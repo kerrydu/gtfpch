@@ -1,0 +1,8 @@
+v 1.0
+d 'gtfpch':  Total Factor Productivity with Undesirable Outputs in Stata
+d 
+d Distribution-Date:   20191204
+d 
+F gtfpch.ado
+F gtfpch.sthlp
+F lgtfpch.mlib
