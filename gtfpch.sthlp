@@ -91,7 +91,7 @@ Variable names must be identified by inputvars for input variable, by desirable_
 
 {title:Examples}
 
-{phang}{cmd. use "https://raw.githubusercontent.com/kerrydu/gtfpch/master/example_ddf.dta"}
+{phang}{cmd:. use "https://raw.githubusercontent.com/kerrydu/gtfpch/master/example_ddf.dta"}
 
 {phang}{cmd:. xtset id t}
 
