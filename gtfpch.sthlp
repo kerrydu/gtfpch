@@ -97,7 +97,7 @@ Variable names must be identified by inputvars for input variable, by desirable_
 
 {phang}{cmd:. gtfpch labor capital energy= gdp: co2,  nonr sav(ddf_result)}
 
-{phang}{cmd:. gtfpch labor capital energy= gdp: co2,  vrs ort(i)}
+{phang}{cmd:. gtfpch labor capital energy= gdp: co2,  ort(i)}
 
 {phang}{cmd:. gtfpch labor capital energy= gdp: co2, seq luen sav(ddf_result,replace)}
 
