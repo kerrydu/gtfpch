@@ -41,9 +41,6 @@
 {synopt:*{opt wmat(name)}}specifies a weight matrix for adjustment of input and output variables. 
 {p_end}
 
-{synopt:{opt vrs}}specifies production technology with variable returns to scale. By default, production technology with constant returns to scale is assumed.
-{p_end}
-
 {synopt:*{cmdab:luen:berger}}specifies estimating Luenberger productivity index. The default is Malmquist–Luenberger productivity index.
 {p_end}
 
