@@ -34,7 +34,7 @@ program define gtfpch, rclass prop(xt)
 	
     syntax varlist [if] [in],    [dmu(varname) gx(varlist) gy(varlist) gb(varlist)  ///
 	                                       SEQuential GLOBAL FGNZ RD  LUENberger ort(string) ///
-										   SAVing(string)   Wmat(string) NONRadial       ///
+										   WINdow(numlist intege max=1 >=1) SAVing(string)   Wmat(string) NONRadial       ///
 										   maxiter(numlist integer >0 max=1) tol(numlist max=1)]
     preserve
     marksample touse
