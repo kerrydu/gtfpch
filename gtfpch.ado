@@ -1,3 +1,7 @@
+*! version 1.1
+* 30 Apr 2020
+* add biennial option
+
 *! version 1.0
 * By Kerry Du, 3 Dec 2019 
 **
@@ -33,7 +37,7 @@ program define gtfpch, rclass prop(xt)
 	
 	
     syntax varlist [if] [in],    [dmu(varname) gx(varlist) gy(varlist) gb(varlist)  ///
-	                                       SEQuential GLOBAL FGNZ RD  LUENberger ort(string) ///
+	                                BIennial  SEQuential GLOBAL FGNZ RD  LUENberger ort(string) ///
 										   WINdow(numlist intege max=1 >=1) SAVing(string)   Wmat(string) NONRadial       ///
 										   maxiter(numlist integer >0 max=1) tol(numlist max=1)]
     preserve
@@ -239,7 +243,7 @@ program define gtfpch, rclass prop(xt)
         if "`luenberger'"==""{
             _malmqluen `invars'=`gopvars':`bopvars' if `touse', id(`id') time(`time') gx(`gx') ///
                                gy(`gy') gb(`gb')  ort(`ort')   ///
-                               `global' `sequential' window(`window') ///
+                              `biennial' `global' `sequential' window(`window') ///
                                maxiter(`maxiter') tol(`tol')
             local indexname "Malmquist-Luenberger Productivity Index"
 
@@ -248,7 +252,7 @@ program define gtfpch, rclass prop(xt)
 
             _luen_ddf `invars'=`gopvars':`bopvars' if `touse', id(`id') time(`time') gx(`gx') ///
                                gy(`gy') gb(`gb')  ort(`ort')   ///
-                               `global' `sequential' window(`window') ///
+                              `biennial' `global' `sequential' window(`window') ///
                                maxiter(`maxiter') tol(`tol')
             local indexname "Luenberger Productivity Index (base on DDF)"
         }
@@ -263,7 +267,7 @@ program define gtfpch, rclass prop(xt)
 
              _luen_nddf `invars'=`gopvars':`bopvars' if `touse', id(`id') time(`time') gx(`gx') ///
                                gy(`gy') gb(`gb')  ort(`ort')  wmat(`weightvec') ///
-                               `global' `sequential' window(`window') ///
+                              `biennial' `global' `sequential' window(`window') ///
                                maxiter(`maxiter') tol(`tol')       
             local indexname "Luenberger Productivity Index (base on nonrial DDF)"
 
@@ -315,7 +319,7 @@ program define gtfpch, rclass prop(xt)
         if "`luenberger'"==""{
             _malmqluen `invars'=`gopvars':`bopvars' if `touse', id(`id') time(`time') gx(`gx') ///
                                gy(`gy') gb(`gb')  ort(`ort')  vrs ///
-                               `global' `sequential' window(`window') ///
+                              `biennial' `global' `sequential' window(`window') ///
                                maxiter(`maxiter') tol(`tol')
             //local indexname "Malmquist-Luenberger Productivity Index"
 
@@ -324,7 +328,7 @@ program define gtfpch, rclass prop(xt)
 
             _luen_ddf `invars'=`gopvars':`bopvars' if `touse', id(`id') time(`time') gx(`gx') ///
                                gy(`gy') gb(`gb')  ort(`ort')  vrs  ///
-                               `global' `sequential' window(`window') ///
+                             `biennial' `global' `sequential' window(`window') ///
                                maxiter(`maxiter') tol(`tol')
             //local indexname "Luenberger Productivity Index (base on DDF)"
         }
@@ -333,7 +337,7 @@ program define gtfpch, rclass prop(xt)
 
              _luen_nddf `invars'=`gopvars':`bopvars' if `touse', id(`id') time(`time') gx(`gx') ///
                                gy(`gy') gb(`gb')  ort(`ort')  wmat(`weightvec') ///
-                               `global' `sequential' window(`window') vrs ///
+                              `biennial' `global' `sequential' window(`window') vrs ///
                                maxiter(`maxiter') tol(`tol')       
             //local indexname "Luenberger Productivity Index (base on nonrial DDF)"
 
@@ -431,7 +435,7 @@ program define gtfpch, rclass prop(xt)
 
 end
 
-
+***********************************************************
 cap program drop _malmqluen
 program define _malmqluen,rclass
     version 16
@@ -462,7 +466,7 @@ program define _malmqluen,rclass
     *local ninv: word count `invars'
     *local ngov: word count `gopvars'
     syntax varlist [if] [in], id(varname) time(varname)  [gx(varlist) ///
-                               gy(varlist) gb(varlist) VRS ort(string) ///
+                       BIennial  gy(varlist) gb(varlist) VRS ort(string) ///
                              GLOBAL SEQuential WINdow(numlist intege max=1 >=1) ///
                  maxiter(numlist integer >0 max=1) tol(numlist max=1 >0)]
                  
@@ -492,7 +496,14 @@ program define _malmqluen,rclass
        disp as error "global and window() cannot be specified together."
        error 498     
      
-     }     
+     }  
+
+     if "`biennial'"!=""{
+     
+       disp as error "global and biennial cannot be specified together."
+       error 498     
+     
+     }           
      
      local techtype "global"
   
@@ -507,7 +518,14 @@ program define _malmqluen,rclass
        disp as error "sequential and window() cannot be specified together."
        error 498     
      
-     }     
+     }  
+
+     if "`biennial'"!=""{
+     
+       disp as error "sequential and biennial cannot be specified together."
+       error 498     
+     
+     }            
      
      local techtype "sequential"
   
@@ -515,10 +533,25 @@ program define _malmqluen,rclass
     
  
      if "`window'"!=""{
+
+       if "`biennial'"!=""{
+       
+         disp as error "biennial and window() cannot be specified together."
+         error 498     
+       
+       }        
      
          local techtype "window"   
      
      }  
+
+       if "`biennial'"!=""{
+       
+        local techtype "biennial"     
+       
+       }        
+     
+
 
 
   if "`gx'"!=""{
@@ -763,6 +796,31 @@ program define _malmqluen,rclass
   
   
   }
+
+
+
+  if `"`techtype'"'=="biennial" {
+  
+      qui{
+        forv t=1/`tmax'{
+            qui replace `flag'= (`period'==`t' | `period'==`t'+1)
+            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            qui replace `DD'=`temp' if `period'==`t'
+            qui drop `temp'
+        }     
+
+        forv t=2/`tmax'{
+            qui replace `flag'=(`period'==`t'-1 | `period'==`t')
+            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            qui replace `D12'=`temp' if `period'==`t'
+            qui drop `temp'
+        }       
+
+    }
+  
+  
+  }
+
  
 
   
@@ -793,6 +851,30 @@ program define _malmqluen,rclass
     
     
   }
+
+  else if `"`techtype'"'=="biennial"{
+
+    qui bys `dmu' (`period'): gen TFPCH=`D12'/`DD'[_n-1] if _n>1
+    label var TFPCH "Total factor productivity change"
+    cap drop `temp' 
+
+    sort `period' `dmu'
+    forv t=1/`tmax'{
+      qui replace `flag'=(`period'==`t')
+      _ddf  if `touse' & `period'==`t', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+      qui replace `DD'=`temp' if `period'==`t'
+      qui cap drop `temp'
+    }
+
+    qui bys `dmu' (`period'): gen TECH=`DD'/`DD'[_n-1]  
+    qui bys `dmu' (`period'): gen TECCH=TFPCH/TECH      
+  
+    label var TECH  "Technical efficiency change" 
+    label var TECCH "Techological change"
+    local resvars TFPCH TECH  TECCH           
+
+  }
+
   else{
   
       //su `DD' `D12' `D21'
@@ -815,7 +897,7 @@ program define _malmqluen,rclass
 
 end  
 
-
+///////////////////////////////////////////////////////////////////////////
 capture program drop _ddf
 program define _ddf
     version 16
@@ -823,7 +905,7 @@ program define _ddf
     syntax [if] [in], gen(string) INvars(varlist) OPvars(varlist) BADvars(varlist) [GVec(varlist) rflag(varname) ort(string) VRS maxiter(numlist) tol(numlist)]
         
 
-        marksample touse 
+    marksample touse 
     markout `touse' `invars' `opvars' `badvars' `gvec'
     
     tempvar touse2
@@ -865,6 +947,7 @@ program define _ddf
     }
     
     mata: _ddf("`data'",`num1',`num2',"`touse'", "`touse2'","`gvec'","`gen'",`rts',`maxiter',`tol')
+
     if "`ort'" =="OUT"{
       
       qui replace `gen'=1/(1+`gen')
@@ -876,7 +959,7 @@ program define _ddf
 
 end 
 
-
+//////////////////////////////////////////////////
 cap program drop _luen_ddf
 program define _luen_ddf,rclass
     version 16
@@ -907,7 +990,7 @@ program define _luen_ddf,rclass
     *local ninv: word count `invars'
     *local ngov: word count `gopvars'
     syntax varlist [if] [in], id(varname) time(varname)  [gx(varlist) ///
-                               gy(varlist) gb(varlist) VRS ort(string) ///
+                   BIennial   gy(varlist) gb(varlist) VRS ort(string) ///
                              GLOBAL SEQuential WINdow(numlist intege max=1 >=1) ///
                  maxiter(numlist integer >0 max=1) tol(numlist max=1 >0)]
                  
@@ -935,7 +1018,14 @@ program define _luen_ddf,rclass
        disp as error "global and window() cannot be specified together."
        error 498     
      
-     }     
+     }  
+
+     if "`biennial'"!=""{
+     
+       disp as error "global and biennial cannot be specified together."
+       error 498     
+     
+     }        
      
      local techtype "global"
   
@@ -951,6 +1041,13 @@ program define _luen_ddf,rclass
        error 498     
      
      }     
+
+     if "`biennial'"!=""{
+     
+       disp as error "sequential and biennial cannot be specified together."
+       error 498     
+     
+     }       
      
      local techtype "sequential"
   
@@ -958,10 +1055,24 @@ program define _luen_ddf,rclass
     
  
      if "`window'"!=""{
+
+       if "`biennial'"!=""{
+       
+         disp as error "biennial and window() cannot be specified together."
+         error 498     
+       
+       }        
      
          local techtype "window"   
      
-     }  
+     }
+
+
+       if "`biennial'"!=""{
+       
+        local techtype "biennial"     
+       
+       }    
 
 
   if "`gx'"!=""{
@@ -1144,6 +1255,30 @@ program define _luen_ddf,rclass
   
   
   }
+
+
+  if `"`techtype'"'=="biennial"{
+  
+      qui{
+        forv t=1/`tmax'{
+            qui replace `flag'= (`period'==`t' | `period'==`t'+1)
+            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            qui replace `DD'=`temp' if `period'==`t'
+            qui drop `temp'
+        }    
+
+        forv t=2/`tmax'{
+            qui replace `flag'=(`period'==`t'-1 | `period'==`t')
+            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            qui replace `D12'=`temp' if `period'==`t'
+            qui drop `temp'
+        }       
+
+    }
+  
+  
+  }
+
   
   
     if `"`techtype'"'=="sequential"{
@@ -1236,6 +1371,29 @@ program define _luen_ddf,rclass
     
     
   }
+  else if `"`techtype'"'="biennial"{
+
+     qui bys `dmu' (`period'): gen TFPCH=`DD'[_n-1]-`D12' if _n>1
+     label var TFPCH "Total factor productivity change"
+     qui cap drop `temp'
+     sort `period' `dmu'
+    forv t=1/`tmax'{
+      qui replace `flag'=(`period'==`t')
+      _ddf_luen  if `touse' & `period'==`t', rflag(`flag') gen(`temp') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+      qui replace `DD'=`temp' if `period'==`t'
+      qui cap drop `temp'
+    }
+    
+    qui bys `dmu' (`period'): gen TECH=`DD'[_n-1]-`DD'
+    qui bys `dmu' (`period'): gen TECCH=TFPCH-TECH      
+  
+    label var TECH  "Technical efficiency change" 
+    label var TECCH "Techological change" 
+    local resvars TFPCH TECH  TECCH     
+
+
+ }
+
   else{
   
       //su `DD' `D12' `D21'
@@ -1259,6 +1417,8 @@ program define _luen_ddf,rclass
 end  
 
 
+
+///////////////////////////////////////////////////////////////
 capture program drop _ddf_luen
 program define _ddf_luen
     version 16
@@ -1266,7 +1426,7 @@ program define _ddf_luen
     syntax [if] [in], gen(string) INvars(varlist) OPvars(varlist) BADvars(varlist) [GVec(varlist) rflag(varname)  VRS maxiter(numlist) tol(numlist)]
         
 
-        marksample touse 
+    marksample touse 
     markout `touse' `invars' `opvars' `badvars' `gvec'
     
     tempvar touse2
@@ -1296,7 +1456,7 @@ program define _ddf_luen
 
 end 
 
-
+////////////////////////////////////////////////////////////////////////
 cap program drop _luen_nddf
 program define _luen_nddf,rclass
     version 16
@@ -1327,7 +1487,7 @@ program define _luen_nddf,rclass
     *local ninv: word count `invars'
     *local ngov: word count `gopvars'
     syntax varlist [if] [in], id(varname) time(varname) wmat(string)  [ gx(varlist) ///
-                               gy(varlist) gb(varlist) VRS ort(string) ///
+                           BIennial  gy(varlist) gb(varlist) VRS ort(string) ///
                              GLOBAL SEQuential WINdow(numlist intege max=1 >=1) ///
                  maxiter(numlist integer >0 max=1) tol(numlist max=1 >0)]
                  
@@ -1343,7 +1503,7 @@ program define _luen_nddf,rclass
   local techtype "contemporaneous"
    
 
-   if "`global'"!=""{
+if "`global'"!=""{
      if "`sequential'"!=""{
      
        disp as error "global and sequential cannot be specified together."
@@ -1356,7 +1516,14 @@ program define _luen_nddf,rclass
        disp as error "global and window() cannot be specified together."
        error 498     
      
-     }     
+     }  
+
+     if "`biennial'"!=""{
+     
+       disp as error "global and biennial cannot be specified together."
+       error 498     
+     
+     }        
      
      local techtype "global"
   
@@ -1372,6 +1539,13 @@ program define _luen_nddf,rclass
        error 498     
      
      }     
+
+     if "`biennial'"!=""{
+     
+       disp as error "sequential and biennial cannot be specified together."
+       error 498     
+     
+     }       
      
      local techtype "sequential"
   
@@ -1379,10 +1553,25 @@ program define _luen_nddf,rclass
     
  
      if "`window'"!=""{
+
+       if "`biennial'"!=""{
+       
+         disp as error "biennial and window() cannot be specified together."
+         error 498     
+       
+       }        
      
          local techtype "window"   
      
-     }  
+     }
+
+
+       if "`biennial'"!=""{
+       
+        local techtype "biennial"     
+       
+       }        
+     
 
 
   if "`gx'"!=""{
@@ -1585,7 +1774,8 @@ program define _luen_nddf,rclass
     qui gen `flag'=0
   
   sort `period' `dmu'
-  
+
+
   if `"`techtype'"'=="contemporaneous"{
   
       qui{
@@ -1615,6 +1805,33 @@ program define _luen_nddf,rclass
   
   
   }
+
+
+  if `"`techtype'"'=="biennial"{
+  
+      qui{
+        forv t=1/`tmax'{
+            qui replace `flag'= (`period'==`t' | `period'==`t'+1)
+
+             _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            qui replace `DD'=`temp' if `period'==`t'
+            qui drop `temp'
+        }    
+
+        forv t=2/`tmax'{
+            qui replace `flag'=(`period'==`t'-1 | `period'==`t')
+            _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            qui replace `D12'=`temp' if `period'==`t'
+            qui drop `temp'
+        }       
+
+    }
+  
+  
+  }
+
+
+  
   
   
     if `"`techtype'"'=="sequential"{
@@ -1707,6 +1924,30 @@ program define _luen_nddf,rclass
     
     
   }
+  else  if `"`techtype'"'=="biennial"{
+
+    qui bys `dmu' (`period'): gen TFPCH=`DD'[_n-1]-`D12' 
+    label var TFPCH "Total factor productivity change"
+    cap drop `temp'   
+    
+    sort `period' `dmu'
+    forv t=1/`tmax'{
+      qui replace `flag'=(`period'==`t')
+      _nddf  if `touse' & `period'==`t', rflag(`flag') gen(`temp') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+      qui replace `DD'=`temp' if `period'==`t'
+      qui cap drop `temp'
+    }
+    
+    qui bys `dmu' (`period'): gen TECH=`DD'[_n-1]-`DD'
+    qui bys `dmu' (`period'): gen TECCH=TFPCH-TECH      
+  
+    label var TECH  "Technical efficiency change" 
+    label var TECCH "Techological change"
+    local resvars TFPCH TECH  TECCH
+    
+    
+  }
+
   else{
   
       //su `DD' `D12' `D21'
@@ -1727,7 +1968,7 @@ program define _luen_nddf,rclass
 
 end  
 
-
+//////////////////////////////////////////////////////////////
 capture program drop _nddf
 program define _nddf
     version 16

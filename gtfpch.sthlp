@@ -32,6 +32,9 @@
 {synopt:{cmdab:seq:uential}}specifies sequential production technology.
 {p_end}
 
+{synopt:{cmdab:bi:ennial}}specifies biennial production technology. 
+{p_end}
+
 {synopt:{opt global}}specifies global production technology.
 {p_end}
 
@@ -137,6 +140,9 @@ Färe, R., Grosskopf, S., Norris, M., & Zhang, Z. (1994). Productivity Growth, T
 
 {phang}
 Ray, S., & Desli, E. (1997). Productivity Growth, Technical Progress, and Efficiency Change in Industrialized Countries: Comment. The American Economic Review, 87(5), 1033-1039.
+
+{phang}
+Jesús T. Pastor, Mette Asmild, C.A. Knox Lovell (2011). The biennial Malmquist productivity change index, Socio-Economic Planning, 45(1):10-15.
 
 
 {title:Author}
