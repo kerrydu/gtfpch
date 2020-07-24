@@ -1,3 +1,6 @@
+*! version 1.2
+* 19 Jul 2020
+* added hybird Oriented
 *! version 1.1
 * 30 Apr 2020
 * add biennial option
@@ -58,6 +61,9 @@ program define gtfpch, rclass prop(xt)
      }
 
     if ("`ort'" == "") local ort = "out"
+    else if ("`ort'" == "hybird" | "`ort'" == "HYBIRD" | "`ort'" == "h" | "`ort'" == "H") {
+         local ort="h"
+    }
     else {
         local ort = upper("`ort'")
         if ("`ort'" == "I" | "`ort'" == "IN" | "`ort'" == "INPUT") {
@@ -68,10 +74,15 @@ program define gtfpch, rclass prop(xt)
         }
         else {
             di as err "option ort allows for case-insensitive " _c
-            di as err "(i|in|input|o|out|output) or nothing."
+            di as err "(i|in|input|o|out|output|h|hybird) or nothing."
             exit 198
         }
-    } 
+    }
+
+  if  "`luenberger'"=="" & "`ort'"=="h"{
+      di as err "ort(hybird) can not be used for Malmquist-Luenberger productivity index."
+      exit 198
+  }
 
 
   if "`gx'"!=""{
@@ -93,6 +104,7 @@ program define gtfpch, rclass prop(xt)
         tempvar gx_`k'
         qui gen `gx_`k''=-`word'
         local gmat `gmat' `gx_`k''
+        local gx `gx' `gx_`k''
         local gmatname `gmatname' -`word'
       }   
     
@@ -102,6 +114,7 @@ program define gtfpch, rclass prop(xt)
         tempvar gx_`k'
         qui gen `gx_`k''=0
         local gmat `gmat' `gx_`k''
+        local gx `gx' `gx_`k''
         local gmatname `gmatname' 0 
       }
     
@@ -124,13 +137,14 @@ program define gtfpch, rclass prop(xt)
   }
   else{
   
-    if  `"`ort'"'=="out"{
+    if  `"`ort'"'!="i"{
       local gopvarscopy `gopvars'
       forv k=1/`ngo'{
         gettoken word gopvarscopy:gopvarscopy
         tempvar gy_`k'
         qui gen `gy_`k''=`word'
         local gmat `gmat' `gy_`k''
+        local gy `gy' `gy_`k''
         local gmatname `gmatname' `word'       
       }   
     
@@ -140,6 +154,7 @@ program define gtfpch, rclass prop(xt)
         tempvar gy_`k'
         qui gen `gy_`k''=0
         local gmat `gmat' `gy_`k''
+        local gy `gy' `gy_`k''
         local gmatname `gmatname' 0        
       }       
     
@@ -161,7 +176,7 @@ program define gtfpch, rclass prop(xt)
   }
   else{
   
-    if `"`ort'"'=="out"{
+    if `"`ort'"'!="i"{
   
       local bopvarscopy `bopvars'
     forv k=1/`nbo'{
@@ -169,6 +184,7 @@ program define gtfpch, rclass prop(xt)
         tempvar gb_`k'
       qui gen `gb_`k''=-`word'
       local gmat `gmat' `gb_`k''
+      local gb `gb' `gb_`k''
       local gmatname `gmatname' -`word'     
     } 
   
@@ -178,6 +194,7 @@ program define gtfpch, rclass prop(xt)
         tempvar gb_`k'
         qui gen `gb_`k''=0
         local gmat `gmat' `gb_`k''
+        local gb `gb' `gb_`k''
         local gmatname `gmatname'  0         
       }     
     
@@ -214,7 +231,7 @@ program define gtfpch, rclass prop(xt)
                 exit 498
             }
         }
-        else{
+        else if "`ort'"=="i"{
             mat `weightvec'=`wmat'[1,(`ninp'+1)..(`ninp'+`nbo'+`ngo')]
             mata: st_numscalar("`wcheck'",sum(st_matrix("`weightvec'")))
             if `wcheck'!=0{
@@ -229,8 +246,11 @@ program define gtfpch, rclass prop(xt)
            if "`ort'"=="out"{       
               mat  `weightvec'=(J(1,`ninp',0),J(1,`ngo',1)*(1/2/`ngo'),J(1,`nbo',1)*(1/2/`nbo'))           
            }
-           else{
+           else if "`ort'"=="i"{
               mat  `weightvec'=(J(1,`ninp',1/`ninp'),J(1,`ngo'+`nbo',0))               
+           }
+           else{
+              mat  `weightvec'=(J(1,`ninp',0.5/`ninp'),J(1,`ngo'+`nbo',0.5/(`ngo'+`nbo'))) 
            }
         
         }
@@ -480,7 +500,7 @@ program define _malmqluen,rclass
 
   confirm numeric var `invars' `gopvars' `bopvars'
   
-  local techtype "contemporaneous"
+ local techtype "contemporaneous"
    
 
    if "`global'"!=""{
@@ -549,116 +569,11 @@ program define _malmqluen,rclass
        
         local techtype "biennial"     
        
-       }        
-     
+       }  
 
 
 
-  if "`gx'"!=""{
-    local ngx: word count `gx'
-    if `ngx'!=`ninp'{
-        disp as error "# of input variables != # of variables specified in gx()."
-        error 498
-    }
-    local gmat `gmat' `gx'
-  
-  }
-  else{
-  
-    if  `"`ort'"'!="out"{
-      local invarscopy `invars'
-      forv k=1/`ninp'{
-        gettoken word invarscopy:invarscopy
-        tempvar gx_`k'
-        qui gen `gx_`k''=-`word'
-        local gmat `gmat' `gx_`k''
-      }   
-    
-    }
-    else{
-      forv k=1/`ninp'{
-        tempvar gx_`k'
-        qui gen `gx_`k''=0
-        local gmat `gmat' `gx_`k''
-      }
-    
-    
-    }
-  
 
-  
-  }
-  
-  if "`gy'"!=""{
-    local ngy: word count `gy'
-    if `ngy'!=`ngo'{
-        disp as error "# of desriable output variables != # of variables specified in gy()."
-        error 498
-    }
-    local gmat `gmat' `gy'
-  
-  }
-  else{
-  
-    if  `"`ort'"'=="out"{
-      local gopvarscopy `gopvars'
-      forv k=1/`ngo'{
-        gettoken word gopvarscopy:gopvarscopy
-        tempvar gy_`k'
-        qui gen `gy_`k''=`word'
-        local gmat `gmat' `gy_`k''
-      }   
-    
-    }
-    else{
-      forv k=1/`ngo'{
-        tempvar gy_`k'
-        qui gen `gy_`k''=0
-        local gmat `gmat' `gy_`k''
-      }       
-    
-    
-    }
-
-  
-  }
-    
-  if "`gb'"!=""{
-    local ngb: word count `gb'
-    if `ngb'!=`nbo'{
-        disp as error "# of undesriable output variables != # of variables specified in gb()."
-        error 498
-    }
-    local gmat `gmat' `gb'
-  
-  }
-  else{
-  
-    if `"`ort'"'=="out"{
-  
-      local bopvarscopy `bopvars'
-    forv k=1/`nbo'{
-        gettoken word bopvarscopy:bopvarscopy
-        tempvar gb_`k'
-      qui gen `gb_`k''=-`word'
-      local gmat `gmat' `gb_`k''
-    } 
-  
-    }
-    else{
-      forv k=1/`nbo'{
-        tempvar gb_`k'
-        qui gen `gb_`k''=0
-        local gmat `gmat' `gb_`k''
-      }     
-    
-    
-    }
-
-  
-  } 
-  
-  
   local comvars: list invars & gopvars 
   if !(`"`comvars'"'==""){
     disp as error "`comvars' should not be specified as input and desriable output simultaneously."
@@ -704,7 +619,8 @@ program define _malmqluen,rclass
   
     qui gen `flag'=0
   
-  sort `period' `dmu'
+    local gmat `gx' `gy' `gb'
+    sort `period' `dmu'
   
   if `"`techtype'"'=="contemporaneous"{
   
@@ -919,23 +835,7 @@ program define _ddf
         local num2: word count `opvars'
     
 *******************************************************************************
-/////////This section is from  Yong-bae Ji and Choonjoo Lee's DEA.ado//////////   
-    // default orientation - Input Oriented
-    if ("`ort'" == "") local ort = "IN"
-    else {
-      local ort = upper("`ort'")
-      if ("`ort'" == "I" | "`ort'" == "IN" | "`ort'" == "INPUT") {
-        local ort = "IN"
-      }
-      else if ("`ort'" == "O" | "`ort'" == "OUT" | "`ort'" == "OUTPUT") {
-        local ort = "OUT"
-      }
-      else {
-        di as err "option ort allows for case-insensitive " _c
-        di as err "(i|in|input|o|out|output) or nothing."
-        exit 198
-      }
-    }
+
     
 *******************************************************************************   
     if "`vrs'"!=""{
@@ -995,14 +895,14 @@ program define _luen_ddf,rclass
                  maxiter(numlist integer >0 max=1) tol(numlist max=1 >0)]
                  
   marksample touse 
-    local bopvars `varlist'
+  local bopvars `varlist'
   local ninp: word count `invars'
-    local ngo: word count `gopvars'
-    local nbo: word count `bopvars'
+  local ngo: word count `gopvars'
+  local nbo: word count `bopvars'
   local nvar: word count `invars' `gopvars' `bopvars' 
   confirm numeric var `invars' `gopvars' `bopvars'
-  
-  local techtype "contemporaneous"
+ 
+ local techtype "contemporaneous"
    
 
    if "`global'"!=""{
@@ -1025,7 +925,7 @@ program define _luen_ddf,rclass
        disp as error "global and biennial cannot be specified together."
        error 498     
      
-     }        
+     }           
      
      local techtype "global"
   
@@ -1040,14 +940,14 @@ program define _luen_ddf,rclass
        disp as error "sequential and window() cannot be specified together."
        error 498     
      
-     }     
+     }  
 
      if "`biennial'"!=""{
      
        disp as error "sequential and biennial cannot be specified together."
        error 498     
      
-     }       
+     }            
      
      local techtype "sequential"
   
@@ -1065,120 +965,13 @@ program define _luen_ddf,rclass
      
          local techtype "window"   
      
-     }
-
+     }  
 
        if "`biennial'"!=""{
        
         local techtype "biennial"     
        
        }    
-
-
-  if "`gx'"!=""{
-    local ngx: word count `gx'
-    if `ngx'!=`ninp'{
-        disp as error "# of input variables != # of variables specified in gx()."
-        error 498
-    }
-    local gmat `gmat' `gx'
-  
-  }
-  else{
-  
-    if  `"`ort'"'!="out"{
-      local invarscopy `invars'
-      forv k=1/`ninp'{
-        gettoken word invarscopy:invarscopy
-        tempvar gx_`k'
-        qui gen `gx_`k''=-`word'
-        local gmat `gmat' `gx_`k''
-      }   
-    
-    }
-    else{
-      forv k=1/`ninp'{
-        tempvar gx_`k'
-        qui gen `gx_`k''=0
-        local gmat `gmat' `gx_`k''
-      }
-    
-    
-    }
-  
-
-  
-  }
-  
-  if "`gy'"!=""{
-    local ngy: word count `gy'
-    if `ngy'!=`ngo'{
-        disp as error "# of desriable output variables != # of variables specified in gy()."
-        error 498
-    }
-    local gmat `gmat' `gy'
-  
-  }
-  else{
-  
-    if  `"`ort'"'=="out"{
-      local gopvarscopy `gopvars'
-      forv k=1/`ngo'{
-        gettoken word gopvarscopy:gopvarscopy
-        tempvar gy_`k'
-        qui gen `gy_`k''=`word'
-        local gmat `gmat' `gy_`k''
-      }   
-    
-    }
-    else{
-      forv k=1/`ngo'{
-        tempvar gy_`k'
-        qui gen `gy_`k''=0
-        local gmat `gmat' `gy_`k''
-      }       
-    
-    
-    }
-
-  
-  }
-    
-  if "`gb'"!=""{
-    local ngb: word count `gb'
-    if `ngb'!=`nbo'{
-        disp as error "# of undesriable output variables != # of variables specified in gb()."
-        error 498
-    }
-    local gmat `gmat' `gb'
-  
-  }
-  else{
-  
-    if `"`ort'"'=="out"{
-  
-      local bopvarscopy `bopvars'
-    forv k=1/`nbo'{
-        gettoken word bopvarscopy:bopvarscopy
-        tempvar gb_`k'
-      qui gen `gb_`k''=-`word'
-      local gmat `gmat' `gb_`k''
-    } 
-  
-    }
-    else{
-      forv k=1/`nbo'{
-        tempvar gb_`k'
-        qui gen `gb_`k''=0
-        local gmat `gmat' `gb_`k''
-      }     
-    
-    
-    }
-
-  
-  } 
-  
   
   local comvars: list invars & gopvars 
   if !(`"`comvars'"'==""){
@@ -1222,10 +1015,12 @@ program define _luen_ddf,rclass
     qui gen `DD'=.
     qui gen `D21'=.
     qui gen `D12'=.
+
+    local gmat `gx' `gy' `gb'
   
     qui gen `flag'=0
   
-  sort `period' `dmu'
+    sort `period' `dmu'
   
   if `"`techtype'"'=="contemporaneous"{
   
@@ -1371,7 +1166,7 @@ program define _luen_ddf,rclass
     
     
   }
-  else if `"`techtype'"'="biennial"{
+  else if `"`techtype'"'=="biennial"{
 
      qui bys `dmu' (`period'): gen TFPCH=`DD'[_n-1]-`D12' if _n>1
      label var TFPCH "Total factor productivity change"
@@ -1499,11 +1294,10 @@ program define _luen_nddf,rclass
   local nbo: word count `bopvars'
   local nvar: word count `invars' `gopvars' `bopvars' 
   confirm numeric var `invars' `gopvars' `bopvars'
-  
-  local techtype "contemporaneous"
+ local techtype "contemporaneous"
    
 
-if "`global'"!=""{
+   if "`global'"!=""{
      if "`sequential'"!=""{
      
        disp as error "global and sequential cannot be specified together."
@@ -1523,7 +1317,7 @@ if "`global'"!=""{
        disp as error "global and biennial cannot be specified together."
        error 498     
      
-     }        
+     }           
      
      local techtype "global"
   
@@ -1538,14 +1332,14 @@ if "`global'"!=""{
        disp as error "sequential and window() cannot be specified together."
        error 498     
      
-     }     
+     }  
 
      if "`biennial'"!=""{
      
        disp as error "sequential and biennial cannot be specified together."
        error 498     
      
-     }       
+     }            
      
      local techtype "sequential"
   
@@ -1563,121 +1357,13 @@ if "`global'"!=""{
      
          local techtype "window"   
      
-     }
-
+     }  
 
        if "`biennial'"!=""{
        
         local techtype "biennial"     
        
-       }        
-     
-
-
-  if "`gx'"!=""{
-    local ngx: word count `gx'
-    if `ngx'!=`ninp'{
-        disp as error "# of input variables != # of variables specified in gx()."
-        error 498
-    }
-    local gmat `gmat' `gx'
-  
-  }
-  else{
-  
-    if  `"`ort'"'!="out"{
-      local invarscopy `invars'
-      forv k=1/`ninp'{
-        gettoken word invarscopy:invarscopy
-        tempvar gx_`k'
-        qui gen `gx_`k''=-`word'
-        local gmat `gmat' `gx_`k''
-      }   
-    
-    }
-    else{
-      forv k=1/`ninp'{
-        tempvar gx_`k'
-        qui gen `gx_`k''=0
-        local gmat `gmat' `gx_`k''
-      }
-    
-    
-    }
-  
-
-  
-  }
-  
-  if "`gy'"!=""{
-    local ngy: word count `gy'
-    if `ngy'!=`ngo'{
-        disp as error "# of desriable output variables != # of variables specified in gy()."
-        error 498
-    }
-    local gmat `gmat' `gy'
-  
-  }
-  else{
-  
-    if  `"`ort'"'=="out"{
-      local gopvarscopy `gopvars'
-      forv k=1/`ngo'{
-        gettoken word gopvarscopy:gopvarscopy
-        tempvar gy_`k'
-        qui gen `gy_`k''=`word'
-        local gmat `gmat' `gy_`k''
-      }   
-    
-    }
-    else{
-      forv k=1/`ngo'{
-        tempvar gy_`k'
-        qui gen `gy_`k''=0
-        local gmat `gmat' `gy_`k''
-      }       
-    
-    
-    }
-
-  
-  }
-    
-  if "`gb'"!=""{
-    local ngb: word count `gb'
-    if `ngb'!=`nbo'{
-        disp as error "# of undesriable output variables != # of variables specified in gb()."
-        error 498
-    }
-    local gmat `gmat' `gb'
-  
-  }
-  else{
-  
-    if `"`ort'"'=="out"{
-  
-      local bopvarscopy `bopvars'
-    forv k=1/`nbo'{
-        gettoken word bopvarscopy:bopvarscopy
-        tempvar gb_`k'
-      qui gen `gb_`k''=-`word'
-      local gmat `gmat' `gb_`k''
-    } 
-  
-    }
-    else{
-      forv k=1/`nbo'{
-        tempvar gb_`k'
-        qui gen `gb_`k''=0
-        local gmat `gmat' `gb_`k''
-      }     
-    
-    
-    }
-
-  
-  } 
-  
+       }   
   
   local comvars: list invars & gopvars 
   if !(`"`comvars'"'==""){
@@ -1773,7 +1459,8 @@ if "`global'"!=""{
   
     qui gen `flag'=0
   
-  sort `period' `dmu'
+    local gmat `gx' `gy' `gb'
+    sort `period' `dmu'
 
 
   if `"`techtype'"'=="contemporaneous"{

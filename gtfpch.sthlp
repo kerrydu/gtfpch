@@ -47,8 +47,8 @@
 {synopt:*{cmdab:luen:berger}}specifies estimating Luenberger productivity index. The default is Malmquist–Luenberger productivity index.
 {p_end}
 
-{synopt:{opt ort(string)}}specifies the oriention. The default is ort(out), 
-meaning the output oriented productivity index. ort(i) means the input oriented productivity index.
+{synopt:*{opt ort(string)}}specifies the oriention. The default is ort(out), 
+meaning the output oriented productivity index(indicator). ort(i) means the input oriented productivity index(indicator); ort(h) means the hybird productivity indicator.
 {p_end}
 
 {synopt:{opt fgnz}}specifies decomposing TFP change following the spirit of Färe, Grosskopf, Norris, and Zhang's (1994).
@@ -70,8 +70,8 @@ meaning the output oriented productivity index. ort(i) means the input oriented 
 {p2colreset}{...}
 {p 4 6 2}  A panel variable and a time variable must be specified; use xtset. {p_end}
 {p 4 6 2}* wmat(name) can only be used when nonradial is specified. {p_end}
-{p 4 6 2}* Luenberger productivity index is estimated when nonradial is specified.{p_end}
-
+{p 4 6 2}* Luenberger productivity indicator is estimated when nonradial is specified.{p_end}
+{p 4 6 2}* ort(h) can only be used for Luenberger productivity indicator.{p_end}
 
 
 
@@ -117,6 +117,9 @@ Macro:
 {phang}
 Chung, Y.H., Färe, R., Grosskopf, S. Productivity and Undesirable Outputs: A Directional Distance Function Approach.
  Journal of Environmental Management, 1997, 51:229-240.
+
+{phang}
+Chambers R.G. Exact nonradial input, output, and productivity measurement. Economic Theory, 2002, 20 (4):751-765
  
 {phang}
 Färe, R., Grosskopf, S. Directional distance functions and slacks-based measures of efficiency. European Journal of Operational Research, 2010, 200:320-322.
