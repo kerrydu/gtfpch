@@ -48,10 +48,10 @@
 {p_end}
 
 {synopt:*{opt ort(string)}}specifies the oriention. The default is ort(out), 
-meaning the output oriented productivity index(indicator). ort(i) means the input oriented productivity index(indicator); ort(h) means the hybird productivity indicator.
+meaning the output oriented productivity index(indicator). ort(i) means the input oriented productivity index(indicator); ort(h) means the hybrid productivity indicator.
 {p_end}
 
-{synopt:{opt fgnz}}specifies decomposing TFP change following the spirit of Färe, Grosskopf, Norris, and Zhang's (1994).
+{synopt:{opt fgnz}}specifies decomposing TFP change following the spirit of Färe, Grosskopf, Norris, and Zhang's (1994) method.
 {p_end}
 
 {synopt:{opt rd}}specifies decomposing TFP change following the spirit of Ray and Desli's (1997) method.

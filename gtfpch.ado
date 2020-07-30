@@ -1,6 +1,6 @@
 *! version 1.2
 * 19 Jul 2020
-* added hybird Oriented
+* added hybrid Oriented
 *! version 1.1
 * 30 Apr 2020
 * add biennial option
@@ -61,7 +61,7 @@ program define gtfpch, rclass prop(xt)
      }
 
     if ("`ort'" == "") local ort = "out"
-    else if ("`ort'" == "hybird" | "`ort'" == "HYBIRD" | "`ort'" == "h" | "`ort'" == "H") {
+    else if ("`ort'" == "hybrid" | "`ort'" == "HYBRID" | "`ort'" == "h" | "`ort'" == "H") {
          local ort="h"
     }
     else {
@@ -74,13 +74,13 @@ program define gtfpch, rclass prop(xt)
         }
         else {
             di as err "option ort allows for case-insensitive " _c
-            di as err "(i|in|input|o|out|output|h|hybird) or nothing."
+            di as err "(i|in|input|o|out|output|h|hybrid) or nothing."
             exit 198
         }
     }
 
   if  "`luenberger'"=="" & "`ort'"=="h"{
-      di as err "ort(hybird) can not be used for Malmquist-Luenberger productivity index."
+      di as err "ort(hybrid) can not be used for Malmquist-Luenberger productivity index."
       exit 198
   }
 
@@ -227,7 +227,7 @@ program define gtfpch, rclass prop(xt)
             mat `weightvec'=`wmat'[1,1..`ninp']
             mata: st_numscalar("`wcheck'",sum(st_matrix("`weightvec'")))
             if `wcheck'!=0{
-                disp as error "For output orientied Luenberger productivity index, the weight components for input reduction should be set to 0."
+                disp as error "For output orientied Luenberger productivity indicator, the weight components for input reduction should be set to 0."
                 exit 498
             }
         }
@@ -235,7 +235,7 @@ program define gtfpch, rclass prop(xt)
             mat `weightvec'=`wmat'[1,(`ninp'+1)..(`ninp'+`nbo'+`ngo')]
             mata: st_numscalar("`wcheck'",sum(st_matrix("`weightvec'")))
             if `wcheck'!=0{
-                disp as error "For input orientied Luenberger productivity index, the weight components for output reduction should be set to 0."
+                disp as error "For input orientied Luenberger productivity indicator, the weight components for output reduction should be set to 0."
                 exit 498
             }
             
@@ -243,6 +243,7 @@ program define gtfpch, rclass prop(xt)
          mat `weightvec'=`wmat'
         }
         else{
+          /*
            if "`ort'"=="out"{       
               mat  `weightvec'=(J(1,`ninp',0),J(1,`ngo',1)*(1/2/`ngo'),J(1,`nbo',1)*(1/2/`nbo'))           
            }
@@ -252,6 +253,17 @@ program define gtfpch, rclass prop(xt)
            else{
               mat  `weightvec'=(J(1,`ninp',0.5/`ninp'),J(1,`ngo'+`nbo',0.5/(`ngo'+`nbo'))) 
            }
+           */
+           if "`ort'"=="out"{       
+              mat  `weightvec'=(J(1,`ninp',0),J(1,`ngo',1),J(1,`nbo',1))           
+           }
+           else if "`ort'"=="i"{
+              mat  `weightvec'=(J(1,`ninp',1),J(1,`ngo'+`nbo',0))               
+           }
+           else{
+              mat  `weightvec'=(J(1,`ninp',1),J(1,`ngo'+`nbo',1)) 
+           }
+
         
         }
 
