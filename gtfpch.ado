@@ -267,6 +267,12 @@ program define gtfpch, rclass prop(xt)
         
         }
 
+        forval i = 1/`=colsof(`weightvec')' {
+             local wvalues `wvalues'  `=`weightvec'[1,`i']'
+           }
+        di 
+        disp " The weight vector is (`wvalues')"
+
     }   
 
 
@@ -291,11 +297,11 @@ program define gtfpch, rclass prop(xt)
     }
     else{
 
-            matrix colnames `weightvec' =`invars' `gopvars' `bopvars' 
-            matrix rownames `weightvec' = "W"
-            di 
-            disp " The weight vector is:"
-            mat list `weightvec',noblank  noheader
+            //matrix colnames `weightvec' =`invars' `gopvars' `bopvars' 
+            //matrix rownames `weightvec' = "W"
+            //di 
+            //disp " The weight vector is:"
+            //mat list `weightvec',noblank  noheader
 
              _luen_nddf `invars'=`gopvars':`bopvars' if `touse', id(`id') time(`time') gx(`gx') ///
                                gy(`gy') gb(`gb')  ort(`ort')  wmat(`weightvec') ///
@@ -320,7 +326,6 @@ program define gtfpch, rclass prop(xt)
         qui keep if !missing(Pdwise)
         disp _n(2) " Total Factor Productivity Change:`indexname'"
         disp "    (Row: Row # in the original data; Pdwise: periodwise)"
-
         list Row `dmu' `id'  Pdwise  `resvars', sep(0) 
         di "Note: missing value indicates infeasible problem."
 
@@ -389,13 +394,15 @@ program define gtfpch, rclass prop(xt)
         qui gen SECH=TECH_crs/TECH
         label var SECH "Scale efficiecny change"      
         qui replace TFPCH=TFPCH_crs
+		/*
         if "`global'"!=""{
           qui replace BPC=BPC_crs
         }
         else{
           qui replace TECCH=TECCH_crs   
         }
-
+		*/
+		qui replace TECCH=TECCH_crs 
         local resvars `resvars' SECH
       }
 
@@ -415,12 +422,16 @@ program define gtfpch, rclass prop(xt)
         qui gen SECH=TECH_crs-TECH
         label var SECH "Scale efficiecny change"      
         qui replace TFPCH=TFPCH_crs
+		/*
         if "`global'"!=""{
           qui replace BPC=BPC_crs
         }
         else{
           qui replace TECCH=TECCH_crs   
         }
+		*/
+		
+		qui replace TECCH=TECCH_crs 
 
         local resvars `resvars' SECH
       }
@@ -431,7 +442,7 @@ program define gtfpch, rclass prop(xt)
         di 
         di " The diectional vector is (`gmatname')"    
       format `resvars' %9.4f
-
+	
     qui keep if `touse'
     qui cap bys `id' (`time'): gen Pdwise=`time'[_n-1]+"~"+`time' if _n>1
     qui cap bys `id' (`time'): gen Pdwise=string(`time'[_n-1])+"~"+string(`time') if _n>1
@@ -440,7 +451,6 @@ program define gtfpch, rclass prop(xt)
     order Row `dmu' `id' Pdwise  `resvars' 
     qui keep if !missing(Pdwise) & `touse'
     qui keep  Row `dmu' `id' Pdwise  `resvars' 
-  
     disp _n(2) " Total Factor Productivity Change:`indexname'"
     disp "    (Row: Row # in the original data; Pdwise: periodwise)"
 
@@ -771,11 +781,14 @@ program define _malmqluen,rclass
     }
     
     qui bys `dmu' (`period'): gen TECH=`DD'/`DD'[_n-1]  
-    qui bys `dmu' (`period'): gen BPC=TFPCH/TECH      
+    *qui bys `dmu' (`period'): gen BPC=TFPCH/TECH 
+	qui bys `dmu' (`period'): gen TECCH=TFPCH/TECH
   
     label var TECH  "Technical efficiency change" 
-    label var BPC "Best practice gap change"
-    local resvars TFPCH TECH  BPC
+	label var TECCH "Technological change"
+    *label var BPC "Best practice gap change"
+    *local resvars TFPCH TECH  BPC
+	local resvars TFPCH TECH  TECCH
     
     
   }
@@ -1170,11 +1183,14 @@ program define _luen_ddf,rclass
     }
     
     qui bys `dmu' (`period'): gen TECH=`DD'[_n-1]-`DD'
-    qui bys `dmu' (`period'): gen BPC=TFPCH-TECH      
+    *qui bys `dmu' (`period'): gen BPC=TFPCH-TECH 
+	qui bys `dmu' (`period'): gen TECCH=TFPCH-TECH
   
     label var TECH  "Technical efficiency change" 
-    label var BPC "Best practice gap change"
-    local resvars TFPCH TECH  BPC
+    *label var BPC "Best practice gap change"
+	label var TECCH "Technological change"
+    *local resvars TFPCH TECH  BPC
+	local resvars TFPCH TECH  TECCH
     
     
   }
@@ -1615,11 +1631,14 @@ program define _luen_nddf,rclass
     }
     
     qui bys `dmu' (`period'): gen TECH=`DD'[_n-1]-`DD'
-    qui bys `dmu' (`period'): gen BPC=TFPCH-TECH      
+    *qui bys `dmu' (`period'): gen BPC=TFPCH-TECH 
+	qui bys `dmu' (`period'): gen TECCH=TFPCH-TECH
   
     label var TECH  "Technical efficiency change" 
-    label var BPC "Best practice gap change"
-    local resvars TFPCH TECH  BPC
+    *label var BPC "Best practice gap change"
+	label var TECCH "Technological Change"
+    *local resvars TFPCH TECH  BPC
+	local resvars TFPCH TECH  TECCH
     
     
   }
