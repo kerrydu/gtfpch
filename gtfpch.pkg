@@ -1,5 +1,5 @@
-v 1.0
-d 'gtfpch':  Total Factor Productivity with Undesirable Outputs in Stata
+v 2.0
+d 'gtfpch': Technical Efficiency and Total Factor Productivity with Undesirable Outputs in Stata
 d 
 d Distribution-Date:   20200806
 d 
@@ -7,4 +7,8 @@ F gtfpch.ado
 F gtfpch.sthlp
 F teddf.ado
 F teddf.sthlp
+F sbmeff.ado
+F sbmeff.sthlp
 F lgtfpch.mlib
+F lsbmeff.mlib
+
