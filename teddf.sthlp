@@ -41,6 +41,12 @@
 {synopt:{opt vrs}}specifies production technology with variable returns to scale. By default, production technology with constant returns to scale is assumed.
 {p_end}
 
+{synopt:{opt sup}}specifies supper efficiency measure.
+{p_end}
+
+{synopt:{opt tonk}}specifies Tonk's (2004) SBM model.
+{p_end}
+
 {synopt:{cmdab:win:dow(#)}}specifies window production technology with the #-period bandwidth.
 {p_end}
 
@@ -118,6 +124,9 @@ Chung, Y.H., Färe, R., Grosskopf, S. Productivity and Undesirable Outputs: A Di
  
 {phang}
 Färe, R., Grosskopf, S. Directional distance functions and slacks-based measures of efficiency. European Journal of Operational Research, 2010, 200:320-322.
+
+{phang}
+Tone, K. (2004). Dealing with Undesirable Outputs in DEA: A Slacks-Based Measure (SBM) Approach. North American Productivity Workshop 2004, Toronto, 23-25 June 2004, 44-45.
 
 {phang}
 Oh, D.-h. A global Malmquist-Luenberger productivity index. Journal of Productivity Analysis, 2010, 34:183-197.

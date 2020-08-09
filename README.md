@@ -9,5 +9,5 @@ See the [manuscript](https://github.com/kerrydu/gtfpch/blob/master/manuscript.pd
 ## Install with Stata Command
 
  ```
- net install gtfpch, from("https://raw.githubusercontent.com/kerrydu/gtfpch/master/")
+ net install gtfpch, from("https://raw.githubusercontent.com/kerrydu/gtfpch/master/") force
  ```

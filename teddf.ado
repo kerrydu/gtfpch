@@ -1,3 +1,5 @@
+*! version 2.1, 7 Aug 2020
+* added supper efficiency opt
 *! version 2.0
 * By Kerry Du, 30 Jul 2020 
 **
@@ -28,9 +30,15 @@ program define teddf, rclass
 	
 	
     syntax varlist [if] [in], Dmu(varname) [Time(varname) gx(varlist) gy(varlist) gb(varlist)  ///
-	                                        BIennial  SEQuential GLObal VRS  NONRadial  ///
+	                                        BIennial  SEQuential GLObal VRS  NONRadial  TONK ///
 										   Wmat(string) SAVing(string)  WINdow(numlist intege max=1 >=1)    ///
-										   maxiter(numlist integer >0 max=1) tol(numlist max=1)]
+										   maxiter(numlist integer >0 max=1) tol(numlist max=1) SUP]
+    local bopvars `varlist'
+	if `"`tonk'"'!=""{
+		sbmeff `invars' = `gopvars' : `bopvars', dmu(`dmu') time(`time') `sup'  `vrs' ///
+		     `biennial' `sequential' `global'  window(`window') saving(`saving') maxiter(`maxiter') tol(`tol')
+		exit
+	}
 
 										   
 	marksample touse 
@@ -327,7 +335,7 @@ program define teddf, rclass
 
 		if "`global'"!=""{
 
-			mata: _tenddf("`data'",`ninp',`ngo',"`touse'", "`touse2'","`gmat'","`weightvec'","Dval `slackvars'",`rts',`maxiter',`tol')
+			mata: _tenddf`sup'("`data'",`ninp',`ngo',"`touse'", "`touse2'","`gmat'","`weightvec'","Dval `slackvars'",`rts',`maxiter',`tol')
 		}
 
 
@@ -341,7 +349,7 @@ program define teddf, rclass
 	           qui replace `touse4'=(`tvar'==`t' & `touse')
 	           qui replace `touse3'=(`tvar'<=`t' & `touse2'==1) 
 
-	 		   mata: _tenddf("`data'",`ninp',`ngo',"`touse4'", "`touse3'","`gmat'","`weightvec'","Dval `slackvars'",`rts',`maxiter',`tol')       	
+	 		   mata: _tenddf`sup'("`data'",`ninp',`ngo',"`touse4'", "`touse3'","`gmat'","`weightvec'","Dval `slackvars'",`rts',`maxiter',`tol')       	
 	        }
 
 
@@ -352,7 +360,7 @@ program define teddf, rclass
 	        forv t=1/`tmax'{
 	           qui replace `touse4'=(`tvar'==`t' & `touse')
 	           qui replace `touse3'=(`tvar'>=`t' & `tvar'<=`t'+1 & `touse2'==1) 
-	 		   mata: _tenddf("`data'",`ninp',`ngo',"`touse4'", "`touse3'","`gmat'","`weightvec'","Dval `slackvars'",`rts',`maxiter',`tol')       	
+	 		   mata: _tenddf`sup'("`data'",`ninp',`ngo',"`touse4'", "`touse3'","`gmat'","`weightvec'","Dval `slackvars'",`rts',`maxiter',`tol')       	
 	        }
 
 
@@ -364,7 +372,7 @@ program define teddf, rclass
 	        forv t=1/`tmax'{
 	           qui replace `touse4'=(`tvar'==`t' & `touse')
 	           qui replace `touse3'=(`tvar'>=`t'-`band' & `tvar'<=`t'+`band' & `touse2'==1) 
-	 		   mata: _tenddf("`data'",`ninp',`ngo',"`touse4'", "`touse3'","`gmat'","`weightvec'","Dval `slackvars'",`rts',`maxiter',`tol')       	
+	 		   mata: _tenddf`sup'("`data'",`ninp',`ngo',"`touse4'", "`touse3'","`gmat'","`weightvec'","Dval `slackvars'",`rts',`maxiter',`tol')       	
 	        }
 
 		}
@@ -376,7 +384,7 @@ program define teddf, rclass
 	        forv t=1/`tmax'{
 	           qui replace `touse4'=(`tvar'==`t' & `touse')
 	           qui replace `touse3'=(`tvar'==`t' & `touse2'==1) 
-	 		   mata: _tenddf("`data'",`ninp',`ngo',"`touse4'", "`touse3'","`gmat'","`weightvec'","Dval `slackvars'",`rts',`maxiter',`tol')       	
+	 		   mata: _tenddf`sup'("`data'",`ninp',`ngo',"`touse4'", "`touse3'","`gmat'","`weightvec'","Dval `slackvars'",`rts',`maxiter',`tol')       	
 	        }
 
 
@@ -389,7 +397,7 @@ program define teddf, rclass
 
 		if "`global'"!=""{
 
-			mata: _ddf("`data'",`ninp',`ngo',"`touse'", "`touse2'","`gmat'","Dval",`rts',`maxiter',`tol')
+			mata: _ddf`sup'("`data'",`ninp',`ngo',"`touse'", "`touse2'","`gmat'","Dval",`rts',`maxiter',`tol')
 		}
 
 
@@ -402,7 +410,7 @@ program define teddf, rclass
 	        forv t=1/`tmax'{
 	           qui replace `touse4'=(`tvar'==`t' & `touse')
 	           qui replace `touse3'=(`tvar'<=`t' & `touse2'==1) 
-	 		   mata: _ddf("`data'",`ninp',`ngo',"`touse4'", "`touse3'","`gmat'","Dval",`rts',`maxiter',`tol')       	
+	 		   mata: _ddf`sup'("`data'",`ninp',`ngo',"`touse4'", "`touse3'","`gmat'","Dval",`rts',`maxiter',`tol')       	
 	        }
 
 
@@ -413,7 +421,7 @@ program define teddf, rclass
 	        forv t=1/`tmax'{
 	           qui replace `touse4'=(`tvar'==`t' & `touse')	        	
 	           qui replace `touse3'=(`tvar'>=`t' & `tvar'<=`t'+1 & `touse2'==1) 
-	 		   mata: _ddf("`data'",`ninp',`ngo',"`touse4'", "`touse3'","`gmat'","Dval",`rts',`maxiter',`tol')       	
+	 		   mata: _ddf`sup'("`data'",`ninp',`ngo',"`touse4'", "`touse3'","`gmat'","Dval",`rts',`maxiter',`tol')       	
 	        }
 
 
@@ -425,7 +433,7 @@ program define teddf, rclass
 	        forv t=1/`tmax'{
 	           qui replace `touse4'=(`tvar'==`t' & `touse')	        	
 	           qui replace `touse3'=(`tvar'>=`t'-`band' & `tvar'<=`t'+`band' & `touse2'==1)
-	 		   mata: _ddf("`data'",`ninp',`ngo',"`touse4'", "`touse3'","`gmat'","Dval",`rts',`maxiter',`tol')       	
+	 		   mata: _ddf`sup'("`data'",`ninp',`ngo',"`touse4'", "`touse3'","`gmat'","Dval",`rts',`maxiter',`tol')       	
 	        }
 
 		}
@@ -436,7 +444,7 @@ program define teddf, rclass
 	        forv t=1/`tmax'{
 	           qui replace `touse4'=(`tvar'==`t' & `touse')	        	
 	           qui replace `touse3'=(`tvar'==`t' & `touse2'==1) 
-	 		   mata: _ddf("`data'",`ninp',`ngo',"`touse4'", "`touse3'","`gmat'","Dval",`rts',`maxiter',`tol')   
+	 		   mata: _ddf`sup'("`data'",`ninp',`ngo',"`touse4'", "`touse3'","`gmat'","Dval",`rts',`maxiter',`tol')   
 	        }
 
 
@@ -476,4 +484,4 @@ program define teddf, rclass
 	
 ///////////////////////////////////////////////////////	
 
-	
+
