@@ -43,8 +43,6 @@ program define teddf, rclass
 										   
 	marksample touse 
 	markout `touse' `invars' `gopvars' `gx' `gy' `gb'
-
-	local bopvars `varlist'
 	
 	local invars: list uniq invars
 	local gopvars: list uniq gopvars
