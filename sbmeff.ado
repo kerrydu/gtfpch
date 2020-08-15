@@ -1,5 +1,7 @@
+*! version 2.0.1
+* 2020-8-15, remove sup opt
 *! version 2.0
-* By Kerry Du, 8 Aug 2020 
+* By Kerry Du & Daoping Wang, 8 Aug 2020 
 capture program drop sbmeff
 program define sbmeff, rclass
     version 16
@@ -36,7 +38,7 @@ program define sbmeff, rclass
 	    syntax varlist [if] [in], Dmu(varname) [Time(varname)  ///
 	                                        BIennial  SEQuential GLObal VRS  ///
 										   SAVing(string)  WINdow(numlist intege max=1 >=1)    ///
-										   maxiter(numlist integer >0 max=1) tol(numlist max=1) SUP]
+										   maxiter(numlist integer >0 max=1) tol(numlist max=1) ]
 
 										   
 										   
@@ -232,7 +234,7 @@ program define sbmeff, rclass
 
 		if "`global'"!=""{
 
-			mata: _sbmeff`sup'("`data'",`ninp',`ngo',"`touse'", "`touse2'","TE `slackvars'",`rts',`maxiter',`tol')
+			mata: _sbmeff("`data'",`ninp',`ngo',"`touse'", "`touse2'","TE `slackvars'",`rts',`maxiter',`tol')
 		}
 
 
@@ -246,7 +248,7 @@ program define sbmeff, rclass
 	           qui replace `touse4'=(`tvar'==`t' & `touse')
 	           qui replace `touse3'=(`tvar'<=`t' & `touse2'==1) 
 
-	 		   mata: _sbmeff`sup'("`data'",`ninp',`ngo',"`touse4'", "`touse3'","TE `slackvars'",`rts',`maxiter',`tol')       	
+	 		   mata: _sbmeff("`data'",`ninp',`ngo',"`touse4'", "`touse3'","TE `slackvars'",`rts',`maxiter',`tol')       	
 	        }
 
 
@@ -257,7 +259,7 @@ program define sbmeff, rclass
 	        forv t=1/`tmax'{
 	           qui replace `touse4'=(`tvar'==`t' & `touse')
 	           qui replace `touse3'=(`tvar'>=`t' & `tvar'<=`t'+1 & `touse2'==1) 
-	 		   mata: _sbmeff`sup'("`data'",`ninp',`ngo',"`touse4'", "`touse3'","Dval `slackvars'",`rts',`maxiter',`tol')       	
+	 		   mata: _sbmeff("`data'",`ninp',`ngo',"`touse4'", "`touse3'","Dval `slackvars'",`rts',`maxiter',`tol')       	
 	        }
 
 
@@ -269,7 +271,7 @@ program define sbmeff, rclass
 	        forv t=1/`tmax'{
 	           qui replace `touse4'=(`tvar'==`t' & `touse')
 	           qui replace `touse3'=(`tvar'>=`t'-`band' & `tvar'<=`t'+`band' & `touse2'==1) 
-	 		   mata: _sbmeff`sup'("`data'",`ninp',`ngo',"`touse4'", "`touse3'","TE `slackvars'",`rts',`maxiter',`tol')       	
+	 		   mata: _sbmeff("`data'",`ninp',`ngo',"`touse4'", "`touse3'","TE `slackvars'",`rts',`maxiter',`tol')       	
 	        }
 
 		}
@@ -281,7 +283,7 @@ program define sbmeff, rclass
 	        forv t=1/`tmax'{
 	           qui replace `touse4'=(`tvar'==`t' & `touse')
 	           qui replace `touse3'=(`tvar'==`t' & `touse2'==1) 
-	 		   mata: _sbmeff`sup'("`data'",`ninp',`ngo',"`touse4'", "`touse3'","TE `slackvars'",`rts',`maxiter',`tol')       	
+	 		   mata: _sbmeff("`data'",`ninp',`ngo',"`touse4'", "`touse3'","TE `slackvars'",`rts',`maxiter',`tol')       	
 	        }
 
 
@@ -334,7 +336,7 @@ program define sbmeffnu2, rclass
 	    syntax varlist [if] [in], Dmu(varname) [Time(varname)  ///
 	                                        BIennial  SEQuential GLObal VRS  ///
 										   SAVing(string)  WINdow(numlist intege max=1 >=1)    ///
-										   maxiter(numlist integer >0 max=1) tol(numlist max=1) SUP]
+										   maxiter(numlist integer >0 max=1) tol(numlist max=1) ]
 
 	local gopvars `varlist'		
 	unab gopvars : `gopvars'
@@ -515,7 +517,7 @@ program define sbmeffnu2, rclass
 
 		if "`global'"!=""{
 
-			mata: _sbm`sup'("`data'",`ninp',`ngo',"`touse'", "`touse2'","TE `slackvars'",`rts',`maxiter',`tol')
+			mata: _sbm("`data'",`ninp',`ngo',"`touse'", "`touse2'","TE `slackvars'",`rts',`maxiter',`tol')
 		}
 
 
@@ -529,7 +531,7 @@ program define sbmeffnu2, rclass
 	           qui replace `touse4'=(`tvar'==`t' & `touse')
 	           qui replace `touse3'=(`tvar'<=`t' & `touse2'==1) 
 
-	 		   mata: _sbm`sup'("`data'",`ninp',`ngo',"`touse4'", "`touse3'","TE `slackvars'",`rts',`maxiter',`tol')       	
+	 		   mata: _sbm("`data'",`ninp',`ngo',"`touse4'", "`touse3'","TE `slackvars'",`rts',`maxiter',`tol')       	
 	        }
 
 
@@ -540,7 +542,7 @@ program define sbmeffnu2, rclass
 	        forv t=1/`tmax'{
 	           qui replace `touse4'=(`tvar'==`t' & `touse')
 	           qui replace `touse3'=(`tvar'>=`t' & `tvar'<=`t'+1 & `touse2'==1) 
-	 		   mata: _sbme`sup'("`data'",`ninp',`ngo',"`touse4'", "`touse3'","Dval `slackvars'",`rts',`maxiter',`tol')       	
+	 		   mata: _sbm("`data'",`ninp',`ngo',"`touse4'", "`touse3'","Dval `slackvars'",`rts',`maxiter',`tol')       	
 	        }
 
 
@@ -552,7 +554,7 @@ program define sbmeffnu2, rclass
 	        forv t=1/`tmax'{
 	           qui replace `touse4'=(`tvar'==`t' & `touse')
 	           qui replace `touse3'=(`tvar'>=`t'-`band' & `tvar'<=`t'+`band' & `touse2'==1) 
-	 		   mata: _sbm`sup'("`data'",`ninp',`ngo',"`touse4'", "`touse3'","TE `slackvars'",`rts',`maxiter',`tol')       	
+	 		   mata: _sbm("`data'",`ninp',`ngo',"`touse4'", "`touse3'","TE `slackvars'",`rts',`maxiter',`tol')       	
 	        }
 
 		}
@@ -564,7 +566,7 @@ program define sbmeffnu2, rclass
 	        forv t=1/`tmax'{
 	           qui replace `touse4'=(`tvar'==`t' & `touse')
 	           qui replace `touse3'=(`tvar'==`t' & `touse2'==1) 
-	 		   mata: _sbm`sup'("`data'",`ninp',`ngo',"`touse4'", "`touse3'","TE `slackvars'",`rts',`maxiter',`tol')       	
+	 		   mata: _sbm("`data'",`ninp',`ngo',"`touse4'", "`touse3'","TE `slackvars'",`rts',`maxiter',`tol')       	
 	        }
 
 

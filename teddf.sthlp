@@ -44,7 +44,7 @@
 {synopt:{opt sup}}specifies supper efficiency measure.
 {p_end}
 
-{synopt:{opt tonk}}specifies Tonk's (2004) SBM model.
+{synopt:{opt tone}}specifies Tone's (2004) SBM model.
 {p_end}
 
 {synopt:{cmdab:win:dow(#)}}specifies window production technology with the #-period bandwidth.

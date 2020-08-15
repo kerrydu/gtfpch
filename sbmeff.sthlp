@@ -42,8 +42,6 @@
 {synopt:{opt vrs}}specifies production technology with variable returns to scale. By default, production technology with constant returns to scale is assumed.
 {p_end}
 
-{synopt:{opt sup}}specifies supper efficiency measure.
-{p_end}
 
 {synopt:{opt sav:ing(filename[,replace])}}specifies that the results be saved in {it:filename}.dta. 
 {p_end}
