@@ -41,7 +41,7 @@
 {synopt:{opt vrs}}specifies production technology with variable returns to scale. By default, production technology with constant returns to scale is assumed.
 {p_end}
 
-{synopt:{opt sup}}specifies supper efficiency measure.
+{synopt:{opt rf(varname)}}specifies the indicator variable that defines which data points of outputs and inputs form the technology reference set.
 {p_end}
 
 {synopt:{opt tone}}specifies Tone's (2004) SBM model.
@@ -165,4 +165,18 @@ Shanghai, China
 
 {psee}
 E-mail: daopingwang@live.sufe.edu.cn
+{p_end}
+
+
+{psee}
+Ning Zhang
+
+{psee}
+Jinan University
+
+{psee}
+Guangzhou, China
+
+{psee}
+E-mail: zn928@naver.com
 {p_end}

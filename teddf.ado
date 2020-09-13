@@ -28,13 +28,13 @@ program define teddf, rclass
     unab gopvars : `gopvars'
 	
 	
-    syntax varlist [if] [in], Dmu(varname) [Time(varname) gx(varlist) gy(varlist) gb(varlist)  ///
+    syntax varlist [if] [in], Dmu(varname) [rf(varname) Time(varname) gx(varlist) gy(varlist) gb(varlist)  ///
 	                                        BIennial  SEQuential GLObal VRS  NONRadial  TONE ///
 										   Wmat(string) SAVing(string)  WINdow(numlist intege max=1 >=1)    ///
 										   maxiter(numlist integer >0 max=1) tol(numlist max=1)]
     local bopvars `varlist'
 	if `"`tone'"'!=""{
-		sbmeff `invars' = `gopvars' : `bopvars', dmu(`dmu') time(`time')  `vrs' ///
+		sbmeff `invars' = `gopvars' : `bopvars', rf(`rf') dmu(`dmu') time(`time')  `vrs' ///
 		     `biennial' `sequential' `global'  window(`window') saving(`saving') maxiter(`maxiter') tol(`tol')
 		exit
 	}
@@ -52,7 +52,7 @@ program define teddf, rclass
     local nbo: word count `bopvars'
 	local nvar=`ninp'+`ngo'+`nbo'
 	
-	confirm numeric var `invars' `gopvars' `bopvars'
+	confirm numeric var `invars' `gopvars' `bopvars' `rf'
 
 	local comvars: list invars & gopvars 
 	if !(`"`comvars'"'==""){
@@ -76,7 +76,7 @@ program define teddf, rclass
 
 	if "`nonradial'"==""{
 		if `"`wmat'"'!=""{
-			disp as red "Warning: wmat() should be only used when nonradial is specified."
+			disp as red "wmat() should be only used when nonradial is specified."
 			error 498
 		}
 	
@@ -90,6 +90,13 @@ program define teddf, rclass
 			if `ncol'!=`nvar'{
 			    dis as error `"# of column of `wmat' != # of input-output variables"'
 				exit 498
+			}
+			forv i=1/`ncol'{
+				local wival=`wmat'[1,`i']
+				if `wival'<0{
+					di as error `"The element of matrix `wmat' should not be less than 0."'
+					exit 498
+				}
 			}
 			mat `weightvec'=`wmat'
 			
@@ -288,9 +295,9 @@ program define teddf, rclass
 	
 	
 
-	qui keep   `invars' `gopvars' `bopvars' `dmu' `time' `gmat' `touse'
+	qui keep   `invars' `gopvars' `bopvars' `dmu' `time' `gmat' `touse' `rf'
 	qui gen Row=_n
-	qui keep if `touse'
+	
 	label var Row "Row #"
 	qui gen double Dval=.
 	label var Dval "Value of NDDFs: `techtype'"
@@ -314,8 +321,12 @@ program define teddf, rclass
 
 
 	tempvar touse2  touse3 touse4
-    qui gen  byte `touse2'=1 
-    markout `touse2' `invars' `opvars' `badvars'	
+    qui gen byte `touse2'=1 
+    if "`rf'"!=""{
+    	qui replace `touse2'=(`rf'!=0) if !missing(`rf')
+    }
+    markout `touse2' `invars' `opvars' `badvars' `rf'
+    *count if `touse2'	
     qui gen byte `touse3'=0	
     qui gen byte `touse4'=`touse'	
 	

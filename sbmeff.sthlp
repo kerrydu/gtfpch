@@ -119,3 +119,31 @@ Xiamen, China
 {psee}
 E-mail: kerrydu@xmu.edu.cn
 {p_end}
+
+
+{psee}
+Daoping Wang
+
+{psee}
+Shanghai University of Finance and Economics
+
+{psee}
+Shanghai, China
+
+{psee}
+E-mail: daopingwang@live.sufe.edu.cn
+{p_end}
+
+
+{psee}
+Ning Zhang
+
+{psee}
+Jinan University
+
+{psee}
+Guangzhou, China
+
+{psee}
+E-mail: zn928@naver.com
+{p_end}

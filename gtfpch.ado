@@ -222,6 +222,14 @@ program define gtfpch, rclass prop(xt)
                 exit 498
             }
             
+          forv i=1/`ncol'{
+            local wival=`wmat'[1,`i']
+            if `wival'<0{
+              di as error `"The element of matrix `wmat' should not be less than 0."'
+              exit 498
+            }
+          }
+           
         //mat `weightvec'=`wmat'
         if "`ort'"=="out"{
             mat `weightvec'=`wmat'[1,1..`ninp']
@@ -292,7 +300,7 @@ program define gtfpch, rclass prop(xt)
                                gy(`gy') gb(`gb')  ort(`ort')   ///
                               `biennial' `global' `sequential' window(`window') ///
                                maxiter(`maxiter') tol(`tol')
-            local indexname "Luenberger Productivity Index (base on DDF)"
+            local indexname "Luenberger Productivity Index (based on DDF)"
         }
     }
     else{
@@ -307,7 +315,7 @@ program define gtfpch, rclass prop(xt)
                                gy(`gy') gb(`gb')  ort(`ort')  wmat(`weightvec') ///
                               `biennial' `global' `sequential' window(`window') ///
                                maxiter(`maxiter') tol(`tol')       
-            local indexname "Luenberger Productivity Index (base on nonrial DDF)"
+            local indexname "Luenberger Productivity Index (based on nonrial DDF)"
 
     }
             local resvars `r(rvars)'
@@ -649,23 +657,23 @@ program define _malmqluen,rclass
       qui{
         forv t=1/`tmax'{
             qui replace `flag'= (`period'==`t')
-            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `DD'=`temp' if `period'==`t'
-            qui drop `temp'
+            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `DD'=`temp' if `period'==`t'
+            //qui drop `temp'
         }    
         local tt=`tmax'-1
         forv t=1/`tt'{
             qui replace `flag'=(`period'==`t'+1) 
-            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D21'=`temp' if `period'==`t'
-            qui drop `temp'
+            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`D21') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D21'=`temp' if `period'==`t'
+            //qui drop `temp'
         }  
 
         forv t=2/`tmax'{
             qui replace `flag'=(`period'==`t'-1)
-            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D12'=`temp' if `period'==`t'
-            qui drop `temp'
+            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D12'=`temp' if `period'==`t'
+            //qui drop `temp'
         }       
 
     }
@@ -679,24 +687,24 @@ program define _malmqluen,rclass
     
         forv t=1/`tmax'{
             qui replace `flag'=(`period'<=`t')
-            _ddf if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `DD'=`temp' if `period'==`t'
-            qui replace `flag'=0
-            qui drop `temp'
+            _ddf if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `DD'=`temp' if `period'==`t'
+            //qui replace `flag'=0
+            //qui drop `temp'
         }    
         local tt=`tmax'-1
         forv t=1/`tt'{
             qui replace `flag'=(`period'<=`t'+1) 
-            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D21'=`temp' if `period'==`t'
-            qui drop `temp'
+            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`D21') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D21'=`temp' if `period'==`t'
+            //qui drop `temp'
         }  
 
         forv t=2/`tmax'{
             qui replace `flag'= (`period'<=`t'-1) 
-            _ddf if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D12'=`temp' if `period'==`t'
-            qui drop `temp'
+            _ddf if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D12'=`temp' if `period'==`t'
+            //qui drop `temp'
         }       
 
     
@@ -711,23 +719,23 @@ program define _malmqluen,rclass
    
         forv t=1/`tmax'{
             qui replace `flag'=(`period'<=`t'+`band' & `period'>=`t'-`band') 
-            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `DD'=`temp' if `period'==`t'
-            qui cap drop `temp'
+            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `DD'=`temp' if `period'==`t'
+            //qui cap drop `temp'
         }    
         local tt=`tmax'-1
         forv t=1/`tt'{
             qui replace `flag'= (`period'<=`t'+1+`band' &  `period'>=`t'-`band'+1)
-            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D21'=`temp' if `period'==`t'
-            qui cap drop `temp'
+            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`D21') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D21'=`temp' if `period'==`t'
+            //qui cap drop `temp'
         }  
 
         forv t=2/`tmax'{
             qui replace `flag'=(`period'<=`t'-1+`band' & `period'>=`t'-1-`band') 
-            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D12'=`temp' if `period'==`t'
-            qui cap drop `temp'
+            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D12'=`temp' if `period'==`t'
+            //qui cap drop `temp'
         }       
 
     
@@ -742,16 +750,16 @@ program define _malmqluen,rclass
       qui{
         forv t=1/`tmax'{
             qui replace `flag'= (`period'==`t' | `period'==`t'+1)
-            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `DD'=`temp' if `period'==`t'
-            qui drop `temp'
+            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `DD'=`temp' if `period'==`t'
+            //qui drop `temp'
         }     
 
         forv t=2/`tmax'{
             qui replace `flag'=(`period'==`t'-1 | `period'==`t')
-            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D12'=`temp' if `period'==`t'
-            qui drop `temp'
+            _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D12'=`temp' if `period'==`t'
+            //qui drop `temp'
         }       
 
     }
@@ -766,18 +774,18 @@ program define _malmqluen,rclass
   if `"`techtype'"'=="global"{
 
       qui replace `flag'=1
-    _ddf  if `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+      _ddf  if `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
         
-        qui bys `dmu' (`period'): gen TFPCH=`temp'/`temp'[_n-1] 
+      qui bys `dmu' (`period'): gen TFPCH=`temp'/`temp'[_n-1] 
     label var TFPCH "Total factor productivity change"
     cap drop `temp'   
     
     sort `period' `dmu'
     forv t=1/`tmax'{
       qui replace `flag'=(`period'==`t')
-      _ddf  if `touse' & `period'==`t', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-      qui replace `DD'=`temp' if `period'==`t'
-      qui cap drop `temp'
+      _ddf  if `touse' & `period'==`t', rflag(`flag') gen(`DD') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+      //qui replace `DD'=`temp' if `period'==`t'
+      //qui cap drop `temp'
     }
     
     qui bys `dmu' (`period'): gen TECH=`DD'/`DD'[_n-1]  
@@ -802,9 +810,9 @@ program define _malmqluen,rclass
     sort `period' `dmu'
     forv t=1/`tmax'{
       qui replace `flag'=(`period'==`t')
-      _ddf  if `touse' & `period'==`t', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-      qui replace `DD'=`temp' if `period'==`t'
-      qui cap drop `temp'
+      _ddf  if `touse' & `period'==`t', rflag(`flag') gen(`DD') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+      //qui replace `DD'=`temp' if `period'==`t'
+      //qui cap drop `temp'
     }
 
     qui bys `dmu' (`period'): gen TECH=`DD'/`DD'[_n-1]  
@@ -853,7 +861,7 @@ program define _ddf
     mark `touse2' if `rflag' // `rflag' might be empty
     markout `touse2' `invars' `opvars' `badvars'
     //qui gen `touse2'=`rflag'  
-        qui gen `gen'=.
+        //qui gen `gen'=.
 
         local data `invars' `opvars' `badvars'
         local num1: word count `invars'   
@@ -1052,23 +1060,23 @@ program define _luen_ddf,rclass
       qui{
         forv t=1/`tmax'{
             qui replace `flag'= (`period'==`t')
-            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `DD'=`temp' if `period'==`t'
-            qui drop `temp'
+            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `DD'=`temp' if `period'==`t'
+            //qui drop `temp'
         }    
         local tt=`tmax'-1
         forv t=1/`tt'{
             qui replace `flag'=(`period'==`t'+1) 
-            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D21'=`temp' if `period'==`t'
-            qui drop `temp'
+            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`D21') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D21'=`temp' if `period'==`t'
+            //qui drop `temp'
         }  
 
         forv t=2/`tmax'{
             qui replace `flag'=(`period'==`t'-1)
-            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D12'=`temp' if `period'==`t'
-            qui drop `temp'
+            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D12'=`temp' if `period'==`t'
+            //qui drop `temp'
         }       
 
     }
@@ -1082,16 +1090,16 @@ program define _luen_ddf,rclass
       qui{
         forv t=1/`tmax'{
             qui replace `flag'= (`period'==`t' | `period'==`t'+1)
-            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `DD'=`temp' if `period'==`t'
-            qui drop `temp'
+            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `DD'=`temp' if `period'==`t'
+            //qui drop `temp'
         }    
 
         forv t=2/`tmax'{
             qui replace `flag'=(`period'==`t'-1 | `period'==`t')
-            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D12'=`temp' if `period'==`t'
-            qui drop `temp'
+            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D12'=`temp' if `period'==`t'
+            //qui drop `temp'
         }       
 
     }
@@ -1106,24 +1114,24 @@ program define _luen_ddf,rclass
     
         forv t=1/`tmax'{
             qui replace `flag'=(`period'<=`t')
-            _ddf_luen if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `DD'=`temp' if `period'==`t'
-            qui replace `flag'=0
-            qui drop `temp'
+            _ddf_luen if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `DD'=`temp' if `period'==`t'
+            //qui replace `flag'=0
+            //qui drop `temp'
         }    
         local tt=`tmax'-1
         forv t=1/`tt'{
             qui replace `flag'=(`period'<=`t'+1) 
-            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D21'=`temp' if `period'==`t'
-            qui drop `temp'
+            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`D21') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D21'=`temp' if `period'==`t'
+            //qui drop `temp'
         }  
 
         forv t=2/`tmax'{
             qui replace `flag'= (`period'<=`t'-1) 
-            _ddf_luen if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D12'=`temp' if `period'==`t'
-            qui drop `temp'
+            _ddf_luen if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D12'=`temp' if `period'==`t'
+            //qui drop `temp'
         }       
 
     
@@ -1138,23 +1146,23 @@ program define _luen_ddf,rclass
    
         forv t=1/`tmax'{
             qui replace `flag'=(`period'<=`t'+`band' & `period'>=`t'-`band') 
-            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `DD'=`temp' if `period'==`t'
-            qui cap drop `temp'
+            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `DD'=`temp' if `period'==`t'
+            //qui cap drop `temp'
         }    
         local tt=`tmax'-1
         forv t=1/`tt'{
             qui replace `flag'= (`period'<=`t'+1+`band' &  `period'>=`t'-`band'+1)
-            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D21'=`temp' if `period'==`t'
-            qui cap drop `temp'
+            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`D21') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D21'=`temp' if `period'==`t'
+            //qui cap drop `temp'
         }  
 
         forv t=2/`tmax'{
             qui replace `flag'=(`period'<=`t'-1+`band' & `period'>=`t'-1-`band') 
-            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D12'=`temp' if `period'==`t'
-            qui cap drop `temp'
+            _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D12'=`temp' if `period'==`t'
+            //qui cap drop `temp'
         }       
 
     
@@ -1177,14 +1185,14 @@ program define _luen_ddf,rclass
     sort `period' `dmu'
     forv t=1/`tmax'{
       qui replace `flag'=(`period'==`t')
-      _ddf_luen  if `touse' & `period'==`t', rflag(`flag') gen(`temp') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-      qui replace `DD'=`temp' if `period'==`t'
-      qui cap drop `temp'
+      _ddf_luen  if `touse' & `period'==`t', rflag(`flag') gen(`DD') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+      //qui replace `DD'=`temp' if `period'==`t'
+      //qui cap drop `temp'
     }
     
     qui bys `dmu' (`period'): gen TECH=`DD'[_n-1]-`DD'
     *qui bys `dmu' (`period'): gen BPC=TFPCH-TECH 
-	qui bys `dmu' (`period'): gen TECCH=TFPCH-TECH
+	  qui bys `dmu' (`period'): gen TECCH=TFPCH-TECH
   
     label var TECH  "Technical efficiency change" 
     *label var BPC "Best practice gap change"
@@ -1202,9 +1210,9 @@ program define _luen_ddf,rclass
      sort `period' `dmu'
     forv t=1/`tmax'{
       qui replace `flag'=(`period'==`t')
-      _ddf_luen  if `touse' & `period'==`t', rflag(`flag') gen(`temp') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-      qui replace `DD'=`temp' if `period'==`t'
-      qui cap drop `temp'
+      _ddf_luen  if `touse' & `period'==`t', rflag(`flag') gen(`DD') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+      //qui replace `DD'=`temp' if `period'==`t'
+      //qui cap drop `temp'
     }
     
     qui bys `dmu' (`period'): gen TECH=`DD'[_n-1]-`DD'
@@ -1256,7 +1264,7 @@ program define _ddf_luen
     mark `touse2' if `rflag' // `rflag' might be empty
     markout `touse2' `invars' `opvars' `badvars'
     //qui gen `touse2'=`rflag'  
-        qui gen `gen'=.
+        //qui gen `gen'=.
 
         local data `invars' `opvars' `badvars'
         local num1: word count `invars'   
@@ -1497,23 +1505,23 @@ program define _luen_nddf,rclass
         forv t=1/`tmax'{
             qui replace `flag'= (`period'==`t')
 
-            noi _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `DD'=`temp' if `period'==`t'
-            qui drop `temp'
+            noi _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `DD'=`temp' if `period'==`t'
+            //qui drop `temp'
         }    
         local tt=`tmax'-1
         forv t=1/`tt'{
             qui replace `flag'=(`period'==`t'+1) 
-            _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D21'=`temp' if `period'==`t'
-            qui drop `temp'
+            _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`D21') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D21'=`temp' if `period'==`t'
+            //qui drop `temp'
         }  
 
         forv t=2/`tmax'{
             qui replace `flag'=(`period'==`t'-1)
-            _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D12'=`temp' if `period'==`t'
-            qui drop `temp'
+            _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D12'=`temp' if `period'==`t'
+            //qui drop `temp'
         }       
 
     }
@@ -1528,16 +1536,16 @@ program define _luen_nddf,rclass
         forv t=1/`tmax'{
             qui replace `flag'= (`period'==`t' | `period'==`t'+1)
 
-             _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `DD'=`temp' if `period'==`t'
-            qui drop `temp'
+             _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `DD'=`temp' if `period'==`t'
+            //qui drop `temp'
         }    
 
         forv t=2/`tmax'{
             qui replace `flag'=(`period'==`t'-1 | `period'==`t')
-            _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D12'=`temp' if `period'==`t'
-            qui drop `temp'
+            _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D12'=`temp' if `period'==`t'
+            //qui drop `temp'
         }       
 
     }
@@ -1554,24 +1562,24 @@ program define _luen_nddf,rclass
     
         forv t=1/`tmax'{
             qui replace `flag'=(`period'<=`t')
-            _nddf if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `DD'=`temp' if `period'==`t'
-            qui replace `flag'=0
-            qui drop `temp'
+            _nddf if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `DD'=`temp' if `period'==`t'
+           // qui replace `flag'=0
+            //qui drop `temp'
         }    
         local tt=`tmax'-1
         forv t=1/`tt'{
             qui replace `flag'=(`period'<=`t'+1) 
-            _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D21'=`temp' if `period'==`t'
-            qui drop `temp'
+            _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`D21') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D21'=`temp' if `period'==`t'
+            //qui drop `temp'
         }  
 
         forv t=2/`tmax'{
             qui replace `flag'= (`period'<=`t'-1) 
-            _nddf if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D12'=`temp' if `period'==`t'
-            qui drop `temp'
+            _nddf if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D12'=`temp' if `period'==`t'
+            //qui drop `temp'
         }       
 
     
@@ -1586,23 +1594,23 @@ program define _luen_nddf,rclass
    
         forv t=1/`tmax'{
             qui replace `flag'=(`period'<=`t'+`band' & `period'>=`t'-`band') 
-            _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `DD'=`temp' if `period'==`t'
-            qui cap drop `temp'
+            _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `DD'=`temp' if `period'==`t'
+            //qui cap drop `temp'
         }    
         local tt=`tmax'-1
         forv t=1/`tt'{
             qui replace `flag'= (`period'<=`t'+1+`band' &  `period'>=`t'-`band'+1)
-            _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D21'=`temp' if `period'==`t'
-            qui cap drop `temp'
+            _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`D21') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D21'=`temp' if `period'==`t'
+            //qui cap drop `temp'
         }  
 
         forv t=2/`tmax'{
             qui replace `flag'=(`period'<=`t'-1+`band' & `period'>=`t'-1-`band') 
-            _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`temp') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            qui replace `D12'=`temp' if `period'==`t'
-            qui cap drop `temp'
+            _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+            //qui replace `D12'=`temp' if `period'==`t'
+            //qui cap drop `temp'
         }       
 
     
@@ -1625,9 +1633,9 @@ program define _luen_nddf,rclass
     sort `period' `dmu'
     forv t=1/`tmax'{
       qui replace `flag'=(`period'==`t')
-      _nddf  if `touse' & `period'==`t', rflag(`flag') gen(`temp') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-      qui replace `DD'=`temp' if `period'==`t'
-      qui cap drop `temp'
+      _nddf  if `touse' & `period'==`t', rflag(`flag') gen(`DD') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+      //qui replace `DD'=`temp' if `period'==`t'
+      //qui cap drop `temp'
     }
     
     qui bys `dmu' (`period'): gen TECH=`DD'[_n-1]-`DD'
@@ -1651,9 +1659,9 @@ program define _luen_nddf,rclass
     sort `period' `dmu'
     forv t=1/`tmax'{
       qui replace `flag'=(`period'==`t')
-      _nddf  if `touse' & `period'==`t', rflag(`flag') gen(`temp') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-      qui replace `DD'=`temp' if `period'==`t'
-      qui cap drop `temp'
+      _nddf  if `touse' & `period'==`t', rflag(`flag') gen(`DD') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+      //qui replace `DD'=`temp' if `period'==`t'
+      //qui cap drop `temp'
     }
     
     qui bys `dmu' (`period'): gen TECH=`DD'[_n-1]-`DD'
@@ -1701,7 +1709,7 @@ program define _nddf
     mark `touse2' if `rflag' // `rflag' might be empty
     markout `touse2' `invars' `opvars' `badvars'
     //qui gen `touse2'=`rflag'  
-        qui gen `gen'=.
+        //qui gen `gen'=.
 
         local data `invars' `opvars' `badvars'
         local num1: word count `invars'   
