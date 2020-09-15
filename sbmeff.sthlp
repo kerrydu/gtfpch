@@ -42,6 +42,8 @@
 {synopt:{opt vrs}}specifies production technology with variable returns to scale. By default, production technology with constant returns to scale is assumed.
 {p_end}
 
+{synopt:{opt rf(varname)}}specifies the indicator variable that defines which data points of outputs and inputs form the technology reference set.
+{p_end}
 
 {synopt:{opt sav:ing(filename[,replace])}}specifies that the results be saved in {it:filename}.dta. 
 {p_end}

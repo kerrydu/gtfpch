@@ -35,7 +35,7 @@ program define sbmeff, rclass
 	
     *syntax varlist [if] [in], dmu(varname) [Time(varname) SEQuential  VRS  SAVing(string) maxiter(numlist integer >0 max=1) tol(numlist max=1)]
 	
-	    syntax varlist [if] [in], Dmu(varname) [Time(varname)  ///
+	    syntax varlist [if] [in], Dmu(varname) [Time(varname)  rf(varname) ///
 	                                        BIennial  SEQuential GLObal VRS  ///
 										   SAVing(string)  WINdow(numlist intege max=1 >=1)    ///
 										   maxiter(numlist integer >0 max=1) tol(numlist max=1) ]
@@ -189,7 +189,7 @@ program define sbmeff, rclass
 	qui mata mata mlib index
 	
 	
-	qui keep  `invars' `gopvars' `bopvars' `dmu' `time' `touse'
+	qui keep  `invars' `gopvars' `bopvars' `dmu' `time' `touse' `rf'
 	qui gen Row=_n
 	label var Row "Row #"
 	qui keep if `touse'	
@@ -223,7 +223,11 @@ program define sbmeff, rclass
 
 	tempvar touse2  touse3 touse4
     qui gen  byte `touse2'=1 
-    markout `touse2' `invars' `opvars' `badvars'	
+    if "`rf'"!=""{
+    	qui replace `touse2'=(`rf'!=0) if !missing(`rf')
+    }
+    markout `touse2' `invars' `opvars' `badvars' `rf'
+
     qui gen byte `touse3'=0	
     qui gen byte `touse4'=`touse'	
 	
@@ -297,6 +301,7 @@ program define sbmeff, rclass
 	disp _n(2) " SBM Efficiency Results:"
 	disp "    (Row: Row # in the original data; TE: Efficiency Score;  S_X: Slack of X)"
 	//disp "      S_X : Slack of X"
+	*format TE `slackvars' %9.4f
 	list Row `dmu' `time' TE `slackvars', sep(0) 
 
 	//disp _n
@@ -333,7 +338,7 @@ program define sbmeffnu2, rclass
 	
     *syntax varlist [if] [in], dmu(varname) [Time(varname) SEQuential  VRS  SAVing(string) maxiter(numlist integer >0 max=1) tol(numlist max=1)]
 	
-	    syntax varlist [if] [in], Dmu(varname) [Time(varname)  ///
+	    syntax varlist [if] [in], Dmu(varname) [Time(varname)  rf(varname) ///
 	                                        BIennial  SEQuential GLObal VRS  ///
 										   SAVing(string)  WINdow(numlist intege max=1 >=1)    ///
 										   maxiter(numlist integer >0 max=1) tol(numlist max=1) ]
@@ -474,7 +479,7 @@ program define sbmeffnu2, rclass
 	qui mata mata mlib index
 	
 	
-	qui keep  `invars' `gopvars'  `dmu' `time' `touse'
+	qui keep  `invars' `gopvars'  `dmu' `time' `touse' `rf'
 	qui gen Row=_n
 	label var Row "Row #"
 	qui keep if `touse'	
@@ -506,7 +511,12 @@ program define sbmeffnu2, rclass
 
 	tempvar touse2  touse3 touse4
     qui gen  byte `touse2'=1 
-    markout `touse2' `invars' `opvars' 
+    
+    if "`rf'"!=""{
+    	qui replace `touse2'=(`rf'!=0) if !missing(`rf')
+    }
+    markout `touse2' `invars' `opvars' `rf'
+   * markout `touse2' `invars' `opvars' 
     qui gen byte `touse3'=0	
     qui gen byte `touse4'=`touse'	
 	
@@ -576,7 +586,7 @@ program define sbmeffnu2, rclass
 	
 	order Row `dmu' `time' TE `slackvars'
 	keep Row `dmu' `time' TE `slackvars'
-	
+	*format TE `slackvars' %9.4f
 	disp _n(2) " SBM Efficiency Results:"
 	disp "    (Row: Row # in the original data; TE: Efficiency Score;  S_X: Slack of X)"
 	//disp "      S_X : Slack of X"
