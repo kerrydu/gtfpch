@@ -646,7 +646,7 @@ program define _malmqluen,rclass
     qui gen `DD'=.
     qui gen `D21'=.
     qui gen `D12'=.
-  
+    qui gen `temp'=.
     qui gen `flag'=0
   
     local gmat `gx' `gy' `gb'
@@ -786,9 +786,11 @@ program define _malmqluen,rclass
       _ddf  if `touse' & `period'==`t', rflag(`flag') gen(`DD') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
       //qui replace `DD'=`temp' if `period'==`t'
       //qui cap drop `temp'
+      *list `dmu' `period' `DD' if !missing(`DD')& `period'==`t'
     }
     
     qui bys `dmu' (`period'): gen TECH=`DD'/`DD'[_n-1]  
+    *su TECH `DD'
     *qui bys `dmu' (`period'): gen BPC=TFPCH/TECH 
 	qui bys `dmu' (`period'): gen TECCH=TFPCH/TECH
   
@@ -883,10 +885,10 @@ program define _ddf
 
     if "`ort'" =="OUT"{
       
-      qui replace `gen'=1/(1+`gen')
+      qui replace `gen'=1/(1+`gen') if `touse'
       }
     else{
-      qui replace `gen'=(1-`gen')
+      qui replace `gen'=(1-`gen') if `touse'
      }
      
 
@@ -1048,7 +1050,7 @@ program define _luen_ddf,rclass
     qui gen `DD'=.
     qui gen `D21'=.
     qui gen `D12'=.
-
+    qui gen `temp'=.
     local gmat `gx' `gy' `gb'
   
     qui gen `flag'=0
@@ -1492,7 +1494,7 @@ program define _luen_nddf,rclass
     qui gen `DD'=.
     qui gen `D21'=.
     qui gen `D12'=.
-  
+    qui gen `temp'=.
     qui gen `flag'=0
   
     local gmat `gx' `gy' `gb'
