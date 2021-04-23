@@ -1,3 +1,5 @@
+*! version 2.01, 20 Apr 2021
+* use frame to store results
 *! version 1.2
 * 19 Jul 2020
 * added hybrid Oriented
@@ -6,12 +8,15 @@
 * add biennial option
 
 *! version 1.0
-* By Kerry Du, 3 Dec 2019 
+* By Kerry Du,Daoping Wang, Ning Zhang, 3 Dec 2019 
 **
 * 
 capture program drop gtfpch
 program define gtfpch, rclass prop(xt)
     version 16
+
+    qui pwf
+    local currentframe = r(currentframe)
 
     qui mata mata mlib index
     _xt, trequired 
@@ -38,12 +43,29 @@ program define gtfpch, rclass prop(xt)
     }
     unab gopvars : `gopvars'
 	
-	
     syntax varlist [if] [in],    [dmu(varname) gx(varlist) gy(varlist) gb(varlist)  ///
 	                                BIennial  SEQuential GLOBAL FGNZ RD  LUENberger ort(string) ///
 										   WINdow(numlist intege max=1 >=1) SAVing(string)   Wmat(string) NONRadial       ///
-										   maxiter(numlist integer >0 max=1) tol(numlist max=1)]
+										   maxiter(numlist integer >0 max=1) tol(numlist max=1) frame(name) noPRINT]
     preserve
+    /*
+  	qui pwf
+    local currentframe = r(currentframe)
+    if `"`frame'"'!=""{
+          frame copy `currentframe' `frame'
+          cwf `frame'
+    }
+    else{
+           frame copy `currentframe' _temp_gtfpchRes_
+           cwf _temp_gtfpchRes_       
+    }
+    */
+
+    sort `id' `time'
+    if `"`frame'"'!=""{
+       confirm new frame `frame'
+    }    
+    
     marksample touse
 
     local bopvars `varlist'
@@ -280,9 +302,12 @@ program define gtfpch, rclass prop(xt)
            }
         di 
         disp " The weight vector is (`wvalues')"
+        local rweightname (`wvalues')
 
     }   
 
+
+************************************** CRS case*************************************
 
     if "`nonradial'"==""{
 
@@ -319,7 +344,7 @@ program define gtfpch, rclass prop(xt)
 
     }
             local resvars `r(rvars)'
-
+***
   if "`rd'"==""&"`fgnz'"==""{
 
         di 
@@ -332,24 +357,41 @@ program define gtfpch, rclass prop(xt)
         order Row `dmu' `id' Pdwise  `resvars' 
         qui keep  Row `dmu' `id' Pdwise  `resvars'    
         qui keep if !missing(Pdwise)
-        disp _n(2) " Total Factor Productivity Change:`indexname'"
-        disp "    (Row: Row # in the original data; Pdwise: periodwise)"
-        list Row `dmu' `id'  Pdwise  `resvars', sep(0) 
-        di "Note: missing value indicates infeasible problem."
+
+        if "`noprint'" == ""{
+          disp _n(2) " Total Factor Productivity Change:`indexname'"
+          disp "    (Row: Row # in the original data; Pdwise: periodwise)"
+          list Row `dmu' `id'  Pdwise  `resvars', sep(0) 
+          di "Note: missing value indicates infeasible problem."
+        }
+
 
         if `"`saving'"'!=""{
           save `saving'
           gettoken filenames saving:saving, parse(",")
           local filenames `filenames'.dta
           disp _n `"Estimated Results are saved in `filenames'."'
-        }   
+          *disp _n `"Estimated Results are also saved in gtfpchResults frame temporarily."' 
+          *cwf `currentframe'
+          *frame drop gtfpchResults         
+        }
+
+        if `"`frame'"'!=""{
+          disp _n `"Estimated Results are saved in `frame' frame."'
+          frame copy `currentframe'  `frame'    
+        }           
         
-
-        return local file `filenames'       
-
+        return local file `filenames'  
+        return local frame `frame'
+        *return local techtype `techtype'     
+        return local weight  `rweightname'
+        return local gvec  `gmatname'    
         restore
 
   }
+
+
+  **************************** estiamte VRS and decompose scale effciency ************************
   else{
 
 
@@ -447,9 +489,9 @@ program define gtfpch, rclass prop(xt)
     }
 
     
-        di 
-        di " The diectional vector is (`gmatname')"    
-      format `resvars' %9.4f
+    di 
+    di " The diectional vector is (`gmatname')"    
+    format `resvars' %9.4f
 	
     qui keep if `touse'
     qui cap bys `id' (`time'): gen Pdwise=`time'[_n-1]+"~"+`time' if _n>1
@@ -459,22 +501,34 @@ program define gtfpch, rclass prop(xt)
     order Row `dmu' `id' Pdwise  `resvars' 
     qui keep if !missing(Pdwise) & `touse'
     qui keep  Row `dmu' `id' Pdwise  `resvars' 
-    disp _n(2) " Total Factor Productivity Change:`indexname'"
-    disp "    (Row: Row # in the original data; Pdwise: periodwise)"
 
-    list Row `dmu' `id'  Pdwise  `resvars' , sep(0) 
-    di "Note: missing value indicates infeasible problem."
+    if "`noprint'"==""{
+      disp _n(2) " Total Factor Productivity Change:`indexname'"
+      disp "    (Row: Row # in the original data; Pdwise: periodwise)"
+
+      list Row `dmu' `id'  Pdwise  `resvars' , sep(0) 
+      di "Note: missing value indicates infeasible problem."          
+    }
 
     if `"`saving'"'!=""{
       save `saving'
       gettoken filenames saving:saving, parse(",")
       local filenames `filenames'.dta
       disp _n `"Estimated Results are saved in `filenames'."'
-    } 
-    
 
-      return local file `filenames'
-      restore     
+    } 
+        if `"`frame'"'!=""{
+          disp _n `"Estimated Results are saved in `frame' frame."'
+          frame copy `currentframe'  `frame'    
+        }           
+        
+        return local file `filenames'  
+        return local frame `frame'   
+        *return local techtype `techtype'     
+        return local weight  `rweightname'
+        return local gvec  `gmatname'          
+
+        restore
 
 
 
@@ -482,8 +536,8 @@ program define gtfpch, rclass prop(xt)
         
 
 
-
 end
+
 
 ***********************************************************
 cap program drop _malmqluen
@@ -521,16 +575,16 @@ program define _malmqluen,rclass
                  maxiter(numlist integer >0 max=1) tol(numlist max=1 >0)]
                  
   marksample touse 
-    local bopvars `varlist'
+  local bopvars `varlist'
   
   local ninp: word count `invars'
-    local ngo: word count `gopvars'
-    local nbo: word count `bopvars'
+  local ngo: word count `gopvars'
+  local nbo: word count `bopvars'
   local nvar: word count `invars' `gopvars' `bopvars'
 
   confirm numeric var `invars' `gopvars' `bopvars'
   
- local techtype "contemporaneous"
+  local techtype "contemporaneous"
    
 
    if "`global'"!=""{
@@ -715,7 +769,8 @@ program define _malmqluen,rclass
   
   
      if `"`techtype'"'=="window"{
-    local band=(`window'-1)/2
+      *local band=(`window'-1)/2
+       local band=`window'
    
         forv t=1/`tmax'{
             qui replace `flag'=(`period'<=`t'+`band' & `period'>=`t'-`band') 
@@ -774,11 +829,10 @@ program define _malmqluen,rclass
   if `"`techtype'"'=="global"{
 
       qui replace `flag'=1
-      _ddf  if `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-        
+      _ddf  if `touse', rflag(`flag') gen(`temp') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol') 
       qui bys `dmu' (`period'): gen TFPCH=`temp'/`temp'[_n-1] 
-    label var TFPCH "Total factor productivity change"
-    cap drop `temp'   
+      label var TFPCH "Total factor productivity change"
+      cap drop `temp'   
     
     sort `period' `dmu'
     forv t=1/`tmax'{
@@ -794,7 +848,7 @@ program define _malmqluen,rclass
     *qui bys `dmu' (`period'): gen BPC=TFPCH/TECH 
 	qui bys `dmu' (`period'): gen TECCH=TFPCH/TECH
   
-    label var TECH  "Technical efficiency change" 
+  label var TECH  "Technical efficiency change" 
 	label var TECCH "Technological change"
     *label var BPC "Best practice gap change"
     *local resvars TFPCH TECH  BPC
@@ -860,10 +914,12 @@ program define _ddf
     markout `touse' `invars' `opvars' `badvars' `gvec'
     
     tempvar touse2
-    mark `touse2' if `rflag' // `rflag' might be empty
+    local rflag=cond("`rflag'"=="","","if `rflag'")
+    mark `touse2' `rflag' // `rflag' might be empty
+    *qui gen byte `touse2'=`rflag'
     markout `touse2' `invars' `opvars' `badvars'
     //qui gen `touse2'=`rflag'  
-        //qui gen `gen'=.
+    //qui gen `gen'=.
 
         local data `invars' `opvars' `badvars'
         local num1: word count `invars'   
@@ -882,8 +938,9 @@ program define _ddf
     }
     
     mata: _ddf("`data'",`num1',`num2',"`touse'", "`touse2'","`gvec'","`gen'",`rts',`maxiter',`tol')
-
-    if "`ort'" =="OUT"{
+    *list `gen' if `touse'
+    *di "ort= `ort'"
+    if "`ort'" =="out"{
       
       qui replace `gen'=1/(1+`gen') if `touse'
       }
@@ -1144,7 +1201,8 @@ program define _luen_ddf,rclass
   
   
      if `"`techtype'"'=="window"{
-    local band=(`window'-1)/2
+    *local band=(`window'-1)/2
+      local band=`window'
    
         forv t=1/`tmax'{
             qui replace `flag'=(`period'<=`t'+`band' & `period'>=`t'-`band') 
@@ -1261,16 +1319,16 @@ program define _ddf_luen
 
     marksample touse 
     markout `touse' `invars' `opvars' `badvars' `gvec'
-    
+    local rflag=("`rflag'"=="","","if `flag'")
     tempvar touse2
-    mark `touse2' if `rflag' // `rflag' might be empty
+    mark `touse2' `rflag' // `rflag' might be empty
     markout `touse2' `invars' `opvars' `badvars'
     //qui gen `touse2'=`rflag'  
-        //qui gen `gen'=.
+    //qui gen `gen'=.
 
-        local data `invars' `opvars' `badvars'
-        local num1: word count `invars'   
-        local num2: word count `opvars'
+    local data `invars' `opvars' `badvars'
+    local num1: word count `invars'   
+    local num2: word count `opvars'
     
 *******************************************************************************
     
@@ -1592,7 +1650,7 @@ program define _luen_nddf,rclass
   
   
      if `"`techtype'"'=="window"{
-    local band=(`window'-1)/2
+    local band=`window'
    
         forv t=1/`tmax'{
             qui replace `flag'=(`period'<=`t'+`band' & `period'>=`t'-`band') 
@@ -1704,18 +1762,19 @@ program define _nddf
     syntax [if] [in], gen(string) INvars(varlist) OPvars(varlist) BADvars(varlist) wmat(string) GVec(varlist) [rflag(varname)  VRS maxiter(numlist) tol(numlist)]
         
 
-        marksample touse 
+    marksample touse 
     markout `touse' `invars' `opvars' `badvars' `gvec'
     
     tempvar touse2
-    mark `touse2' if `rflag' // `rflag' might be empty
+     local rflag=cond("`rflag'"=="",""," if `rflag'")
+    mark `touse2' `rflag' // `rflag' might be empty
     markout `touse2' `invars' `opvars' `badvars'
     //qui gen `touse2'=`rflag'  
-        //qui gen `gen'=.
+    //qui gen `gen'=.
 
-        local data `invars' `opvars' `badvars'
-        local num1: word count `invars'   
-        local num2: word count `opvars'
+    local data `invars' `opvars' `badvars'
+    local num1: word count `invars'   
+    local num2: word count `opvars'
     
 
 
@@ -1739,7 +1798,3 @@ end
 
 
 ********************************************
-
-
-
-

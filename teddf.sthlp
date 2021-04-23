@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 0.3  29 Oct 2019}{...}
+{* *! version 0.3  20 Apr 2021}{...}
 {cmd:help teddf}
 {hline}
 
@@ -23,13 +23,13 @@
 {synopt:{cmdab:t:ime:(varname)}}specifies time period for contemporaneous production technology. If {opt time:(varname)} is not specified, global production technology is assumed. 
 {p_end}
 
-{synopt:{opt gx(varlist)}}specifies direction components for input adjustment. The order of variables specified in gx() should as the same in {it:{help varlist:inputvars}}. The default is gx=(0,..,0).
+{synopt:{opt gx(varlist)}}specifies direction components for input adjustment. The order of variables specified in gx() should be as the same in {it:{help varlist:inputvars}}. The default is gx=(0,..,0).
 {p_end}
 
-{synopt:{opt gy(varlist)}}specifies direction components for desirable output adjustment. The order of variables specified in gy() should as the same in {it:{help varlist:desirable_outputvars}}. The default is gy=Y.
+{synopt:{opt gy(varlist)}}specifies direction components for desirable output adjustment. The order of variables specified in gy() should be as the same in {it:{help varlist:desirable_outputvars}}. The default is gy=Y.
 {p_end}
 
-{synopt:{opt gb(varlist)}}specifies direction components for undesirable output adjustment. The order of variables specified in gb() should as the same in {it:{help varlist:undesirable_outputvars}}. The default is gb=-B. 
+{synopt:{opt gb(varlist)}}specifies direction components for undesirable output adjustment. The order of variables specified in gb() should be as the same in {it:{help varlist:undesirable_outputvars}}. The default is gb=-B. 
 {p_end}
 
 {synopt:{cmdab:nonr:adial}}specifies using non-radial directional distance function.
@@ -44,9 +44,6 @@
 {synopt:{opt rf(varname)}}specifies the indicator variable that defines which data points of outputs and inputs form the technology reference set.
 {p_end}
 
-{synopt:{opt tone}}specifies Tone's (2004) SBM model.
-{p_end}
-
 {synopt:{cmdab:win:dow(#)}}specifies window production technology with the #-period bandwidth.
 {p_end}
 
@@ -59,13 +56,28 @@
 {synopt:{cmdab:glo:bal}}specifies global production technology.
 {p_end}
 
+{synopt:{opt brep(#)}}specifies the number of bootstrap replications. The default is brep(0) specifying performing the estimator without bootstrap. Typically, it requires 1,000 or more replications for bootstrap DEA methods.
+{p_end}
+
+{synopt:{opt alpha(real)}}sets the size of the subsample bootstrap. By default, alpha(0.7) indicates subsampling N^0.7 observations out of the N original reference observations.
+{p_end}
+
 {synopt:{opt sav:ing(filename[,replace])}}specifies that the results be saved in {it:filename}.dta. 
+{p_end}
+
+{synopt:{opt frame(framename)}}specifies that the results be saved in {it:framename} frame. 
 {p_end}
 
 {synopt:{opt maxiter(#)}}specifies the maximum number of iterations, which must be an integer greater than 0. The default value of maxiter is 16000.
 {p_end}
 
 {synopt:{opt tol(real)}}specifies the convergence-criterion tolerance, which must be greater than 0.  The default value of tol is 1e-8.
+{p_end}
+
+{synopt:{opt nodots}} suppress iteration dots.
+{p_end}
+
+{synopt:{opt noprint}} suppress display of the results.
 {p_end}
 
 {synoptline}
@@ -126,9 +138,6 @@ Chung, Y.H., Färe, R., Grosskopf, S. Productivity and Undesirable Outputs: A Di
 Färe, R., Grosskopf, S. Directional distance functions and slacks-based measures of efficiency. European Journal of Operational Research, 2010, 200:320-322.
 
 {phang}
-Tone, K. (2004). Dealing with Undesirable Outputs in DEA: A Slacks-Based Measure (SBM) Approach. North American Productivity Workshop 2004, Toronto, 23-25 June 2004, 44-45.
-
-{phang}
 Oh, D.-h. A global Malmquist-Luenberger productivity index. Journal of Productivity Analysis, 2010, 34:183-197.
 
 {phang}
@@ -141,20 +150,6 @@ Zhou, P., Ang, B.W., Wang, H. Energy and CO2 emission performance in electricity
 {title:Author}
 
 {psee}
-Kerry Du
-
-{psee}
-Xiamen University
-
-{psee}
-Xiamen, China
-
-{psee}
-E-mail: kerrydu@xmu.edu.cn
-{p_end}
-
-
-{psee}
 Daoping Wang
 
 {psee}
@@ -165,6 +160,20 @@ Shanghai, China
 
 {psee}
 E-mail: daopingwang@live.sufe.edu.cn
+{p_end}
+
+
+{psee}
+Kerry Du
+
+{psee}
+Xiamen University
+
+{psee}
+Xiamen, China
+
+{psee}
+E-mail: kerrydu@xmu.edu.cn
 {p_end}
 
 

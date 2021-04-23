@@ -1,14 +1,11 @@
-*! version 3.0, 20 Apr 2021
-* use frame to store results
 *! version 3.0, 6 Apr 2021
-* add subsample bootstrap
 *! version 2.1, 7 Aug 2020
 *! version 2.0
-* By Kerry Du, Daoping Wang, Ning Zhang, 30 Jul 2020 
+* By Kerry Du & Daoping Wang, 30 Jul 2020 
 **
 * 
-capture program drop teddf
-program define teddf, rclass
+capture program drop teddf2
+program define teddf2, rclass
     version 16
 
     gettoken word 0 : 0, parse(" =:,")
@@ -32,10 +29,10 @@ program define teddf, rclass
     unab gopvars : `gopvars'
 	
 	
-    syntax varlist [if] [in], Dmu(varname) [rf(varname) Time(varname) gx(varlist) gy(varlist) gb(varlist)  frame(name) ///
+    syntax varlist [if] [in], Dmu(varname) [rf(varname) Time(varname) gx(varlist) gy(varlist) gb(varlist)  ///
 	                                        BIennial  SEQuential GLObal VRS  NONRadial  brep(integer 0) alpha(real 0.7) ///
 										   Wmat(string) SAVing(string)  WINdow(numlist integer max=1 >=1)   level(real 95) ///
-										   maxiter(numlist integer >0 max=1) tol(numlist max=1) NODOTS SAVing(string) noPRINT]
+										   maxiter(numlist integer >0 max=1) tol(numlist max=1) NODOTS SAVing(string)]
     local bopvars `varlist'
 
 	if "`nodots'"!=""{
@@ -44,36 +41,25 @@ program define teddf, rclass
 	else{
 		local nodots = 0
 	}
-    
-	if (`brep'<100 & `brep'>0) {
-		di "{p 1 1 7}{error}# of  bootstrap replications must be at least 100."
-		exit 198
+
+	if `brep'<100 & `brep'>0 {
+		di as red "The number of  bootstrap replications must be at least 100."
+		exit
 	}
-	if (`brep'<200 & `brep'>0) {
+	if `brep'<200 {
 		di as red "Warning: Statistical inference may be unreliable for small number of bootstrap replications."
 	}
 	
-	if (`level' < 10 |  `level' > 99.99) {
+	if `level' < 10 |  `level' > 99.99 {
 		di "{p 1 1 7}{error}level() must be between 10 and 99.99 inclusive{p_end}"
 		exit 198
 	}
 
-	if (`alpha' < 0.5 |  `alpha' > 1) {
+	if `alpha' < 0.5 |  `alpha' > 1 {
 		di "{p 1 1 7}{error}alpha() must be between 0.5 and 1{p_end}"
 		exit 198
 	}
 
-	if `"`frame'"'!=""{
-    	confirm new frame `frame'
-	}
-
-
-    // copy data to ddfResults frame & saved resulst 
-	qui pwf
-    local currentframe = r(currentframe)
-
-    *frame copy `currentframe' ddfResults
-    *cwf ddfResults
 
 	marksample touse 
 	markout `touse' `invars' `gopvars' `gx' `gy' `gb'
@@ -112,7 +98,7 @@ program define teddf, rclass
 
 	if "`nonradial'"==""{
 		if `"`wmat'"'!=""{
-			disp as error "wmat() should be only used when nonradial is specified."
+			disp as red "wmat() should be only used when nonradial is specified."
 			error 498
 		}
 	
@@ -149,7 +135,6 @@ program define teddf, rclass
            }
            	di 
             disp " The weight vector is (`wvalues')"
-			local rweightvec  (`wvalues')
             //mat list `weightvec',noblank  noheader		
 	}
 	
@@ -253,7 +238,10 @@ program define teddf, rclass
 
 
 	
-	preserve	
+	preserve
+	
+
+	
 	
 	if "`gx'"!=""{
 		local ngx: word count `gx'
@@ -350,7 +338,7 @@ program define teddf, rclass
 	    qui gen `tvar'=1
 	}
 	
-	sort `dmu2' `tvar'  // important for mm_sample() in the context of panel data
+	sort `dmu2' `tvar'  // important
 
 
 	tempvar touse2  
@@ -438,36 +426,23 @@ program define teddf, rclass
  	format `outputvar'   %9.4f
 	order Row `dmu' `time' `outputvar'
 	keep  Row `dmu' `time' `outputvar'
+	
+	disp _n(2) " `NDDF' Directional Distance Function Results:"
+	disp "    (Row: Row # in the original data; Dv: Estimated value of `NDDF' DDF.)"
 
-    //di "`print'"
-    if "`print'" != "noprint" {
-        disp _n(2) " `NDDF' Directional Distance Function Results:"
-        disp "    (Row: Row # in the original data; Dv: Estimated value of `NDDF' DDF.)"
-        list, sep(0) 
-        di "Note: Missing value indicates infeasible problem."
-    }
+	list, sep(0) 
+	di "Note: missing value indicates infeasible problem."
 	
 	if `"`saving'"'!=""{
 	  save `saving'
 	  gettoken filenames saving:saving, parse(",")
 	  local filenames `filenames'.dta
 	  disp _n `"Estimated Results are saved in `filenames'."'
-      *disp _n `"Estimated Results are also saved in ddfResults frame temporarily."'
-      *cwf `currentframe'
-      *frame drop ddfResults
 	}
-
-	if `"`frame'"'!=""{
-		frame copy `currentframe' `frame'
-		disp _n `"Estimated Results are also saved in `frame' frame temporarily."'
-	}
-
 
 	return local file `filenames'      
-	return local frame `frame'
-	return local gvec  (`gmatname')
-	return local weight `rweightvec'
 
+	
 	restore 
 	
 	end
@@ -476,7 +451,7 @@ program define teddf, rclass
 ///////////////////////////////////////////////////////	
 
 
-/*
+
 version 16
 cap mata mata drop _ddf()
 cap mata mata drop _nddf()
@@ -1248,6 +1223,16 @@ real matrix function nddfwindowbt(          real matrix       data0, ///
 }
 
 //////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
 
 
 void function _ddf( string scalar     d, ///

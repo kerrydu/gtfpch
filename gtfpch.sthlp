@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 0.3  29 Oct 2019}{...}
+{* *! version 1.1  22 Apr 2021}{...}
 {cmd:help gtfpch}
 {hline}
 
@@ -60,11 +60,18 @@ meaning the output oriented productivity index(indicator). ort(i) means the inpu
 {synopt:{opt sav:ing(filename[,replace])}}specifies that the results be saved in {it:filename}.dta. 
 {p_end}
 
+{synopt:{opt frame(framename)}}specifies that the results be saved in {it:framename} frame. 
+{p_end}
+
 {synopt:{opt maxiter(#)}}specifies the maximum number of iterations, which must be an integer greater than 0. The default value of maxiter is 16000.
 {p_end}
 
 {synopt:{opt tol(real)}}specifies the convergence-criterion tolerance, which must be greater than 0.  The default value of tol is 1e-8.
 {p_end}
+
+{synopt:{opt noprint}}suppress display of the results.{p_end}
+
+
 
 {synoptline}
 {p2colreset}{...}
@@ -105,9 +112,17 @@ Variable names must be identified by inputvars for input variable, by desirable_
 
 {psee}
 Macro:
-
 {psee}
 {cmd: r(file)} the filename stores results of {cmd:gtfpch}.
+{p_end}
+{psee}
+{cmd: r(frame)} the frame name stores results of {cmd:gtfpch}.
+{p_end}
+{psee}
+{cmd: r(weight)} the weight vector for non-radial DDF {cmd:gtfpch}.
+{p_end}
+{psee}
+{cmd: r(gvec)} the directional vector {cmd:gtfpch}.
 {p_end}
 
 
@@ -150,19 +165,6 @@ Jesús T. Pastor, Mette Asmild, C.A. Knox Lovell (2011). The biennial Malmquist 
 
 {title:Author}
 
-{psee}
-Kerry Du
-
-{psee}
-Xiamen University
-
-{psee}
-Xiamen, China
-
-{psee}
-E-mail: kerrydu@xmu.edu.cn
-{p_end}
-
 
 {psee}
 Daoping Wang
@@ -176,6 +178,21 @@ Shanghai, China
 {psee}
 E-mail: daopingwang@live.sufe.edu.cn
 {p_end}
+
+
+{psee}
+Kerry Du
+
+{psee}
+Xiamen University
+
+{psee}
+Xiamen, China
+
+{psee}
+E-mail: kerrydu@xmu.edu.cn
+{p_end}
+
 
 
 {psee}
