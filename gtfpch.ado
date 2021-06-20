@@ -1,3 +1,4 @@
+*! version 2.02, 20 June 2021
 *! version 2.01, 20 Apr 2021
 * use frame to store results
 *! version 1.2
@@ -73,7 +74,7 @@ program define gtfpch, rclass prop(xt)
     local ngo: word count `gopvars'
     local nbo: word count `bopvars'
     local nvar: word count `invars' `gopvars' `bopvars'
-    qui keep `invars' `gopvars' `bopvars' `touse' `id' `time' `dmu'
+    qui keep `invars' `gopvars' `bopvars' `touse' `id' `time' `dmu'  `gx' `gy' `gb'
 
     qui gen Row=_n
     label var Row "Row # in the original dataset"

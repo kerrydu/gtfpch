@@ -1,3 +1,4 @@
+*! version 3.0.1, 20 June 2021
 *! version 3.0, 20 Apr 2021
 * use frame to store results
 *! version 3.0, 6 Apr 2021
@@ -88,7 +89,7 @@ program define teddf, rclass
 	local nvar=`ninp'+`ngo'+`nbo'
 	
     local band = 0
-	confirm numeric var `invars' `gopvars' `bopvars' `rf'
+	confirm numeric var `invars' `gopvars' `bopvars' `rf' `gx' `gy' `gb'
 
 	local comvars: list invars & gopvars 
 	if !(`"`comvars'"'==""){
@@ -333,7 +334,7 @@ program define teddf, rclass
 	
 	
 
-	qui keep   `invars' `gopvars' `bopvars' `dmu' `time' `gmat' `touse' `rf'
+	qui keep   `invars' `gopvars' `bopvars' `dmu' `time' `gmat' `touse' `rf' `gx' `gy' `gb'
 	qui gen Row=_n
 	
 	label var Row "Row # in the original data"
