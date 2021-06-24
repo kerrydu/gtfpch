@@ -26,12 +26,12 @@
 {synopt:{opt gx(varlist)}}specifies direction components for input adjustment. The order of variables specified in gx() should be as the same in {it:{help varlist:inputvars}}. The default is gx=(0,..,0) for all observations.
 {p_end}
 
-{synopt:{opt gy(varlist)}}specifies direction components for desirable output adjustment. The order of variables specified in gy() should be as the same in {it:{help varlist:desirable_outputvars}}. The default is 
-gy(desirable_outputvars).
+{synopt:{opt gy(varlist)}}specifies direction components for desirable output adjustment. The order of variables specified in gy() should be as the same in {it:{help varlist:desirable_outputvars}}. By default, gy takes 
+{it:{help varlist:desirable_outputvars}}.
 {p_end}
 
-{synopt:{opt gb(varlist)}}specifies direction components for undesirable output adjustment. The order of variables specified in gb() should be as the same in {it:{help varlist:undesirable_outputvars}}. The default is 
-gb(undesirable_outputvars). 
+{synopt:{opt gb(varlist)}}specifies direction components for undesirable output adjustment. The order of variables specified in gb() should be as the same in {it:{help varlist:undesirable_outputvars}}. By default, gb takes the opposite of 
+{it:{help varlist:undesirable_outputvars}}. 
 {p_end}
 
 {synopt:{cmdab:nonr:adial}}specifies using non-radial directional distance function.
