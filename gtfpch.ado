@@ -16,6 +16,10 @@ capture program drop gtfpch
 program define gtfpch, rclass prop(xt)
     version 16
 
+	  _get_version gtfpch
+	  _compile_mata, package(gtfpch) version(`package_version') verbose 
+
+
     qui pwf
     local currentframe = r(currentframe)
 

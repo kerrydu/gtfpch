@@ -11,6 +11,14 @@
 capture program drop teddf
 program define teddf, rclass
     version 16
+    /*
+	cap which ftools
+    if _rc {
+      ssc install ftools
+    }
+	*/
+	_get_version gtfpch
+	_compile_mata, package(gtfpch) version(`package_version') verbose 
 
     gettoken word 0 : 0, parse(" =:,")
     while `"`word'"' != ":" & `"`word'"' != "=" {
