@@ -1,3 +1,4 @@
+*! version 4.0.1, 11 Sep 2021
 *! version 3.0.1, 20 June 2021
 *! version 3.0, 20 Apr 2021
 * use frame to store results
@@ -11,12 +12,32 @@
 capture program drop teddf
 program define teddf, rclass
     version 16
-    /*
-	cap which ftools
-    if _rc {
-      ssc install ftools
+
+
+    **********************************************
+    *******Check whether a new version is available
+    // global c_m_d_0 is used in the updatecmd.ado
+    global c_m_d_0 `0'  
+    local pkg gtfpch // updatecmd should be replaced with your package name
+
+    //install the updatecmd package if it is missing
+    cap which updatecmd
+    if _rc{
+      cap net install updatecmd, from("https://github.com/kerrydu/kgitee/raw/master/") replace
+      if _rc{
+         cap net install updatecmd, from("https://gitee.com/kerrydu/kgitee/raw/master/") replace
+         If _rc global up_grade_`pkg' "updatecmd_is_missing"
+       }
+      
     }
-	*/
+
+    //the first run of the command defines global up_grade_`pkg'
+    if "${up_grade_`pkg'}"==""{ 
+        updatecmd gtfpch, from("https://gitee.com/kerrydu/kgitee/raw/master/") pkg(`pkg')       
+		exit
+    } 
+    ********************************************
+
 	_get_version gtfpch
 	_compile_mata, package(gtfpch) version(`package_version') verbose 
 
