@@ -44,7 +44,7 @@ program define teddf, rclass
     syntax varlist [if] [in], Dmu(varname) [rf(varname) Time(varname) gx(varlist) gy(varlist) gb(varlist)  frame(name) ///
 	                                        BIennial  SEQuential GLObal VRS  NONRadial  brep(integer 0) alpha(real 0.7) ///
 										   Wmat(string) SAVing(string)  WINdow(numlist integer max=1 >=1)   level(real 95) ///
-										   maxiter(numlist integer >0 max=1) tol(numlist max=1) NODOTS SAVing(string) noPRINT]
+										   maxiter(numlist integer >0 max=1) tol(numlist max=1) NODOTS  noPRINT]
     local bopvars `varlist'
 
 	if "`nodots'"!=""{
