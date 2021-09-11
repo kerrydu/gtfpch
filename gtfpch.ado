@@ -1,4 +1,4 @@
-*! version 4.02, 11 Sep 2021
+*! version 1.02, 11 Sep 2021
 *! version 2.02, 20 June 2021
 *! version 2.01, 20 Apr 2021
 * use frame to store results
