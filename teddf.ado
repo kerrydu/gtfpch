@@ -33,7 +33,8 @@ program define teddf, rclass
 
     //the first run of the command defines global up_grade_`pkg'
     if "${up_grade_`pkg'}"==""{ 
-        updatecmd gtfpch, from("https://gitee.com/kerrydu/kgitee/raw/master/") pkg(`pkg')       
+        updatecmd gtfpch, from("https://raw.githubusercontent.com/kerrydu/gtfpch/master/") ///
+		froma("https://gitee.com/kerrydu/gtfpch/raw/master/") pkg(`pkg')       
 		exit
     } 
     ********************************************
