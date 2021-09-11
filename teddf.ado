@@ -30,13 +30,14 @@ program define teddf, rclass
        }
       
     }
-
+    local checkupdate 0
     //the first run of the command defines global up_grade_`pkg'
     if "${up_grade_`pkg'}"==""{ 
+		local checkupdate 1
         updatecmd teddf, from("https://raw.githubusercontent.com/kerrydu/gtfpch/master/") ///
 		froma("https://gitee.com/kerrydu/gtfpch/raw/master/") pkg(`pkg')       
-		exit
     } 
+	if `checkupdate'  exit
     ********************************************
 
 	_get_version gtfpch

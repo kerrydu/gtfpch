@@ -33,15 +33,15 @@ program define gtfpch, rclass prop(xt)
        }
       
     }
-
+    local checkupdate 0
     //the first run of the command defines global up_grade_`pkg'
     if "${up_grade_`pkg'}"==""{ 
+        local checkupdate 1
         updatecmd gtfpch, from("https://raw.githubusercontent.com/kerrydu/gtfpch/master/") ///
-		froma("https://gitee.com/kerrydu/gtfpch/raw/master/") pkg(`pkg')       
-		    exit
+		froma("https://gitee.com/kerrydu/gtfpch/raw/master/") pkg(`pkg')      
     } 
+    if `checkupdate' exit
     ********************************************   
-
 	  _get_version gtfpch
 	  _compile_mata, package(gtfpch) version(`package_version') verbose 
 
