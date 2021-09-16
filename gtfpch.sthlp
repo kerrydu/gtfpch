@@ -112,15 +112,19 @@ Variable names must be identified by inputvars for input variable, by desirable_
 
 {psee}
 Macro:
+{p_end}
 {psee}
 {cmd: r(file)} the filename stores results of {cmd:gtfpch}.
 {p_end}
+
 {psee}
 {cmd: r(frame)} the frame name stores results of {cmd:gtfpch}.
 {p_end}
+
 {psee}
 {cmd: r(weight)} the weight vector for non-radial DDF {cmd:gtfpch}.
 {p_end}
+
 {psee}
 {cmd: r(gvec)} the directional vector {cmd:gtfpch}.
 {p_end}
