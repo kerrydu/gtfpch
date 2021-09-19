@@ -1,4 +1,4 @@
-*! version 4.021, 16 Sep 2021
+*! version 4.022, 18 Sep 2021
 *! version 2.02, 20 June 2021
 *! version 2.01, 20 Apr 2021
 * use frame to store results
@@ -1350,7 +1350,7 @@ program define _ddf_luen
 
     marksample touse 
     markout `touse' `invars' `opvars' `badvars' `gvec'
-    local rflag=("`rflag'"=="","","if `flag'")
+    local rflag=cond("`rflag'"=="","","if `rflag'") //fix missing cond 18-9-2021
     tempvar touse2
     mark `touse2' `rflag' // `rflag' might be empty
     markout `touse2' `invars' `opvars' `badvars'
