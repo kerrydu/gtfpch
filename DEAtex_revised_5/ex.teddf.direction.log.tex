@@ -1,0 +1,43 @@
+. 
+. gen gK=0
+{\smallskip}
+. gen gL=0
+{\smallskip}
+. gen gY=Y
+{\smallskip}
+. gen gCO2=-CO2
+{\smallskip}
+. teddf K L= Y: CO2, dmu(Province) time(year) gx(gK gL) gy(gY) gb(gCO2) sav(ex.teddf.direction.result,replace)
+{\smallskip}
+ The directional vector is (gK gL gY gCO2)
+{\smallskip}
+{\smallskip}
+  Directional Distance Function Results:
+    (Row: Row \# in the original data; Dv: Estimated value of  DDF.)
+{\smallskip}
+     {\TLC}\HLI{37}{\TRC}
+     {\VBAR} Row       Province   year        Dv {\VBAR}
+     {\LFTT}\HLI{37}{\RGTT}
+  1. {\VBAR}   1          Anhui   2013    0.4024 {\VBAR}
+  2. {\VBAR}   2          Anhui   2014    0.4515 {\VBAR}
+  3. {\VBAR}   3          Anhui   2015    0.5049 {\VBAR}
+  4. {\VBAR}   4        Beijing   2013   -0.0000 {\VBAR}
+  5. {\VBAR}   5        Beijing   2014   -0.0000 {\VBAR}
+  6. {\VBAR}   6        Beijing   2015   -0.0000 {\VBAR}
+                       ...
+                       ...
+                       ...
+ 85. {\VBAR}  82         Yunnan   2013    0.4267 {\VBAR}
+ 86. {\VBAR}  83         Yunnan   2014    0.4428 {\VBAR}
+ 87. {\VBAR}  84         Yunnan   2015    0.4648 {\VBAR}
+ 88. {\VBAR}  85       Zhejiang   2013    0.1507 {\VBAR}
+ 89. {\VBAR}  86       Zhejiang   2014    0.1891 {\VBAR}
+ 90. {\VBAR}  87       Zhejiang   2015    0.2265 {\VBAR}
+     {\BLC}\HLI{37}{\BRC}
+Note: Missing value indicates infeasible problem.
+(note: file ex.teddf.direction.result.dta not found)
+file ex.teddf.direction.result.dta saved
+{\smallskip}
+Estimated Results are saved in ex.teddf.direction.result.dta.
+{\smallskip}
+. 

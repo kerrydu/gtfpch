@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 1.1  22 Apr 2021}{...}
+{* *! version 1.1  21 Oct 2021}{...}
 {cmd:help gtfpch}
 {hline}
 
@@ -38,7 +38,7 @@
 {synopt:{opt global}}specifies global production technology.
 {p_end}
 
-{synopt:{cmdab:nonr:adial}}specifies using non-radial directional distance function.
+{synopt:{cmdab:nonr:adial}}specifies using non-radial directional distance function(NDDF).
 {p_end}
 
 {synopt:*{opt wmat(name)}}specifies a weight matrix for adjustment of input and output variables. 
@@ -47,8 +47,9 @@
 {synopt:*{cmdab:luen:berger}}specifies estimating Luenberger productivity index. The default is Malmquist–Luenberger productivity index.
 {p_end}
 
-{synopt:*{opt ort(string)}}specifies the oriention. The default is ort(out), 
-meaning the output oriented productivity index(indicator). ort(i) means the input oriented productivity index(indicator); ort(h) means the hybrid productivity indicator.
+{synopt:*{opt ort(string)}}specifies the oriention. The default is ort(out). 
+ort(out) means the output oriented productivity index(indicator); ort(i) means the input oriented productivity 
+index(indicator); ort(h) means the hybrid productivity indicator.
 {p_end}
 
 {synopt:{opt fgnz}}specifies decomposing TFP change following the spirit of Färe, Grosskopf, Norris, and Zhang's (1994) method.
@@ -71,6 +72,8 @@ meaning the output oriented productivity index(indicator). ort(i) means the inpu
 
 {synopt:{opt noprint}}suppress display of the results.{p_end}
 
+{synopt:{opt noch:eck}}suppress checking for new version. It is suggested to be 
+used for saving time when internet connection is unavailable. {p_end}
 
 
 {synoptline}
@@ -166,6 +169,17 @@ Ray, S., & Desli, E. (1997). Productivity Growth, Technical Progress, and Effici
 {phang}
 Jesús T. Pastor, Mette Asmild, C.A. Knox Lovell (2011). The biennial Malmquist productivity change index, Socio-Economic Planning, 45(1):10-15.
 
+{phang}
+Daoping Wang, Kerui Du, Ning Zhang (2021). {browse "https://raw.githubusercontent.com/kerrydu/gtfpch/master/manuscript.pdf":Measuring technical efficiency and total factor productivity change with undesirable outputs in Stata}, Working paper.
+
+
+{marker support}{...}
+{title:Dependency}
+
+{pstd}{cmd:gtfpch} requires the {cmd:moremata} package.{p_end}
+{pstd}_compile_mata.ado and _get_version.ado are borrowed from Sergio Correia's {cmd:ftools} package({browse "https://github.com/sergiocorreia/ftools":Github repo}).{p_end}
+
+
 
 {title:Author}
 
@@ -185,7 +199,7 @@ E-mail: daopingwang@live.sufe.edu.cn
 
 
 {psee}
-Kerry Du
+Kerui Du
 
 {psee}
 Xiamen University
@@ -203,10 +217,10 @@ E-mail: kerrydu@xmu.edu.cn
 Ning Zhang
 
 {psee}
-Jinan University
+Shandong University
 
 {psee}
-Guangzhou, China
+Jinan, China
 
 {psee}
 E-mail: zn928@naver.com

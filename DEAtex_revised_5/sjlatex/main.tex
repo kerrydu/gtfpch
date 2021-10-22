@@ -1,0 +1,38 @@
+% main.tex - a driver for your Stata Journal insert
+%
+% This file should only be changed according to the AUTHOR notes below.
+%
+% The Stata Press document class
+\documentclass[bib]{statapress}
+
+% Page dimensions
+\usepackage[crop,newcenter,frame]{pagedims}
+
+% The Stata Journal styles
+\usepackage{sj}
+
+% Encapsulated PostScript figures
+\usepackage{epsfig}
+
+% Stata Log listings and useful macros
+\usepackage{stata}
+
+\usepackage{amsmath}
+
+% Shadow package to render technical note figure
+\usepackage{shadow}
+
+% EDITORS: volume number, issue number, month, and year
+\sjsetissue{$vv$}{$ii$}{$mm$}{$yyyy$}
+
+\usepackage{threeparttable} 
+\usepackage{tabularx}
+
+\begin{document}
+
+% AUTHOR:  Change "readme" to your insert's file name.
+\input{readme}
+
+\clearpage
+\end{document}
+% END: main.tex

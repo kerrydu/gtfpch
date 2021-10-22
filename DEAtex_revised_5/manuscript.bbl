@@ -1,0 +1,147 @@
+\ifnum 24=1 \def\bibname{Reference}
+\else \def\bibname{References} \fi
+\begin{thebibliography}{24}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+
+\bibitem[{Badunenko and Mozharovskyi(2016)}]{Badunenko2016}
+Badunenko, O., and P.~Mozharovskyi. 2016.
+\newblock {Nonparametric frontier analysis using Stata}.
+\newblock \emph{Stata Journal} 16(3): 550--589.
+\urlprefix\url{http://www.stata-journal.com/sjpdf.html?article=st0444.}
+\bibitem[{Badunenko and Mozharovskyi(2020)}]{Badunenko2020}
+\mbox{\vrule width30.25006ptheight2.62222ptdepth-2.25222pt}. 2020.
+\newblock Statistical inference for the Russell measure of technical
+  efficiency.
+\newblock \emph{Journal of the Operational Research Society} 71(3): 517--527.
+\urlprefix\url{https://doi.org/10.1080/01605682.2019.1599778.}
+\bibitem[{Banker(1993)}]{banker1993}
+Banker, R.~D. 1993.
+\newblock Maximum Likelihood, Consistency and Data Envelopment Analysis: A
+  Statistical Foundation.
+\newblock \emph{Management Science} 39(10): 1265--1273.
+\urlprefix\url{http://www.jstor.org/stable/2632965.}
+\bibitem[{Chambers(2002)}]{Chambers2002}
+Chambers, R.~G. 2002.
+\newblock {Exact nonradial input, output, and productivity measurement}.
+\newblock \emph{Economic Theory} 20(4): 751--765.
+\urlprefix\url{http://link.springer.com/10.1007/s001990100231.}
+\bibitem[{Chung et~al.(1997)Chung, F{\"{a}}re, and Grosskopf}]{Chung1997}
+Chung, Y., R.~F{\"{a}}re, and S.~Grosskopf. 1997.
+\newblock {Productivity and Undesirable Outputs: A Directional Distance
+  Function Approach}.
+\newblock \emph{Journal of Environmental Management} 51(3): 229--240.
+\urlprefix\url{https://linkinghub.elsevier.com/retrieve/pii/S0301479797901468.}
+\bibitem[{Debreu(1951)}]{Debreu1951}
+Debreu, G. 1951.
+\newblock {The Coefficient of Resource Utilization}.
+\newblock \emph{Econometrica} 19(3): 273.
+\urlprefix\url{https://www.jstor.org/stable/1906814?origin=crossref.}
+\bibitem[{F{\"{a}}re and Grosskopf(2010)}]{Fare2010}
+F{\"{a}}re, R., and S.~Grosskopf. 2010.
+\newblock {Directional distance functions and slacks-based measures of
+  efficiency}.
+\newblock \emph{European Journal of Operational Research} 200(1): 320--322.
+\urlprefix\url{https://linkinghub.elsevier.com/retrieve/pii/S0377221709000186.}
+\bibitem[{F{\"{a}}re et~al.(1985)F{\"{a}}re, Grosskopf, and Lovell}]{Fare1985}
+F{\"{a}}re, R., S.~Grosskopf, and C.~A.~K. Lovell. 1985.
+\newblock \emph{{The Measurement of Efficiency of Production}}.
+\newblock Dordrecht: Springer Netherlands.
+\urlprefix\url{http://link.springer.com/10.1007/978-94-015-7721-2.}
+\bibitem[{F{\"{a}}re et~al.(1994)F{\"{a}}re, Grosskopf, Norris, and
+  Zhang}]{Fare1994}
+F{\"{a}}re, R., S.~Grosskopf, M.~Norris, and Z.~Zhang. 1994.
+\newblock {Productivity Growth, Technical Progress, and Efficiency Change in
+  Industrialized Countries}.
+\newblock \emph{The American Economic Review} 84(1): 66--83.
+\urlprefix\url{http://www.jstor.org/stable/2117971.}
+\bibitem[{Farrell(1957)}]{Farrell1957}
+Farrell, M.~J. 1957.
+\newblock {The Measurement of Productive Efficiency}.
+\newblock \emph{Journal of the Royal Statistical Society. Series A (General)}
+  120(3): 253.
+\urlprefix\url{https://www.jstor.org/stable/2343100?origin=crossref.}
+\bibitem[{Ji and Lee(2010)}]{Ji2010}
+Ji, Y., and C.~Lee. 2010.
+\newblock {Data envelopment analysis}.
+\newblock \emph{Stata Journal} 10(2): 267--280.
+\urlprefix\url{http://www.stata-journal.com/sjpdf.html?article=st0193.}
+\bibitem[{Kneip et~al.(1998)Kneip, Park, and Simar}]{Kneip1998}
+Kneip, A., B.~U. Park, and L.~Simar. 1998.
+\newblock A Note on the Convergence of Nonparametric DEA Estimators for
+  Production Efficiency Scores.
+\newblock \emph{Econometric Theory} 14(6): 783--793.
+\urlprefix\url{http://www.jstor.org/stable/3533091.}
+\bibitem[{Kneip et~al.(2008)Kneip, Simar, and Wilson}]{kneip2008}
+Kneip, A., L.~Simar, and P.~W. Wilson. 2008.
+\newblock ASYMPTOTICS AND CONSISTENT BOOTSTRAPS FOR DEA ESTIMATORS IN
+  NONPARAMETRIC FRONTIER MODELS.
+\newblock \emph{Econometric Theory} 24(6): 1663–1697.
+
+\bibitem[{Koopmans(1951)}]{koopmans1951analysis}
+Koopmans, T.~C. 1951.
+\newblock An analysis of production as an efficient combination of activities.
+\newblock \emph{Activity analysis of production and allocation} .
+
+\bibitem[{Lin and Du(2015)}]{Lin2015}
+Lin, B., and K.~Du. 2015.
+\newblock {Modeling the dynamics of carbon emission performance in China: A
+  parametric Malmquist index approach}.
+\newblock \emph{Energy Economics} 49: 550--557.
+\urlprefix\url{https://linkinghub.elsevier.com/retrieve/pii/S0140988315001206.}
+\bibitem[{Mahlberg and Sahoo(2011)}]{Mahlberg2011}
+Mahlberg, B., and B.~K. Sahoo. 2011.
+\newblock {Radial and non-radial decompositions of Luenberger productivity
+  indicator with an illustrative application}.
+\newblock \emph{International Journal of Production Economics} 131(2):
+  721--726.
+\urlprefix\url{https://linkinghub.elsevier.com/retrieve/pii/S092552731100079X.}
+\bibitem[{Ray and Desli(1997)}]{Ray1997}
+Ray, S.~C., and E.~Desli. 1997.
+\newblock {Productivity Growth, Technical Progress, and Efficiency Change in
+  Industrialized Countries: Comment}.
+\newblock \emph{The American Economic Review} 87(5): 1033--1039.
+\urlprefix\url{http://www.jstor.org/stable/2951340.}
+\bibitem[{Simar et~al.(2012)Simar, Vanhems, and Wilson}]{simar2012}
+Simar, L., A.~Vanhems, and P.~W. Wilson. 2012.
+\newblock Statistical inference for DEA estimators of directional distances.
+\newblock \emph{European Journal of Operational Research} 220(3): 853--864.
+\urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0377221712001622.}
+\bibitem[{Simar and {W. Wilson}(2019)}]{simar2019}
+Simar, L., and P.~{W. Wilson}. 2019.
+\newblock Central limit theorems and inference for sources of productivity
+  change measured by nonparametric Malmquist indices.
+\newblock \emph{European Journal of Operational Research} 277(2): 756--769.
+\urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0377221719301882.}
+\bibitem[{Simar and Wilson(1998)}]{Simar1998}
+Simar, L., and P.~W. Wilson. 1998.
+\newblock Sensitivity Analysis of Efficiency Scores: How to Bootstrap in
+  Nonparametric Frontier Models.
+\newblock \emph{Management Science} 44(1): 49--61.
+
+\bibitem[{Simar and Wilson(1999)}]{simar1999}
+\mbox{\vrule width30.25006ptheight2.62222ptdepth-2.25222pt}. 1999.
+\newblock Estimating and bootstrapping Malmquist indices.
+\newblock \emph{European Journal of Operational Research} 115(3): 459--471.
+\urlprefix\url{https://www.sciencedirect.com/science/article/pii/S0377221797004505.}
+\bibitem[{Tauchmann(2012)}]{Tauchmann2012}
+Tauchmann, H. 2012.
+\newblock {Partial frontier efficiency analysis}.
+\newblock \emph{Stata Journal} 12(3): 461--478.
+\urlprefix\url{http://www.stata-journal.com/sjpdf.html?article=st0270.}
+\bibitem[{Yan et~al.(2020)Yan, Zou, Du, and Li}]{YAN2020}
+Yan, Z., B.~Zou, K.~Du, and K.~Li. 2020.
+\newblock Do renewable energy technology innovations promote China's green
+  productivity growth? Fresh evidence from partially linear
+  functional-coefficient models.
+\newblock \emph{Energy Economics} 90: 104842.
+\urlprefix\url{http://www.sciencedirect.com/science/article/pii/S0140988320301821.}
+\bibitem[{Zhou et~al.(2012)Zhou, Ang, and Wang}]{Zhou2012}
+Zhou, P., B.~Ang, and H.~Wang. 2012.
+\newblock {Energy and CO2 emission performance in electricity generation: A
+  non-radial directional distance function approach}.
+\newblock \emph{European Journal of Operational Research} 221(3): 625--635.
+\urlprefix\url{https://linkinghub.elsevier.com/retrieve/pii/S0377221712003153.}
+\end{thebibliography}

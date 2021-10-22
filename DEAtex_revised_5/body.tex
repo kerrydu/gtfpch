@@ -1,0 +1,61 @@
+% readme.tex -- a short example of how each Stata Journal insert should be
+% organized.
+
+\inserttype{article}
+
+\author{Short article author list}{%
+  Daoping Wang\\
+  School of Urban and Regional Science,\\ 
+  Shanghai University of Finance and Economics\\
+  Shanghai, China\\
+  daopingwang@live.sufe.edu.cn\\
+  \\
+
+  \and
+  Kerui Du\\
+  School of Management, Xiamen University\\
+  Xiamen, China\\
+  kerrydu@xmu.edu.cn \\
+  \\
+  
+  \and
+  Ning Zhang\\
+  Institute of Blue and Green Development, Shandong University\\
+  Weihai, China\\
+  zn928@naver.com
+}
+
+\title[Short toc article title]{Measuring technical efficiency and total factor productivity change with undesirable outputs in Stata}
+\maketitle
+
+
+\begin{abstract}
+	In this article, we introduce two user-written data envelopment analysis commands for measuring technical efficiency and productivity change in Stata. Over the last decades, an important theoretical progress of data envelopment analysis, a nonparametric method widely used for performance assessment of decision-making units, is the incorporating of undesirable outputs. Models with the ability to deal with undesirable outputs have been developed and applied in empirical studies for assessing the sustainability of decision-making units, and are getting more and more attention from researchers and managers. The {\tt teddf} command developed in the present article allows users to measure technical efficiency, both radial and non-radial, when some outputs are undesirable. Technical efficiency measures are obtained by solving linear programming problems. The {\tt gtfpch} command provides tools for measuring productivity change, e.g., the Malmquist-Luenberger index and the Luenberger indicator. We provide a brief overview of the nonparametric efficiency and productivity change measurement with the consideration of undesirable outputs, and we describe the syntax and options of the new commands. Examples are given to illustrate how to perform the technical efficiency and productivity analysis with the newly introduced commands.
+	
+	\keywords{teddf, gtfpch, DEA, Malmquist-Luenberger index, Luenberger indicator, directional distance function, total fatcor productivity}
+\end{abstract}
+
+
+% discussion of the Stata Journal document class.
+%\input sj.tex
+% discussion of the Stata Press LaTeX package for Stata output.
+%\input stata.tex
+\input first.tex
+% discussion of the Stata Press LaTeX package for Stata output.
+\input second.tex
+
+
+\bibliographystyle{sj}
+\bibliography{sj}
+
+
+\begin{aboutauthors}
+	Daoping Wang is a PhD candidate at the School of Urban and Regional Science, Shanghai University of Finance and Economics. His primary research interests include economic dynamics, risk analysis, and sustainable development.
+	
+	Kerui Du (corresponding author) is an associate professor at the School of Management, Xiamen University. His primary research interests include applied econometrics, energy and environmental economics.	
+	
+	Ning Zhang is a professor at the Institute of Blue and Green Development, Shandong University. His primary research interests include environmental economics and energy economics.
+\end{aboutauthors}
+
+
+\endinput

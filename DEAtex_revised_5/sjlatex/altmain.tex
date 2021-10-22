@@ -1,0 +1,32 @@
+% altmain.tex - an alternative driver for your Stata Journal insert
+%
+% This file should only be changed according to the AUTHOR notes below.
+%
+% The article class
+\documentclass{article}
+
+% The Stata Journal styles
+\usepackage[article,notstatapress]{sj}
+
+% Encapsulated PostScript figures
+\usepackage{epsfig}
+
+% Stata Log listings and useful macros
+\usepackage{stata}
+
+% Shadow package to render technical note figure
+\usepackage{shadow}
+%\usepackage{ifpdf}
+
+% Bibliography packages
+\usepackage{natbib}
+\usepackage{chapterbib}
+\bibpunct{(}{)}{;}{a}{}{,}
+
+\begin{document}
+
+% AUTHOR:  Change "readme" to your insert's file name.
+\input{readme}
+
+\end{document}
+% END: altmain.tex

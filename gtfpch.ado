@@ -1,3 +1,4 @@
+*! version 4.1, 21 Oct 2021
 *! version 4.022, 18 Sep 2021
 *! version 2.02, 20 June 2021
 *! version 2.01, 20 Apr 2021
@@ -17,35 +18,9 @@ capture program drop gtfpch
 program define gtfpch, rclass prop(xt)
     version 16
 
-    **********************************************
-    *******Check whether a new version is available
-    // global c_m_d_0 is used in the updatecmd.ado
-    global c_m_d_0 `0'  
-    local pkg gtfpch // updatecmd should be replaced with your package name
-
-    //install the updatecmd package if it is missing
-    cap which updatecmd
-    if _rc{
-      cap net install updatecmd, from("https://github.com/kerrydu/kgitee/raw/master/") replace
-      if _rc{
-         cap net install updatecmd, from("https://gitee.com/kerrydu/kgitee/raw/master/") replace
-         if _rc global up_grade_`pkg' "updatecmd_is_missing"
-       }
-      
-    }
-    local checkupdate 0
-    //the first run of the command defines global up_grade_`pkg'
-    if "${up_grade_`pkg'}"==""{ 
-        local checkupdate 1
-        updatecmd gtfpch, from("https://raw.githubusercontent.com/kerrydu/gtfpch/master/") ///
-		froma("https://gitee.com/kerrydu/gtfpch/raw/master/") pkg(`pkg')      
-    } 
-    if `checkupdate' exit
-    ********************************************   
+   * recompile the mlib for different Stata version
 	  _get_version gtfpch
 	  _compile_mata, package(gtfpch) version(`package_version') verbose 
-
-
     qui pwf
     local currentframe = r(currentframe)
 
@@ -54,6 +29,7 @@ program define gtfpch, rclass prop(xt)
     local id=r(ivar)
     local time=r(tvar)
 
+   * extract input and desriable output variables
     gettoken word 0 : 0, parse(" =:,")
     while `"`word'"' != ":" & `"`word'"' != "=" {
         if `"`word'"' == "," | `"`word'"'=="" {
@@ -75,22 +51,17 @@ program define gtfpch, rclass prop(xt)
     unab gopvars : `gopvars'
 	
     syntax varlist [if] [in],    [dmu(varname) gx(varlist) gy(varlist) gb(varlist)  ///
-	                                BIennial  SEQuential GLOBAL FGNZ RD  LUENberger ort(string) ///
-										   WINdow(numlist intege max=1 >=1) SAVing(string)   Wmat(string) NONRadial       ///
-										   maxiter(numlist integer >0 max=1) tol(numlist max=1) frame(name) noPRINT]
+	                              BIennial  SEQuential GLOBAL FGNZ RD  LUENberger ort(string) ///
+								  WINdow(numlist intege max=1 >=1) SAVing(string)   Wmat(string) NONRadial ///
+								  maxiter(numlist integer >0 max=1) tol(numlist max=1) frame(name) noPRINT NOCHeck]
+
+
+   * check whether the new version is available
+   if "`nocheck'"==""{ //default
+      if "$gtfpchcheck"==""   gtfpchcheckupdate gtfpch 
+   }
+   
     preserve
-    /*
-  	qui pwf
-    local currentframe = r(currentframe)
-    if `"`frame'"'!=""{
-          frame copy `currentframe' `frame'
-          cwf `frame'
-    }
-    else{
-           frame copy `currentframe' _temp_gtfpchRes_
-           cwf _temp_gtfpchRes_       
-    }
-    */
 
     sort `id' `time'
     if `"`frame'"'!=""{
@@ -101,8 +72,8 @@ program define gtfpch, rclass prop(xt)
 
     local bopvars `varlist'
     local ninp: word count `invars'
-    local ngo: word count `gopvars'
-    local nbo: word count `bopvars'
+    local ngo:  word count `gopvars'
+    local nbo:  word count `bopvars'
     local nvar: word count `invars' `gopvars' `bopvars'
     qui keep `invars' `gopvars' `bopvars' `touse' `id' `time' `dmu'  `gx' `gy' `gb'
 
@@ -110,6 +81,7 @@ program define gtfpch, rclass prop(xt)
     label var Row "Row # in the original dataset"
     if "`nonradial'"!=""{
      local luenberger luenberger
+	 *if "`ort'" =="" local ort h
 
      }
 
@@ -150,12 +122,12 @@ program define gtfpch, rclass prop(xt)
   }
   else{
   
-    if  `"`ort'"'!="out"{
+    if  `"`ort'"'!="out"{ // for ort(i) and ort(h)
       local invarscopy `invars'
       forv k=1/`ninp'{
         gettoken word invarscopy:invarscopy
         tempvar gx_`k'
-        qui gen `gx_`k''=-`word'
+        qui gen `gx_`k''=-`word'  // gx=-X for input orientied direction
         local gmat `gmat' `gx_`k''
         local gx `gx' `gx_`k''
         local gmatname `gmatname' -`word'
@@ -165,12 +137,11 @@ program define gtfpch, rclass prop(xt)
     else{
       forv k=1/`ninp'{
         tempvar gx_`k'
-        qui gen `gx_`k''=0
+        qui gen `gx_`k''=0  // gx=0 for output orientied direction
         local gmat `gmat' `gx_`k''
         local gx `gx' `gx_`k''
         local gmatname `gmatname' 0 
       }
-    
     
     }
   
@@ -190,7 +161,7 @@ program define gtfpch, rclass prop(xt)
   }
   else{
   
-    if  `"`ort'"'!="i"{
+    if  `"`ort'"'!="i"{ //for ort(out) and ort(h)
       local gopvarscopy `gopvars'
       forv k=1/`ngo'{
         gettoken word gopvarscopy:gopvarscopy
@@ -210,8 +181,6 @@ program define gtfpch, rclass prop(xt)
         local gy `gy' `gy_`k''
         local gmatname `gmatname' 0        
       }       
-    
-    
     }
 
   
@@ -231,10 +200,10 @@ program define gtfpch, rclass prop(xt)
   
     if `"`ort'"'!="i"{
   
-      local bopvarscopy `bopvars'
+    local bopvarscopy `bopvars'
     forv k=1/`nbo'{
-        gettoken word bopvarscopy:bopvarscopy
-        tempvar gb_`k'
+      gettoken word bopvarscopy:bopvarscopy
+      tempvar gb_`k'
       qui gen `gb_`k''=-`word'
       local gmat `gmat' `gb_`k''
       local gb `gb' `gb_`k''
@@ -278,7 +247,7 @@ program define gtfpch, rclass prop(xt)
           forv i=1/`ncol'{
             local wival=`wmat'[1,`i']
             if `wival'<0{
-              di as error `"The element of matrix `wmat' should not be less than 0."'
+              di as error `"The element of matrix `wmat' should not be negative."'
               exit 498
             }
           }
@@ -304,17 +273,7 @@ program define gtfpch, rclass prop(xt)
          mat `weightvec'=`wmat'
         }
         else{
-          /*
-           if "`ort'"=="out"{       
-              mat  `weightvec'=(J(1,`ninp',0),J(1,`ngo',1)*(1/2/`ngo'),J(1,`nbo',1)*(1/2/`nbo'))           
-           }
-           else if "`ort'"=="i"{
-              mat  `weightvec'=(J(1,`ninp',1/`ninp'),J(1,`ngo'+`nbo',0))               
-           }
-           else{
-              mat  `weightvec'=(J(1,`ninp',0.5/`ninp'),J(1,`ngo'+`nbo',0.5/(`ngo'+`nbo'))) 
-           }
-           */
+			
            if "`ort'"=="out"{       
               mat  `weightvec'=(J(1,`ninp',0),J(1,`ngo',1),J(1,`nbo',1))           
            }
@@ -361,12 +320,6 @@ program define gtfpch, rclass prop(xt)
     }
     else{
 
-            //matrix colnames `weightvec' =`invars' `gopvars' `bopvars' 
-            //matrix rownames `weightvec' = "W"
-            //di 
-            //disp " The weight vector is:"
-            //mat list `weightvec',noblank  noheader
-
              _luen_nddf `invars'=`gopvars':`bopvars' if `touse', id(`id') time(`time') gx(`gx') ///
                                gy(`gy') gb(`gb')  ort(`ort')  wmat(`weightvec') ///
                               `biennial' `global' `sequential' window(`window') ///
@@ -375,11 +328,11 @@ program define gtfpch, rclass prop(xt)
 
     }
             local resvars `r(rvars)'
-***
+*****************************************************************************************
   if "`rd'"==""&"`fgnz'"==""{
 
         di 
-        di " The diectional vector is (`gmatname')"
+        di " The directional vector is (`gmatname')"
         format `resvars' %9.4f
         qui keep if  `touse'
         qui cap bys `id' (`time'): gen Pdwise=`time'[_n-1]+"~"+`time' if _n>1
@@ -402,9 +355,7 @@ program define gtfpch, rclass prop(xt)
           gettoken filenames saving:saving, parse(",")
           local filenames `filenames'.dta
           disp _n `"Estimated Results are saved in `filenames'."'
-          *disp _n `"Estimated Results are also saved in gtfpchResults frame temporarily."' 
-          *cwf `currentframe'
-          *frame drop gtfpchResults         
+       
         }
 
         if `"`frame'"'!=""{
@@ -475,14 +426,6 @@ program define gtfpch, rclass prop(xt)
         qui gen SECH=TECH_crs/TECH
         label var SECH "Scale efficiecny change"      
         qui replace TFPCH=TFPCH_crs
-		/*
-        if "`global'"!=""{
-          qui replace BPC=BPC_crs
-        }
-        else{
-          qui replace TECCH=TECCH_crs   
-        }
-		*/
 		qui replace TECCH=TECCH_crs 
         local resvars `resvars' SECH
       }
@@ -503,14 +446,6 @@ program define gtfpch, rclass prop(xt)
         qui gen SECH=TECH_crs-TECH
         label var SECH "Scale efficiecny change"      
         qui replace TFPCH=TFPCH_crs
-		/*
-        if "`global'"!=""{
-          qui replace BPC=BPC_crs
-        }
-        else{
-          qui replace TECCH=TECCH_crs   
-        }
-		*/
 		
 		qui replace TECCH=TECCH_crs 
 
@@ -521,7 +456,7 @@ program define gtfpch, rclass prop(xt)
 
     
     di 
-    di " The diectional vector is (`gmatname')"    
+    di " The directional vector is (`gmatname')"    
     format `resvars' %9.4f
 	
     qui keep if `touse'
@@ -571,11 +506,12 @@ end
 
 
 ***********************************************************
+/////////////////////subprograms///////////////////////////
+***********************************************************
 cap program drop _malmqluen
 program define _malmqluen,rclass
     version 16
   
-
     gettoken word 0 : 0, parse("=:,")
     while `"`word'"' != ":" & `"`word'"' != "=" {
         if `"`word'"' == "," | `"`word'"'=="" {
@@ -596,21 +532,17 @@ program define _malmqluen,rclass
     }
     unab gopvars : `gopvars'
 
-********************************************************************************* 
-  
-    *local ninv: word count `invars'
-    *local ngov: word count `gopvars'
-    syntax varlist [if] [in], id(varname) time(varname)  [gx(varlist) ///
+    syntax varlist [if] [in], id(varname) time(varname)  [gx(varlist)    ///
                        BIennial  gy(varlist) gb(varlist) VRS ort(string) ///
-                             GLOBAL SEQuential WINdow(numlist intege max=1 >=1) ///
-                 maxiter(numlist integer >0 max=1) tol(numlist max=1 >0)]
+                       GLOBAL SEQuential WINdow(numlist intege max=1 >=1) ///
+                  maxiter(numlist integer >0 max=1) tol(numlist max=1 >0)   ]
                  
   marksample touse 
   local bopvars `varlist'
   
   local ninp: word count `invars'
-  local ngo: word count `gopvars'
-  local nbo: word count `bopvars'
+  local ngo:  word count `gopvars'
+  local nbo:  word count `bopvars'
   local nvar: word count `invars' `gopvars' `bopvars'
 
   confirm numeric var `invars' `gopvars' `bopvars'
@@ -717,7 +649,7 @@ program define _malmqluen,rclass
   } 
   
    
-    tempvar period dmu
+  tempvar period dmu
   
   qui egen `period'=group(`time')
   qui egen `dmu'=group(`id')  
@@ -740,25 +672,21 @@ program define _malmqluen,rclass
   if `"`techtype'"'=="contemporaneous"{
   
       qui{
-        forv t=1/`tmax'{
+	  	*D11
+        forv t=1/`tmax'{ 
             qui replace `flag'= (`period'==`t')
             _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `DD'=`temp' if `period'==`t'
-            //qui drop `temp'
-        }    
+        }
+		*D21
         local tt=`tmax'-1
         forv t=1/`tt'{
             qui replace `flag'=(`period'==`t'+1) 
             _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`D21') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D21'=`temp' if `period'==`t'
-            //qui drop `temp'
         }  
-
+		*D12
         forv t=2/`tmax'{
             qui replace `flag'=(`period'==`t'-1)
             _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D12'=`temp' if `period'==`t'
-            //qui drop `temp'
         }       
 
     }
@@ -769,27 +697,22 @@ program define _malmqluen,rclass
   
     if `"`techtype'"'=="sequential"{
   
-    
+		*D11
         forv t=1/`tmax'{
             qui replace `flag'=(`period'<=`t')
             _ddf if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `DD'=`temp' if `period'==`t'
-            //qui replace `flag'=0
-            //qui drop `temp'
-        }    
+
+        }
+		*D21
         local tt=`tmax'-1
         forv t=1/`tt'{
             qui replace `flag'=(`period'<=`t'+1) 
             _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`D21') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D21'=`temp' if `period'==`t'
-            //qui drop `temp'
         }  
-
+		*D12
         forv t=2/`tmax'{
             qui replace `flag'= (`period'<=`t'-1) 
             _ddf if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D12'=`temp' if `period'==`t'
-            //qui drop `temp'
         }       
 
     
@@ -800,28 +723,22 @@ program define _malmqluen,rclass
   
   
      if `"`techtype'"'=="window"{
-      *local band=(`window'-1)/2
+      
        local band=`window'
    
         forv t=1/`tmax'{
             qui replace `flag'=(`period'<=`t'+`band' & `period'>=`t'-`band') 
             _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `DD'=`temp' if `period'==`t'
-            //qui cap drop `temp'
         }    
         local tt=`tmax'-1
         forv t=1/`tt'{
             qui replace `flag'= (`period'<=`t'+1+`band' &  `period'>=`t'-`band'+1)
             _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`D21') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D21'=`temp' if `period'==`t'
-            //qui cap drop `temp'
         }  
 
         forv t=2/`tmax'{
             qui replace `flag'=(`period'<=`t'-1+`band' & `period'>=`t'-1-`band') 
             _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D12'=`temp' if `period'==`t'
-            //qui cap drop `temp'
         }       
 
     
@@ -837,15 +754,12 @@ program define _malmqluen,rclass
         forv t=1/`tmax'{
             qui replace `flag'= (`period'==`t' | `period'==`t'+1)
             _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `DD'=`temp' if `period'==`t'
-            //qui drop `temp'
         }     
 
         forv t=2/`tmax'{
             qui replace `flag'=(`period'==`t'-1 | `period'==`t')
             _ddf  if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D12'=`temp' if `period'==`t'
-            //qui drop `temp'
+
         }       
 
     }
@@ -869,20 +783,15 @@ program define _malmqluen,rclass
     forv t=1/`tmax'{
       qui replace `flag'=(`period'==`t')
       _ddf  if `touse' & `period'==`t', rflag(`flag') gen(`DD') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-      //qui replace `DD'=`temp' if `period'==`t'
-      //qui cap drop `temp'
-      *list `dmu' `period' `DD' if !missing(`DD')& `period'==`t'
     }
     
     qui bys `dmu' (`period'): gen TECH=`DD'/`DD'[_n-1]  
-    *su TECH `DD'
-    *qui bys `dmu' (`period'): gen BPC=TFPCH/TECH 
+  
 	qui bys `dmu' (`period'): gen TECCH=TFPCH/TECH
   
-  label var TECH  "Technical efficiency change" 
+    label var TECH  "Technical efficiency change" 
 	label var TECCH "Technological change"
-    *label var BPC "Best practice gap change"
-    *local resvars TFPCH TECH  BPC
+   
 	local resvars TFPCH TECH  TECCH
     
     
@@ -898,8 +807,7 @@ program define _malmqluen,rclass
     forv t=1/`tmax'{
       qui replace `flag'=(`period'==`t')
       _ddf  if `touse' & `period'==`t', rflag(`flag') gen(`DD') gv(`gmat') `vrs' ort(`ort') in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-      //qui replace `DD'=`temp' if `period'==`t'
-      //qui cap drop `temp'
+
     }
 
     qui bys `dmu' (`period'): gen TECH=`DD'/`DD'[_n-1]  
@@ -947,19 +855,13 @@ program define _ddf
     tempvar touse2
     local rflag=cond("`rflag'"=="","","if `rflag'")
     mark `touse2' `rflag' // `rflag' might be empty
-    *qui gen byte `touse2'=`rflag'
+    
     markout `touse2' `invars' `opvars' `badvars'
-    //qui gen `touse2'=`rflag'  
-    //qui gen `gen'=.
 
-        local data `invars' `opvars' `badvars'
-        local num1: word count `invars'   
-        local num2: word count `opvars'
-    
-*******************************************************************************
-
-    
-*******************************************************************************   
+     local data `invars' `opvars' `badvars'
+     local num1: word count `invars'   
+     local num2: word count `opvars'
+      
     if "`vrs'"!=""{
       local rts=1
     }
@@ -969,8 +871,9 @@ program define _ddf
     }
     
     mata: _ddf("`data'",`num1',`num2',"`touse'", "`touse2'","`gvec'","`gen'",`rts',`maxiter',`tol')
-    *list `gen' if `touse'
-    *di "ort= `ort'"
+	
+	//di "`ort'"
+
     if "`ort'" =="out"{
       
       qui replace `gen'=1/(1+`gen') if `touse'
@@ -1151,22 +1054,19 @@ program define _luen_ddf,rclass
         forv t=1/`tmax'{
             qui replace `flag'= (`period'==`t')
             _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `DD'=`temp' if `period'==`t'
-            //qui drop `temp'
+  
         }    
         local tt=`tmax'-1
         forv t=1/`tt'{
             qui replace `flag'=(`period'==`t'+1) 
             _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`D21') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D21'=`temp' if `period'==`t'
-            //qui drop `temp'
+  
         }  
 
         forv t=2/`tmax'{
             qui replace `flag'=(`period'==`t'-1)
             _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D12'=`temp' if `period'==`t'
-            //qui drop `temp'
+    
         }       
 
     }
@@ -1181,15 +1081,13 @@ program define _luen_ddf,rclass
         forv t=1/`tmax'{
             qui replace `flag'= (`period'==`t' | `period'==`t'+1)
             _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `DD'=`temp' if `period'==`t'
-            //qui drop `temp'
+   
         }    
 
         forv t=2/`tmax'{
             qui replace `flag'=(`period'==`t'-1 | `period'==`t')
             _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D12'=`temp' if `period'==`t'
-            //qui drop `temp'
+       
         }       
 
     }
@@ -1205,23 +1103,17 @@ program define _luen_ddf,rclass
         forv t=1/`tmax'{
             qui replace `flag'=(`period'<=`t')
             _ddf_luen if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `DD'=`temp' if `period'==`t'
-            //qui replace `flag'=0
-            //qui drop `temp'
         }    
         local tt=`tmax'-1
         forv t=1/`tt'{
             qui replace `flag'=(`period'<=`t'+1) 
             _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`D21') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D21'=`temp' if `period'==`t'
-            //qui drop `temp'
         }  
 
         forv t=2/`tmax'{
             qui replace `flag'= (`period'<=`t'-1) 
             _ddf_luen if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D12'=`temp' if `period'==`t'
-            //qui drop `temp'
+
         }       
 
     
@@ -1238,22 +1130,19 @@ program define _luen_ddf,rclass
         forv t=1/`tmax'{
             qui replace `flag'=(`period'<=`t'+`band' & `period'>=`t'-`band') 
             _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `DD'=`temp' if `period'==`t'
-            //qui cap drop `temp'
+  
         }    
         local tt=`tmax'-1
         forv t=1/`tt'{
             qui replace `flag'= (`period'<=`t'+1+`band' &  `period'>=`t'-`band'+1)
             _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`D21') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D21'=`temp' if `period'==`t'
-            //qui cap drop `temp'
+    
         }  
 
         forv t=2/`tmax'{
             qui replace `flag'=(`period'<=`t'-1+`band' & `period'>=`t'-1-`band') 
             _ddf_luen  if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D12'=`temp' if `period'==`t'
-            //qui cap drop `temp'
+            
         }       
 
     
@@ -1277,13 +1166,12 @@ program define _luen_ddf,rclass
     forv t=1/`tmax'{
       qui replace `flag'=(`period'==`t')
       _ddf_luen  if `touse' & `period'==`t', rflag(`flag') gen(`DD') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-      //qui replace `DD'=`temp' if `period'==`t'
-      //qui cap drop `temp'
+   
     }
     
     qui bys `dmu' (`period'): gen TECH=`DD'[_n-1]-`DD'
     *qui bys `dmu' (`period'): gen BPC=TFPCH-TECH 
-	  qui bys `dmu' (`period'): gen TECCH=TFPCH-TECH
+	qui bys `dmu' (`period'): gen TECCH=TFPCH-TECH
   
     label var TECH  "Technical efficiency change" 
     *label var BPC "Best practice gap change"
@@ -1302,8 +1190,7 @@ program define _luen_ddf,rclass
     forv t=1/`tmax'{
       qui replace `flag'=(`period'==`t')
       _ddf_luen  if `touse' & `period'==`t', rflag(`flag') gen(`DD') gv(`gmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-      //qui replace `DD'=`temp' if `period'==`t'
-      //qui cap drop `temp'
+     
     }
     
     qui bys `dmu' (`period'): gen TECH=`DD'[_n-1]-`DD'
@@ -1354,16 +1241,13 @@ program define _ddf_luen
     tempvar touse2
     mark `touse2' `rflag' // `rflag' might be empty
     markout `touse2' `invars' `opvars' `badvars'
-    //qui gen `touse2'=`rflag'  
-    //qui gen `gen'=.
+ 
 
     local data `invars' `opvars' `badvars'
     local num1: word count `invars'   
     local num2: word count `opvars'
     
-*******************************************************************************
-    
-*******************************************************************************   
+  
     if "`vrs'"!=""{
       local rts=1
     }
@@ -1404,7 +1288,6 @@ program define _luen_nddf,rclass
     }
     unab gopvars : `gopvars'
 
-********************************************************************************* 
   
     *local ninv: word count `invars'
     *local ngov: word count `gopvars'
@@ -1596,23 +1479,20 @@ program define _luen_nddf,rclass
         forv t=1/`tmax'{
             qui replace `flag'= (`period'==`t')
 
-            noi _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `DD'=`temp' if `period'==`t'
-            //qui drop `temp'
+            _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
+     
         }    
         local tt=`tmax'-1
         forv t=1/`tt'{
             qui replace `flag'=(`period'==`t'+1) 
             _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`D21') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D21'=`temp' if `period'==`t'
-            //qui drop `temp'
+          
         }  
 
         forv t=2/`tmax'{
             qui replace `flag'=(`period'==`t'-1)
             _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D12'=`temp' if `period'==`t'
-            //qui drop `temp'
+
         }       
 
     }
@@ -1628,15 +1508,13 @@ program define _luen_nddf,rclass
             qui replace `flag'= (`period'==`t' | `period'==`t'+1)
 
              _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `DD'=`temp' if `period'==`t'
-            //qui drop `temp'
+      
         }    
 
         forv t=2/`tmax'{
             qui replace `flag'=(`period'==`t'-1 | `period'==`t')
             _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D12'=`temp' if `period'==`t'
-            //qui drop `temp'
+    
         }       
 
     }
@@ -1654,23 +1532,19 @@ program define _luen_nddf,rclass
         forv t=1/`tmax'{
             qui replace `flag'=(`period'<=`t')
             _nddf if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `DD'=`temp' if `period'==`t'
-           // qui replace `flag'=0
-            //qui drop `temp'
+          
         }    
         local tt=`tmax'-1
         forv t=1/`tt'{
             qui replace `flag'=(`period'<=`t'+1) 
             _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`D21') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D21'=`temp' if `period'==`t'
-            //qui drop `temp'
+          
         }  
 
         forv t=2/`tmax'{
             qui replace `flag'= (`period'<=`t'-1) 
             _nddf if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D12'=`temp' if `period'==`t'
-            //qui drop `temp'
+           
         }       
 
     
@@ -1686,22 +1560,19 @@ program define _luen_nddf,rclass
         forv t=1/`tmax'{
             qui replace `flag'=(`period'<=`t'+`band' & `period'>=`t'-`band') 
             _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`DD') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `DD'=`temp' if `period'==`t'
-            //qui cap drop `temp'
+            
         }    
         local tt=`tmax'-1
         forv t=1/`tt'{
             qui replace `flag'= (`period'<=`t'+1+`band' &  `period'>=`t'-`band'+1)
             _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`D21') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D21'=`temp' if `period'==`t'
-            //qui cap drop `temp'
+            
         }  
 
         forv t=2/`tmax'{
             qui replace `flag'=(`period'<=`t'-1+`band' & `period'>=`t'-1-`band') 
             _nddf  if `period'==`t' & `touse', rflag(`flag') gen(`D12') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-            //qui replace `D12'=`temp' if `period'==`t'
-            //qui cap drop `temp'
+         
         }       
 
     
@@ -1725,8 +1596,7 @@ program define _luen_nddf,rclass
     forv t=1/`tmax'{
       qui replace `flag'=(`period'==`t')
       _nddf  if `touse' & `period'==`t', rflag(`flag') gen(`DD') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-      //qui replace `DD'=`temp' if `period'==`t'
-      //qui cap drop `temp'
+   
     }
     
     qui bys `dmu' (`period'): gen TECH=`DD'[_n-1]-`DD'
@@ -1751,8 +1621,7 @@ program define _luen_nddf,rclass
     forv t=1/`tmax'{
       qui replace `flag'=(`period'==`t')
       _nddf  if `touse' & `period'==`t', rflag(`flag') gen(`DD') gv(`gmat') wmat(`wmat') `vrs'  in(`invars') op(`gopvars') bad(`bopvars') maxiter(`maxiter') tol(`tol')
-      //qui replace `DD'=`temp' if `period'==`t'
-      //qui cap drop `temp'
+    
     }
     
     qui bys `dmu' (`period'): gen TECH=`DD'[_n-1]-`DD'
@@ -1790,7 +1659,9 @@ capture program drop _nddf
 program define _nddf
     version 16
 
-    syntax [if] [in], gen(string) INvars(varlist) OPvars(varlist) BADvars(varlist) wmat(string) GVec(varlist) [rflag(varname)  VRS maxiter(numlist) tol(numlist)]
+    syntax [if] [in], gen(string) INvars(varlist) OPvars(varlist) ///
+	                  BADvars(varlist) wmat(string) GVec(varlist) ///
+					  [rflag(varname)  VRS maxiter(numlist) tol(numlist)]
         
 
     marksample touse 
@@ -1800,17 +1671,12 @@ program define _nddf
      local rflag=cond("`rflag'"=="",""," if `rflag'")
     mark `touse2' `rflag' // `rflag' might be empty
     markout `touse2' `invars' `opvars' `badvars'
-    //qui gen `touse2'=`rflag'  
-    //qui gen `gen'=.
+   
 
     local data `invars' `opvars' `badvars'
     local num1: word count `invars'   
     local num2: word count `opvars'
-    
-
-
-    
-*******************************************************************************   
+     
     if "`vrs'"!=""{
       local rts=1
     }
@@ -1826,6 +1692,6 @@ end
 
 
 
-
-
+*******************************************
+///////////////////END//////////////////////
 ********************************************

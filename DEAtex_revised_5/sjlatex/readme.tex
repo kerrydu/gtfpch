@@ -1,0 +1,36 @@
+% readme.tex -- a short example of how each Stata Journal insert should be
+% organized.
+
+\inserttype[st0001]{article}
+\author{Short article author list}{%
+  First author\\First affiliation\\City, State/Country\\Email address
+  \and
+  Second author\\Second affiliation\\City, State/Country\\Email address
+}
+\title[Short toc article title]{Long title for title page of article insert}
+\maketitle
+
+\begin{abstract}
+This is an example article.  You should change the \verb+\input{}+ line in
+\texttt{main.tex} to point to your file.  If this is your first submission to
+the {\sl Stata Journal}, please read the following ``getting started''
+information.
+
+\keywords{\inserttag, command name(s), keyword(s)}
+\end{abstract}
+
+% discussion of the Stata Journal document class.
+\input sj.tex
+% discussion of the Stata Press LaTeX package for Stata output.
+\input stata.tex
+
+\bibliographystyle{sj}
+\bibliography{sj}
+
+\begin{aboutauthors}
+Some background information about the first author.
+
+Some background information about the second author.
+\end{aboutauthors}
+
+\endinput

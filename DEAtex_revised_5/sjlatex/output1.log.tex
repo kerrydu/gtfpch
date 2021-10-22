@@ -1,0 +1,18 @@
+. sysuse auto
+(1978 Automobile Data)
+{\smallskip}
+. regress mpg weight
+{\smallskip}
+      Source {\VBAR}       SS       df       MS              Number of obs =      74
+\HLI{13}{\PLUS}\HLI{30}           F(  1,    72) =  134.62
+       Model {\VBAR}   1591.9902     1   1591.9902           Prob > F      =  0.0000
+    Residual {\VBAR}  851.469256    72  11.8259619           R-squared     =  0.6515
+\HLI{13}{\PLUS}\HLI{30}           Adj R-squared =  0.6467
+       Total {\VBAR}  2443.45946    73  33.4720474           Root MSE      =  3.4389
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+         mpg {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+      weight {\VBAR}  -.0060087   .0005179   -11.60   0.000    -.0070411   -.0049763
+       _cons {\VBAR}   39.44028   1.614003    24.44   0.000     36.22283    42.65774
+\HLI{13}{\BOTT}\HLI{64}

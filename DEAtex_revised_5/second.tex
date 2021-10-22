@@ -1,0 +1,263 @@
+
+\section{The \textit{teddf} command}\label{sec_teddf}
+{\tt teddf} estimates directional distance function with undesirable outputs for technical efficiency measurement.
+
+\subsection{Syntax}
+\begin{stsyntax}
+	teddf\
+	\textit{X\varlist} = \textit{Y\varlist}:\textit{B\varlist} \optif \optin,\
+	\underbar{d}mu(\varname)
+	\optional{
+		    \underbar{t}ime(\varname)
+		    gx(\varlist)
+		    gy(\varlist)
+		    gb(\varlist)
+		    \underbar{nonr}adial
+		    wmat(name)
+		    vrs
+		    rf(\varname)
+		    \underbar{win}dow(\num)
+		    \underbar{bi}ennial 
+		    \underbar{seq}uential
+		    \underbar{glo}bal
+		    brep(\num)
+		    alpha(real)
+		    tol(real)
+		    maxiter(\num)
+		    \underbar{sav}ing(filename[,replace])
+		    frame(framename)
+		    nodots
+		    noprint
+		    \underbar{noch}eck
+ }
+\end{stsyntax}
+
+
+\subsection{Options}
+
+\hangpara
+{\tt dmu(\varname)} specifies names of DMUs. It is required.
+
+\hangpara
+{\tt time(\varname)} specifies the time variable for panel data.
+
+\hangpara
+{\tt gx(\varlist)} specifies direction components for input adjustment. The order of variables specified in gx() should as the same in \textit{X\varlist}. By default, gx takes the opposite of \textit{X\varlist}.
+
+\hangpara
+{\tt gy(\varlist)} specifies direction components for desirable output adjustment. The order of variables specified in gy() should as the same in \textit{Y\varlist}. By default, gy takes \textit{Y\varlist}.
+
+\hangpara
+{\tt gb(\varlist)} specifies direction components for undesirable output adjustment. The order of variables specified in gb() should as the same in \textit{B\varlist}. By default, gb takes the opposite of \textit{B\varlist}.
+
+\hangpara
+{\tt nonradial} specifies using the nonradial directional distance measure.
+
+\hangpara
+{\tt wmat(name)} specifies a weight matrix for adjustment of input and output variable for the nonradial directional distance measure. The default is wmatrix= (1,...,1).
+
+\hangpara
+{\tt vrs} specifies production technology with variable returns to scale. By default, production technology with constant returns to scale is assumed.
+
+\hangpara
+{\tt rf(\varname)} specifies the indicator variable that defines which data points of outputs and inputs form the technology reference set.
+
+\hangpara
+{\tt window(\num)}  specifies using window production technology with the \num-period bandwidth.
+
+\hangpara
+{\tt biennial}  specifies using biennial production technology.
+
+\hangpara
+{\tt sequential} specifies using sequential production technology.
+
+\hangpara
+{\tt global} specifies using global production technology.
+
+\hangpara
+{\tt brep(\num)} specifies the number of bootstrap replications. The default is brep(0) specifying performing the estimator without bootstrap. Typically, it requires 1,000 or more replications for bootstrap DEA methods.
+
+\hangpara
+{\tt alpha(real) } sets the size of the subsample bootstrap. By default, alpha(0.7) indicates subsampling $N^{0.7}$ observations out of the $N$ original reference observations.
+
+\hangpara
+{\tt tol(real)} specifies the convergence-criterion tolerance  for LinearProgram(). The default value of tol is 1e-8.
+
+\hangpara
+{\tt maxiter(\num) } specifies the maximum number of iterations for LinearProgram(). The default value of maxiter is 16000.
+
+\hangpara
+ {\tt saving(filename[,replace])}  specifies a filename to store the results.
+ 
+\hangpara
+ {\tt frame(name)} specifies a framename to stroe the results.
+ 
+\hangpara
+{\tt nodots} suppress iteration dots.
+
+\hangpara
+{\tt noprint} suppress suppress display of the results.
+
+\hangpara
+{\tt nocheck} suppress checking for new version. It is suggested to be used for saving time when internet connection is unavailable.
+
+
+\section{The \textit{gtfpch} command}\label{sec_gtfpch}
+{\tt gtfpch} measures total factor productivity change with undesirable outputs using Malmquist–Luenberger productivity index or Luenberger indicator.
+
+\subsection{Syntax}
+\begin{stsyntax}
+	gtfpch\
+	\textit{X\varlist} = \textit{Y\varlist}:\textit{B\varlist} \optif \optin,\
+	\optional{
+		\underbar{d}mu(\varname)
+		\underbar{luen}berger
+		ort(\ststring)
+		gx(\varlist)
+		gy(\varlist)
+		gb(\varlist)
+		\underbar{nonr}adial
+		wmat(name)
+		\underbar{win}dow(\num)
+		\underbar{bi}ennial 
+		\underbar{seq}uential
+		\underbar{glo}bal	
+		fgnz
+		rd	
+		tol(real)
+		maxiter(\num)
+		\underbar{sav}ing(filename[,replace])
+		frame(framename)
+		noprint
+		\underbar{noch}eck		
+	}
+\end{stsyntax}
+
+
+\subsection{Options}
+
+\hangpara
+{\tt dmu(\varname)} specifies names of DMUs. 
+
+\hangpara
+{\tt luenberger} specifies estimating Luenberger productivity indicator. The default is Malmquist–Luenberger productivity index based on the radial directional distance function.
+
+\hangpara
+{\tt ort(\ststring)} specifies the oriention. The default is ort(input), meaning the input oriented productivity index/indicator. ort(output) means the output oriented productivity index/indicator. ort(hybrid) means the hybrid-direction productivity index/indicator.
+
+\hangpara
+{\tt gx(\varlist)} specifies direction components for input adjustment. The order of variables specified in gx() should as the same in \textit{X\varlist}. By default, gx=(0,..,0) for ort(output); gx=-\textit{X\varlist} for ort(input) and ort(hybrid).
+
+\hangpara
+{\tt gy(\varlist)} specifies direction components for desirable output adjustment. The order of variables specified in gy() should as the same in \textit{Y\varlist}. By default, gy=(0,..,0) for ort(input); gy=\textit{Y\varlist} for ort(output) and ort(hybrid).
+
+\hangpara
+{\tt gb(\varlist)} specifies direction components for undesirable output adjustment. The order of variables specified in gb() should as the same in \textit{B\varlist}. By default, gb=(0,..,0) for ort(input); gb=-\textit{B\varlist} for ort(output) and ort(hybrid).
+
+\hangpara
+{\tt nonradial} specifies using the non-radial directional distance measure.
+
+\hangpara
+{\tt wmat(name)} specifies a weight matrix for adjustment of input and output variable for the nonradial directional distance measure.
+
+\hangpara
+{\tt window(\num)}  specifies using window production technology with the \num-period bandwidth.
+
+\hangpara
+{\tt biennial}  specifies using biennial production technology.
+
+\hangpara
+{\tt sequential} specifies using sequential production technology.
+
+\hangpara
+{\tt global} specifies using global production technology.
+
+\hangpara
+{\tt fgnz} specifies specifies decomposing TFP change following the spirit of \cite{Fare1994} method.
+
+\hangpara
+{\tt rd} specifies decomposing TFP change following the spirit of \cite{Ray1997} method.
+
+\hangpara
+{\tt tol(real)} specifies the convergence-criterion tolerance  for LinearProgram(). The default value of tol is 1e-8.
+
+\hangpara
+{\tt maxiter(\num) } specifies the maximum number of iterations for LinearProgram(). The default value of maxiter is 16000.
+
+\hangpara
+{\tt saving(filename[,replace])}  specifies a file name to store the results.
+
+\hangpara
+{\tt frame(name)}  specifies a frame name to store the results.
+
+\hangpara
+{\tt noprint}   suppress suppress display of the results.
+
+\hangpara
+{\tt nocheck} suppress checking for new version. It is suggested to be used for saving time when internet connection is unavailable.
+
+\section{Example}\label{sec_example}
+To exemplify the use of the commands described above, we use an input-output data set of China's provinces for the period of 2013-2015 which is obtained from a recent publication, \cite{YAN2020}. The dataset includes three input variables (capital, labor, and energy), one desirable output (real GDP), and one undesirable output ($CO_2$ emissions). The data are described as follows.
+
+\begin{stlog}
+	\input{ex.describe.log.tex}
+\end{stlog}
+
+
+\subsection{Application of \textit{teddf}}
+The estimation of the directional distance function model proposed by \cite{Chung1997} as follows. The corresponding results are displayed below the executed command. The Dv variable stores the values of the directional distance function of the DMUs. Note that the sav(ex.teddf.result) option saves the results in a new data file named ex.teddf.result.dta.
+
+\begin{stlog}
+	\input{ex.teddf.log.tex}
+\end{stlog}
+
+To customize the directional vector, 
+\begin{stlog}
+	\input{ex.teddf.direction.log.tex}
+\end{stlog}
+
+Additionally, we show an application of {\tt teddf} to estimate the non-radial directional distance function model as follows. The Dv variable stores the values of the non-radial directional distance function of the DMUs. B\_K, B\_L, B\_CO2, and B\_Y variables store the reduction proportion of inputs ($K$,$L$) and undesirable outputs ($CO2$), and the expansion proportion of desirable output ($Y$), respectively.
+
+\begin{stlog}
+	\input{ex.teddf.nonr.log.tex}
+\end{stlog}
+
+To customize the weight matrix, 
+\begin{stlog}
+	\input{ex.teddf.nonr.weight.log.tex}
+\end{stlog}
+
+
+\subsection{Application of \textit{gtfpch}}
+We first apply {\tt gtfpch} to estimate the Malmquist–Luenberger productivity index (MLPI) to measure the green total-factor productivity growth of China's provinces. Regarding the results, TFPCH stores the values of MLPI; TECH and TECCH are the two decomposition terms of MLPI, describing technical efficiency change and technological change, respectively. Note that we implement the estimation based on the global technology benchmark by specifying the \textit{global} option.
+
+\begin{stlog}
+	\input{ex.gtfpch.log.tex}
+\end{stlog}
+
+Alternatively, {\tt gtfpch} can be employed to estimate the Luenberger productivity indicator. We present an example as follows.  
+
+\begin{stlog}
+	\input{ex.gtfpch.nonr.log.tex}
+\end{stlog}
+
+
+
+\section{Conclusion}\label{sec_conclusion}
+With the increasing demand for improving sustainability at the macro and micro levels, scholars and managers recognized that it is becoming more and more important to consider undesirable output in efficiency and productivity analysis. 
+Stata, as one of the leading packages for economic analysis, however, has not provided comprehensive tools to measure technical efficiency and total factor productivity change when considering undesirable outputs. 
+Here, as an attempt to fill this gap, we introduced two new Stata commands that perform estimations for nonparametric frontier models with undesirable outputs.
+
+{\tt teddf} estimates directional distance function with undesirable outputs for technical efficiency measurement. Both radial Debreu-Farrell and non-radial Russell measures can be calculated, under different assumptions about the production technology, e.g., window, biennial, sequential, and global production technology.
+{\tt gtfpch} measures total factor productivity change with undesirable outputs using Malmquist–Luenberger productivity index or Luenberger indicator. Two types of specifications of decomposing total factor productivity change were given. 
+Some empirical examples have been presented to show the usage of the two commands.
+
+Finally, it should be noted that the models we introduced are DEA-type estimators, which might be sensitive to sampling variation. Thus, the statistical inference in this context is critical. However, there are still many open issues both in theory and application.
+
+
+
+\section{Acknowledgments}
+Kerui Du thanks the financial support of the National Natural Science Foundation of China (72074184) and the Fundamental Research Funds for the Central Universities (20720201016). Ning Zhang thanks the financial support of the National Natural Science Foundation of China (72033005; 71822402). We are grateful to Stephen P. Jenkins and the anonymous reviewer for the helpful comments and suggestions which led to an improved version of this paper.
+
+
+\endinput

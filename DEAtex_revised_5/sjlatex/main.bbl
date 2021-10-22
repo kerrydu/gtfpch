@@ -1,0 +1,77 @@
+\ifnum 12=1 \def\bibname{Reference}
+\else \def\bibname{References} \fi
+\begin{thebibliography}{12}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+
+\bibitem[{Akaike(1973)}]{akaike}
+Akaike, H. 1973.
+\newblock Information theory and an extension of the maximum likelihood
+  principle.
+\newblock In \emph{Second International Symposium on Information Theory}, ed.
+  B.~N. Petrov and F.~Csaki,  267--281. Budapest, Hungary: Akademiai Kiado.
+
+\bibitem[{Ben-Akiva and Lerman(1985)}]{benAkivaLerman}
+Ben-Akiva, M., and S.~R. Lerman. 1985.
+\newblock \emph{Discrete Choice Analysis: \uppercase{T}heory and Application to
+  Travel Demand}.
+\newblock Cambridge, MA: MIT Press.
+
+\bibitem[{Dyke and Patterson(1952)}]{dykePatterson}
+Dyke, G.~V., and H.~D. Patterson. 1952.
+\newblock Analysis of factorial arrangements when the data are proportions.
+\newblock \emph{Biometrics} 8: 1--12.
+
+\bibitem[{Goossens et~al.\@(1994)Goossens, Mittelbach, and
+  Samarin}]{latexcompanion}
+Goossens, M., F.~Mittelbach, and A.~Samarin. 1994.
+\newblock \emph{The \LaTeX{} Companion}.
+\newblock Reading, MA: Addison--Wesley.
+
+\bibitem[{Greene(2003)}]{greene03}
+Greene, W.~H. 2003.
+\newblock \emph{Econometric Analysis}.
+\newblock 5th ed. Upper Saddle River, {\smrm NJ}: Prentice Hall.
+
+\bibitem[{Hilbe(1993{\natexlab{a}})}]{hilbe93a}
+Hilbe, J. 1993{\natexlab{a}}.
+\newblock sg16: Generalized linear models. {\em Stata Technical Bulletin} 11:\
+  20--28.
+\newblock Reprinted in \emph{Stata Technical Bulletin Reprints}. Vol.~2, pp.
+  149--159. College Station, {\smrm TX}: Stata Press.
+
+\bibitem[{Hilbe(1993{\natexlab{b}})}]{hilbe93b}
+\mbox{\vrule width30.25006ptheight2.62222ptdepth-2.25222pt}.
+  1993{\natexlab{b}}.
+\newblock Log Negative Binomial Regression as a Generalized Linear Model.
+\newblock \emph{Graduate College Committee on Statistics} \relax(Technical
+  Report 26).
+
+\bibitem[{Hilbe(1994)}]{hilbe94}
+\mbox{\vrule width30.25006ptheight2.62222ptdepth-2.25222pt}. 1994.
+\newblock Generalized linear models.
+\newblock \emph{American Statistician} 48: 255--265.
+
+\bibitem[{Kendall and Stuart(1979)}]{kendallstuart}
+Kendall, M., and A.~Stuart. 1979.
+\newblock \emph{The Advanced Theory of Statistics}. Vol.~2.
+\newblock 4th ed. London: Griffin.
+
+\bibitem[{Knuth(1986)}]{texbook}
+Knuth, D.~E. 1986.
+\newblock \emph{The \TeX{} book}.
+\newblock Reading, MA: Addison--Wesley.
+
+\bibitem[{Lamport(1994)}]{latexbook}
+Lamport, L. 1994.
+\newblock \emph{\LaTeX: A Document Preparation System}.
+\newblock 2nd ed. Reading, MA: Addison--Wesley.
+
+\bibitem[{Maddala(1983)}]{maddala83}
+Maddala, G.~S. 1983.
+\newblock \emph{Limited-Dependent and Qualitative Variables in Econometrics}.
+\newblock Cambridge: Cambridge University Press.
+
+\end{thebibliography}
