@@ -30,3 +30,5 @@ If you use this module, please cite the following papers:
   Year = {2021},
 }
 ```
+
+> Wang D., Du, K. and Zhang, N. Measuring technical efficiency and total factor productivity change with undesirable outputs in Stata, Stata Journal, 2021, forthcoming
