@@ -1,0 +1,118 @@
+. 
+. gen gK=0
+{\smallskip}
+. gen gL=0
+{\smallskip}
+. gen gY=Y
+{\smallskip}
+. gen gCO2=-CO2
+{\smallskip}
+. teddf K L= Y: CO2, dmu(Province) time(year) gx(gK gL) gy(gY) gb(gCO2) sav(ex.teddf.direction.result,replace)
+{\smallskip}
+ The directional vector is (gK gL gY gCO2)
+{\smallskip}
+{\smallskip}
+  Directional Distance Function Results:
+    (Row: Row \# in the original data; Dv: Estimated value of  DDF.)
+{\smallskip}
+     {\TLC}\HLI{37}{\TRC}
+     {\VBAR} Row       Province   year        Dv {\VBAR}
+     {\LFTT}\HLI{37}{\RGTT}
+  1. {\VBAR}   1          Anhui   2013    0.4024 {\VBAR}
+  2. {\VBAR}   2          Anhui   2014    0.4515 {\VBAR}
+  3. {\VBAR}   3          Anhui   2015    0.5049 {\VBAR}
+  4. {\VBAR}   4        Beijing   2013   -0.0000 {\VBAR}
+  5. {\VBAR}   5        Beijing   2014   -0.0000 {\VBAR}
+  6. {\VBAR}   6        Beijing   2015   -0.0000 {\VBAR}
+  7. {\VBAR}  88      Chongqing   2013    0.2828 {\VBAR}
+  8. {\VBAR}  89      Chongqing   2014    0.2980 {\VBAR}
+  9. {\VBAR}  90      Chongqing   2015    0.3438 {\VBAR}
+ 10. {\VBAR}   7         Fujian   2013    0.1157 {\VBAR}
+ 11. {\VBAR}   8         Fujian   2014    0.1821 {\VBAR}
+ 12. {\VBAR}   9         Fujian   2015    0.2095 {\VBAR}
+ 13. {\VBAR}  10          Gansu   2013    0.5852 {\VBAR}
+ 14. {\VBAR}  11          Gansu   2014    0.6263 {\VBAR}
+ 15. {\VBAR}  12          Gansu   2015    0.6723 {\VBAR}
+ 16. {\VBAR}  13      Guangdong   2013   -0.0000 {\VBAR}
+ 17. {\VBAR}  14      Guangdong   2014    0.0444 {\VBAR}
+ 18. {\VBAR}  15      Guangdong   2015    0.0613 {\VBAR}
+ 19. {\VBAR}  16        Guangxi   2013    0.3327 {\VBAR}
+ 20. {\VBAR}  17        Guangxi   2014    0.3521 {\VBAR}
+ 21. {\VBAR}  18        Guangxi   2015    0.3755 {\VBAR}
+ 22. {\VBAR}  19        Guizhou   2013    0.6992 {\VBAR}
+ 23. {\VBAR}  20        Guizhou   2014    0.7183 {\VBAR}
+ 24. {\VBAR}  21        Guizhou   2015    0.7394 {\VBAR}
+ 25. {\VBAR}  22         Hainan   2013    0.2597 {\VBAR}
+ 26. {\VBAR}  23         Hainan   2014    0.3264 {\VBAR}
+ 27. {\VBAR}  24         Hainan   2015    0.4230 {\VBAR}
+ 28. {\VBAR}  25          Hebei   2013    0.5342 {\VBAR}
+ 29. {\VBAR}  26          Hebei   2014    0.5660 {\VBAR}
+ 30. {\VBAR}  27          Hebei   2015    0.6006 {\VBAR}
+ 31. {\VBAR}  31   Heilongjiang   2013    0.2970 {\VBAR}
+ 32. {\VBAR}  32   Heilongjiang   2014    0.3586 {\VBAR}
+ 33. {\VBAR}  33   Heilongjiang   2015    0.3788 {\VBAR}
+ 34. {\VBAR}  28          Henan   2013    0.3932 {\VBAR}
+ 35. {\VBAR}  29          Henan   2014    0.4379 {\VBAR}
+ 36. {\VBAR}  30          Henan   2015    0.4927 {\VBAR}
+ 37. {\VBAR}  34          Hubei   2013    0.1866 {\VBAR}
+ 38. {\VBAR}  35          Hubei   2014    0.2338 {\VBAR}
+ 39. {\VBAR}  36          Hubei   2015    0.2778 {\VBAR}
+ 40. {\VBAR}  37          Hunan   2013    0.2028 {\VBAR}
+ 41. {\VBAR}  38          Hunan   2014    0.2382 {\VBAR}
+ 42. {\VBAR}  39          Hunan   2015    0.3099 {\VBAR}
+ 43. {\VBAR}  43        Jiangsu   2013    0.1847 {\VBAR}
+ 44. {\VBAR}  44        Jiangsu   2014    0.1974 {\VBAR}
+ 45. {\VBAR}  45        Jiangsu   2015    0.2004 {\VBAR}
+ 46. {\VBAR}  46        Jiangxi   2013    0.3167 {\VBAR}
+ 47. {\VBAR}  47        Jiangxi   2014    0.3530 {\VBAR}
+ 48. {\VBAR}  48        Jiangxi   2015    0.4219 {\VBAR}
+ 49. {\VBAR}  40          Jilin   2013    0.4793 {\VBAR}
+ 50. {\VBAR}  41          Jilin   2014    0.5007 {\VBAR}
+ 51. {\VBAR}  42          Jilin   2015    0.5124 {\VBAR}
+ 52. {\VBAR}  49       Liaoning   2013    0.3953 {\VBAR}
+ 53. {\VBAR}  50       Liaoning   2014    0.4367 {\VBAR}
+ 54. {\VBAR}  51       Liaoning   2015    0.4370 {\VBAR}
+ 55. {\VBAR}  52      Neimenggu   2013    0.7058 {\VBAR}
+ 56. {\VBAR}  53      Neimenggu   2014    0.7354 {\VBAR}
+ 57. {\VBAR}  54      Neimenggu   2015    0.7321 {\VBAR}
+ 58. {\VBAR}  55        Ningxia   2013    0.8766 {\VBAR}
+ 59. {\VBAR}  56        Ningxia   2014    0.8831 {\VBAR}
+ 60. {\VBAR}  57        Ningxia   2015    0.8995 {\VBAR}
+ 61. {\VBAR}  58        Qinghai   2013    0.5722 {\VBAR}
+ 62. {\VBAR}  59        Qinghai   2014    0.5836 {\VBAR}
+ 63. {\VBAR}  60        Qinghai   2015    0.6398 {\VBAR}
+ 64. {\VBAR}  67        Shaanxi   2013    0.6070 {\VBAR}
+ 65. {\VBAR}  68        Shaanxi   2014    0.6220 {\VBAR}
+ 66. {\VBAR}  69        Shaanxi   2015    0.6599 {\VBAR}
+ 67. {\VBAR}  61       Shandong   2013    0.2939 {\VBAR}
+ 68. {\VBAR}  62       Shandong   2014    0.3495 {\VBAR}
+ 69. {\VBAR}  63       Shandong   2015    0.3933 {\VBAR}
+ 70. {\VBAR}  70       Shanghai   2013   -0.0000 {\VBAR}
+ 71. {\VBAR}  71       Shanghai   2014   -0.0000 {\VBAR}
+ 72. {\VBAR}  72       Shanghai   2015   -0.0000 {\VBAR}
+ 73. {\VBAR}  64         Shanxi   2013    0.7599 {\VBAR}
+ 74. {\VBAR}  65         Shanxi   2014    0.7980 {\VBAR}
+ 75. {\VBAR}  66         Shanxi   2015    0.8245 {\VBAR}
+ 76. {\VBAR}  73        Sichuan   2013    0.2197 {\VBAR}
+ 77. {\VBAR}  74        Sichuan   2014    0.2575 {\VBAR}
+ 78. {\VBAR}  75        Sichuan   2015    0.2866 {\VBAR}
+ 79. {\VBAR}  76        Tianjin   2013   -0.0000 {\VBAR}
+ 80. {\VBAR}  77        Tianjin   2014   -0.0000 {\VBAR}
+ 81. {\VBAR}  78        Tianjin   2015    0.0308 {\VBAR}
+ 82. {\VBAR}  79       Xinjiang   2013    0.7144 {\VBAR}
+ 83. {\VBAR}  80       Xinjiang   2014    0.7590 {\VBAR}
+ 84. {\VBAR}  81       Xinjiang   2015    0.8084 {\VBAR}
+ 85. {\VBAR}  82         Yunnan   2013    0.4267 {\VBAR}
+ 86. {\VBAR}  83         Yunnan   2014    0.4428 {\VBAR}
+ 87. {\VBAR}  84         Yunnan   2015    0.4648 {\VBAR}
+ 88. {\VBAR}  85       Zhejiang   2013    0.1507 {\VBAR}
+ 89. {\VBAR}  86       Zhejiang   2014    0.1891 {\VBAR}
+ 90. {\VBAR}  87       Zhejiang   2015    0.2265 {\VBAR}
+     {\BLC}\HLI{37}{\BRC}
+Note: Missing value indicates infeasible problem.
+(note: file ex.teddf.direction.result not found)
+file ex.teddf.direction.result saved
+{\smallskip}
+Estimated Results are saved in ex.teddf.direction.result.dta.
+{\smallskip}
+. 

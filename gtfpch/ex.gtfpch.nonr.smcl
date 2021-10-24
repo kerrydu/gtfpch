@@ -1,0 +1,82 @@
+{com}. 
+. gtfpch K L= Y: CO2, dmu( Province ) nonr  global sav(ex.gtfpch.nonr.result,replace)
+{res}
+ The weight vector is (0 0 1 1)
+
+ The directional vector is (0 0 Y -CO2)
+
+
+ Total Factor Productivity Change:Luenberger Productivity Index (based on nonrial DDF)
+    (Row: Row # in the original data; Pdwise: periodwise)
+{txt}
+     {c TLC}{hline 5}{c -}{hline 14}{c -}{hline 4}{c -}{hline 11}{c -}{hline 9}{c -}{hline 9}{c -}{hline 8}{c TRC}
+     {c |} {res}Row       Province   id      Pdwise     TFPCH      TECH    TECCH {txt}{c |}
+     {c LT}{hline 5}{c -}{hline 14}{c -}{hline 4}{c -}{hline 11}{c -}{hline 9}{c -}{hline 9}{c -}{hline 8}{c RT}
+  1. {c |} {res}  2          Anhui    1   2013~2014   -0.0676   -0.2281   0.1605 {txt}{c |}
+  2. {c |} {res}  3          Anhui    1   2014~2015    0.0214   -0.0597   0.0811 {txt}{c |}
+  3. {c |} {res}  5        Beijing    2   2013~2014    0.0832   -0.0000   0.0832 {txt}{c |}
+  4. {c |} {res}  6        Beijing    2   2014~2015    0.1705    0.0000   0.1705 {txt}{c |}
+  5. {c |} {res}  8      Chongqing    3   2013~2014    0.0175   -0.0564   0.0738 {txt}{c |}
+  6. {c |} {res}  9      Chongqing    3   2014~2015    0.0178   -0.1079   0.1257 {txt}{c |}
+  7. {c |} {res} 11         Fujian    4   2013~2014   -0.0378   -0.0947   0.0569 {txt}{c |}
+  8. {c |} {res} 12         Fujian    4   2014~2015    0.0640   -0.0590   0.1230 {txt}{c |}
+  9. {c |} {res} 14          Gansu    5   2013~2014   -0.1748   -0.3039   0.1291 {txt}{c |}
+ 10. {c |} {res} 15          Gansu    5   2014~2015   -0.1423   -0.2188   0.0765 {txt}{c |}
+ 11. {c |} {res} 17      Guangdong    6   2013~2014    0.0372   -0.1043   0.1416 {txt}{c |}
+ 12. {c |} {res} 18      Guangdong    6   2014~2015    0.0316   -0.0483   0.0799 {txt}{c |}
+ 13. {c |} {res} 20        Guangxi    7   2013~2014    0.0701   -0.0935   0.1636 {txt}{c |}
+ 14. {c |} {res} 21        Guangxi    7   2014~2015    0.0463   -0.0685   0.1149 {txt}{c |}
+ 15. {c |} {res} 23        Guizhou    8   2013~2014   -0.1899   -0.3070   0.1171 {txt}{c |}
+ 16. {c |} {res} 24        Guizhou    8   2014~2015   -0.1913   -0.2681   0.0767 {txt}{c |}
+ 17. {c |} {res} 26         Hainan    9   2013~2014   -0.0770   -0.1506   0.0736 {txt}{c |}
+ 18. {c |} {res} 27         Hainan    9   2014~2015   -0.0974   -0.2098   0.1124 {txt}{c |}
+ 19. {c |} {res} 29          Hebei   10   2013~2014   -0.0842   -0.2057   0.1215 {txt}{c |}
+ 20. {c |} {res} 30          Hebei   10   2014~2015   -0.0754   -0.1438   0.0684 {txt}{c |}
+ 21. {c |} {res} 32   Heilongjiang   11   2013~2014   -0.0189   -0.1510   0.1321 {txt}{c |}
+ 22. {c |} {res} 33   Heilongjiang   11   2014~2015    0.0066   -0.0513   0.0579 {txt}{c |}
+ 23. {c |} {res} 35          Henan   12   2013~2014   -0.0239   -0.1969   0.1731 {txt}{c |}
+ 24. {c |} {res} 36          Henan   12   2014~2015    0.0449   -0.0597   0.1046 {txt}{c |}
+ 25. {c |} {res} 38          Hubei   13   2013~2014   -0.0002   -0.0640   0.0638 {txt}{c |}
+ 26. {c |} {res} 39          Hubei   13   2014~2015   -0.0045   -0.1038   0.0993 {txt}{c |}
+ 27. {c |} {res} 41          Hunan   14   2013~2014    0.0227   -0.0417   0.0644 {txt}{c |}
+ 28. {c |} {res} 42          Hunan   14   2014~2015   -0.0449   -0.1487   0.1037 {txt}{c |}
+ 29. {c |} {res} 44        Jiangsu   15   2013~2014    0.0605   -0.0053   0.0657 {txt}{c |}
+ 30. {c |} {res} 45        Jiangsu   15   2014~2015    0.0831   -0.0268   0.1100 {txt}{c |}
+ 31. {c |} {res} 47        Jiangxi   16   2013~2014    0.0129   -0.1216   0.1345 {txt}{c |}
+ 32. {c |} {res} 48        Jiangxi   16   2014~2015   -0.0358   -0.1499   0.1141 {txt}{c |}
+ 33. {c |} {res} 50          Jilin   17   2013~2014    0.0620   -0.1153   0.1773 {txt}{c |}
+ 34. {c |} {res} 51          Jilin   17   2014~2015    0.1629    0.0191   0.1438 {txt}{c |}
+ 35. {c |} {res} 53       Liaoning   18   2013~2014    0.0780   -0.1039   0.1820 {txt}{c |}
+ 36. {c |} {res} 54       Liaoning   18   2014~2015    0.1291    0.0198   0.1092 {txt}{c |}
+ 37. {c |} {res} 56      Neimenggu   19   2013~2014    0.0528   -0.1069   0.1598 {txt}{c |}
+ 38. {c |} {res} 57      Neimenggu   19   2014~2015    0.1649    0.0329   0.1320 {txt}{c |}
+ 39. {c |} {res} 59        Ningxia   20   2013~2014   -0.3604   -0.4801   0.1197 {txt}{c |}
+ 40. {c |} {res} 60        Ningxia   20   2014~2015    0.0329   -0.0555   0.0884 {txt}{c |}
+ 41. {c |} {res} 62        Qinghai   21   2013~2014   -0.1070   -0.2903   0.1833 {txt}{c |}
+ 42. {c |} {res} 63        Qinghai   21   2014~2015    0.0362   -0.1169   0.1531 {txt}{c |}
+ 43. {c |} {res} 65        Shaanxi   22   2013~2014   -0.1201   -0.2856   0.1655 {txt}{c |}
+ 44. {c |} {res} 66        Shaanxi   22   2014~2015   -0.0245   -0.1140   0.0896 {txt}{c |}
+ 45. {c |} {res} 68       Shandong   23   2013~2014   -0.0162   -0.1516   0.1353 {txt}{c |}
+ 46. {c |} {res} 69       Shandong   23   2014~2015   -0.0472   -0.1088   0.0616 {txt}{c |}
+ 47. {c |} {res} 71       Shanghai   24   2013~2014    0.1528    0.0000   0.1528 {txt}{c |}
+ 48. {c |} {res} 72       Shanghai   24   2014~2015    0.0676   -0.0000   0.0676 {txt}{c |}
+ 49. {c |} {res} 74         Shanxi   25   2013~2014   -0.2466   -0.3373   0.0907 {txt}{c |}
+ 50. {c |} {res} 75         Shanxi   25   2014~2015   -0.2778   -0.3393   0.0614 {txt}{c |}
+ 51. {c |} {res} 77        Sichuan   26   2013~2014   -0.0004   -0.0521   0.0518 {txt}{c |}
+ 52. {c |} {res} 78        Sichuan   26   2014~2015    0.0495   -0.0636   0.1131 {txt}{c |}
+ 53. {c |} {res} 80        Tianjin   27   2013~2014    0.1075   -0.0275   0.1350 {txt}{c |}
+ 54. {c |} {res} 81        Tianjin   27   2014~2015    0.1303    0.0530   0.0774 {txt}{c |}
+ 55. {c |} {res} 83       Xinjiang   28   2013~2014   -0.2221   -0.3371   0.1150 {txt}{c |}
+ 56. {c |} {res} 84       Xinjiang   28   2014~2015   -0.2232   -0.2931   0.0699 {txt}{c |}
+ 57. {c |} {res} 86         Yunnan   29   2013~2014    0.0128   -0.1320   0.1448 {txt}{c |}
+ 58. {c |} {res} 87         Yunnan   29   2014~2015    0.1378    0.0586   0.0792 {txt}{c |}
+ 59. {c |} {res} 89       Zhejiang   30   2013~2014    0.0119   -0.0558   0.0677 {txt}{c |}
+ 60. {c |} {res} 90       Zhejiang   30   2014~2015   -0.0092   -0.0996   0.0903 {txt}{c |}
+     {c BLC}{hline 5}{c -}{hline 14}{c -}{hline 4}{c -}{hline 11}{c -}{hline 9}{c -}{hline 9}{c -}{hline 8}{c BRC}
+Note: missing value indicates infeasible problem.
+(note: file ex.gtfpch.nonr.result not found)
+file ex.gtfpch.nonr.result saved
+
+Estimated Results are saved in ex.gtfpch.nonr.result.dta.
+
+{com}. 

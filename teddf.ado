@@ -14,6 +14,10 @@ capture program drop teddf
 program define teddf, rclass
     version 16
 
+    * install moremata pacakge
+	cap which lmoremata.mlib
+	if _rc ssc install moremata, replace
+
    * recompile the mlib for different Stata version
 	_get_version gtfpch
 	_compile_mata, package(gtfpch) version(`package_version') verbose 

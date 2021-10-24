@@ -1,0 +1,23 @@
+{com}. 
+. use example.dta
+{txt}
+{com}. describe 
+
+{txt}Contains data from {res}example.dta
+{txt}  obs:{res}            90                          
+{txt} vars:{res}             7                          6 Aug 2020 12:12
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:Province       }{txt}{bind: str12   }{bind:{txt}%12s      }{space 1}{bind:         }{bind:  }{res}{res}province name{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}year{p_end}
+{p 0 48}{bind:K              }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}capital stock (in 100 million 1997 CNY){p_end}
+{p 0 48}{bind:L              }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}employment (in 10 thousand persons){p_end}
+{p 0 48}{bind:E              }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}energy consumption (in million tons of standard coal){p_end}
+{p 0 48}{bind:Y              }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}real GDP (in 100 million 1997 CNY){p_end}
+{p 0 48}{bind:CO2            }{txt}{bind: float   }{bind:{txt}%15.1f    }{space 1}{bind:         }{bind:  }{res}{res}carbon dioxide emission (in kg){p_end}
+{txt}{hline}
+Sorted by: 
+
+{com}. 
