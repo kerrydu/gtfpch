@@ -70,7 +70,7 @@ Clearly, the non-radial DDF measure allows the inputs and outputs to be adjusted
  
 
 \subsection{Measurement of technical efficiency}
-To estimate the DDF measure of technical efficiency using the nonparametric technique, the production technology set is derived from observed data. Typically, for the cross-sectional data, the production technology set with the assumption of constant return to scale (CRS) is constructed as
+To estimate the DDF measure of technical efficiency using the nonparametric technique, the production technology set is derived from observed data. Typically, for the cross-sectional data with $J$ individuals, the production technology set with the assumption of constant return to scale (CRS) is constructed as
 
 \begin{equation}\label{eq_tech_dea}
     T = \left\{ {({\pmb{x}},{\pmb{y}},{\pmb{b}}):\sum\limits_{j = 1}^J {{\lambda _j}{{\pmb{x}}_j} \le {\pmb{x}},\sum\limits_{j = 1}^J {{\lambda _j}{{\pmb{y}}_j} \ge {\pmb{y}},} \sum\limits_{j = 1}^J {{\lambda _j}{{\pmb{b}}_j} = {\pmb{b}},} }  {\pmb{\lambda }} \ge 0} \right\}.
@@ -154,9 +154,8 @@ For example, firms in industries that face environmental regulations would typic
 \cite{Chung1997} has introduced a productivity index based on the radial DDF measure, called the Malmquist-Luenberger productivity index, which credits the reduction of undesirable outputs, e.g., pollution, while simultaneously crediting increases in desirable outputs. Considering two adjacent periods, denoted as $s$ and $t$. respectively. If we choose the direction to be ${\pmb{g}} = (\pmb{0},\pmb{y}, - \pmb{b})$, the output-oriented Malmquist-Luenberger productivity index with undesirable outputs is defined as
 \begin{equation}\label{eq_mpi}
     \textit{ML} %_{\pmb{g}} ({{\pmb{x}}^s},{{\pmb{y}}^s},{{\pmb{b}}^s},{{\pmb{x}}^t},{{\pmb{y}}^t},{{\pmb{b}}^t}) 
-    = {\left[ {\frac{{1 + D _r^s({{\pmb{x}}^s},{{\pmb{y}}^s},{{\pmb{b}}^s};{\pmb{g}})}}{{1 + D _r^s({{\pmb{x}}^t},{{\pmb{y}}^t},{{\pmb{b}}^t};{\pmb{g}})}} 
-    \times 
-    \frac{{1 + D _r^t({{\pmb{x}}^s},{{\pmb{y}}^s},{{\pmb{b}}^s};{\pmb{g}})}}{{1 + D _r^t({{\pmb{x}}^t},{{\pmb{y}}^t},{{\pmb{b}}^t};{\pmb{g}})}}} \right]^{1/2}}.
+    = {\left[ {
+    \frac{{1 + D _r^t({{\pmb{x}}^s},{{\pmb{y}}^s},{{\pmb{b}}^s};{\pmb{g}})}}{{1 + D _r^t({{\pmb{x}}^t},{{\pmb{y}}^t},{{\pmb{b}}^t};{\pmb{g}})}} \times \frac{{1 + D _r^s({{\pmb{x}}^s},{{\pmb{y}}^s},{{\pmb{b}}^s};{\pmb{g}})}}{{1 + D _r^s({{\pmb{x}}^t},{{\pmb{y}}^t},{{\pmb{b}}^t};{\pmb{g}})}}  } \right]^{1/2}}.
 \end{equation}
 To avoid an arbitrary choice between base years, an geometric mean of a fraction-based Malmquist-Luenberger productivity index in base year $t$ (first fraction) and $s$ (second fraction) has been taken. The Malmquist–Luenberger measure indicates productivity improvements if their values are greater than one and decreases in productivity if the values are less than one. 
 

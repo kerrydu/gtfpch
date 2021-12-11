@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2019.9.5)  22 OCT 2021 17:36
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2019.9.5)  11 DEC 2021 17:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -951,13 +951,13 @@ Package pdftex.def Info: SJF2.pdf  used on input line 95.
                                                   \fi \fi 
 l.109 \end{split}\end{equation}
                                 <./SJF2.pdf>] [6] [7]
-Overfull \hbox (0.22276pt too wide) in paragraph at lines 160--162
+Overfull \hbox (0.22276pt too wide) in paragraph at lines 159--161
 \OT1/cmr/m/n/10 To avoid an ar-bi-trary choice be-tween base years, an ge-o-met
 -ric mean of a fraction-
  []
 
 [8] [9]
-Overfull \hbox (3.50063pt too wide) in paragraph at lines 228--229
+Overfull \hbox (3.50063pt too wide) in paragraph at lines 227--228
 []\OT1/cmr/m/n/10 Regarding the sta-tis-ti-cal in-fer-ence for DEA-based pro-du
 c-tiv-ity in-dexes, [][]Simar
  []
@@ -1244,9 +1244,9 @@ fpch.nonr.result,replace)[]
  []
 
 
-Overfull \hbox (45.50528pt too wide) in paragraph at lines 9--9
+Overfull \hbox (54.0054pt too wide) in paragraph at lines 9--9
  [] \OT1/cmtt/m/n/8 Total Factor Productivity Change:Luenberger Productivity In
-dex (based on nonrial DDF)[] 
+dex (based on nonradial DDF)[] 
  []
 
 ) [17]) (./manuscript.bbl [18] [19]
@@ -1279,7 +1279,7 @@ Here is how much of TeX's memory you used:
  22717 multiletter control sequences out of 15000+600000
  11962 words of font info for 44 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,21n,48p,1643b,576s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 55i,21n,48p,1644b,576s stack positions out of 5000i,500n,10000p,200000b,80000s
 <d:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><d:/tex
 live/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmitt10.pfb><d:/texlive/201
 9/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><d:/texlive/2019/texmf-d
@@ -1294,7 +1294,7 @@ dist/fonts/type1/public/amsfonts/cm/cmti10.pfb><d:/texlive/2019/texmf-dist/font
 s/type1/public/amsfonts/cm/cmtt10.pfb><d:/texlive/2019/texmf-dist/fonts/type1/p
 ublic/amsfonts/cm/cmtt8.pfb><d:/texlive/2019/texmf-dist/fonts/type1/public/amsf
 onts/cm/cmtt9.pfb>
-Output written on manuscript.pdf (20 pages, 385115 bytes).
+Output written on manuscript.pdf (20 pages, 385125 bytes).
 PDF statistics:
  448 PDF objects out of 1000 (max. 8388607)
  377 compressed objects within 4 object streams

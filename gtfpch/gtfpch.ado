@@ -1,3 +1,4 @@
+*! version 4.11, 12 Dec 2021
 *! version 4.1, 21 Oct 2021
 *! version 4.022, 18 Sep 2021
 *! version 2.02, 20 June 2021
@@ -324,7 +325,7 @@ program define gtfpch, rclass prop(xt)
                                gy(`gy') gb(`gb')  ort(`ort')  wmat(`weightvec') ///
                               `biennial' `global' `sequential' window(`window') ///
                                maxiter(`maxiter') tol(`tol')       
-            local indexname "Luenberger Productivity Index (based on nonrial DDF)"
+            local indexname "Luenberger Productivity Index (based on nonradial DDF)"
 
     }
             local resvars `r(rvars)'
@@ -408,7 +409,7 @@ program define gtfpch, rclass prop(xt)
                                gy(`gy') gb(`gb')  ort(`ort')  wmat(`weightvec') ///
                               `biennial' `global' `sequential' window(`window') vrs ///
                                maxiter(`maxiter') tol(`tol')       
-            //local indexname "Luenberger Productivity Index (base on nonrial DDF)"
+            //local indexname "Luenberger Productivity Index (base on nonradial DDF)"
 
     }
     local resvars `r(rvars)'
