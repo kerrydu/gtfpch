@@ -45,7 +45,7 @@ Then, following \cite{Chung1997}, the radial DDF is defined as
 \begin{equation}\label{eq_ddf_r}
     D_r (\pmb{x},\pmb{y},\pmb{b};\pmb{g}) = \sup \{ \beta :((\pmb{x},\pmb{y},\pmb{b}) + \beta \pmb{g}) \in T  \} 
 \end{equation}
-where $\pmb{g} = (\pmb{g}_x,\pmb{g}_y, \pmb{g}_b) \in \Re _ - ^N \times \Re _ + ^M \times \Re _ - ^H$ is a preassigned nonzero vector, specifying the direction in which the distance between the data point, $(\pmb{x},\pmb{y},\pmb{b})$, and the production frontier is measured. 
+where $\pmb{g} = (\pmb{g}_x;\pmb{g}_y; \pmb{g}_b) \in \Re _ - ^N \times \Re _ + ^M \times \Re _ - ^H$ is a preassigned nonzero vector, specifying the direction in which the distance between the data point, $(\pmb{x},\pmb{y},\pmb{b})$, and the production frontier is measured. 
 
 Equation \eqref{eq_ddf_r} gives out the most general form of radial DDF. One can define the distance between the DMU and the production frontier in a specific direction by setting different $\pmb{g}$. By way of illustration, we consider the cases of  ${\pmb{g}_1} = (\pmb{0},\pmb{y},\pmb{0})$, ${\pmb{g}_2} = (\pmb{0},\pmb{0},-\pmb{b})$, ${\pmb{g}_3} = (\pmb{0},\pmb{y},-\pmb{b})$, which is widely used in literature. 
 Figure \ref{fig_ddf} presents hypothetical one-desirable output (e.g., \textit{GDP}) one-undesirable output (e.g., \textit{CO$_2$}) production processes. 
@@ -65,7 +65,7 @@ The nonradial DDF is defined as
 \begin{equation}\label{eq_ddf_nr}
     D_{nr} (\pmb{x},\pmb{y},\pmb{b};\pmb{g}) = \sup \{ \pmb{w'} \pmb{\beta} :((\pmb{x},\pmb{y},\pmb{b}) + \textit{diag}(\pmb{\beta}) \cdot \pmb{g}) \in T \} 
 \end{equation}
-where $\pmb{w}$ denotes a normalized weight vector that is relevant to the numbers of inputs and outputs, and ${\pmb{\beta }} = ({{\pmb{\beta }}_x},{{\pmb{\beta }}_y},{{\pmb{\beta }}_b}) \in {\Re ^N} \times {\Re ^M} \times {\Re ^H}$ denotes the vector of the scaling factors. 
+where $\pmb{w}$ denotes a non-negative weight vector; ${\pmb{\beta }} = ({{\pmb{\beta}}_x};{{\pmb{\beta }}_y};{{\pmb{\beta}}_b}) \in \Re _ + ^N \times \Re _ + ^M \times \Re _+ ^H$, where $\beta_x$, $\beta_y$  and $\beta_b$  denotes the vectors of the scaling factors with regard to inputs ($x$), desirable outputs ($y$) and undesirable outputs ($b$), respectively. 
 Clearly, the nonradial DDF measure allows the inputs and outputs to be adjusted non-proportionally. Compared with the radial measure in Fig.\ref{fig_ddf}, instead of using a fixed point, e.g., B, C, or D, as the reference point, if the nonradial directional distance function is used, the reference point would be located at any point on the production frontier.
  
 

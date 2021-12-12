@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2019.9.5)  12 DEC 2021 13:21
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2019.9.5)  12 DEC 2021 17:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -637,7 +637,7 @@ Overfull \hbox (33.35674pt too wide) detected at line 88
 OML/cmm/m/it/10 :
  []
 
-<SJF2.pdf, id=165, 507.30428pt x 106.52698pt>
+<SJF2.pdf, id=163, 507.30428pt x 106.52698pt>
 File: SJF2.pdf Graphic file (type pdf)
 <use SJF2.pdf>
 Package pdftex.def Info: SJF2.pdf  used on input line 95.
@@ -992,7 +992,7 @@ dist/fonts/type1/public/amsfonts/cm/cmti10.pfb><d:/texlive/2019/texmf-dist/font
 s/type1/public/amsfonts/cm/cmtt10.pfb><d:/texlive/2019/texmf-dist/fonts/type1/p
 ublic/amsfonts/cm/cmtt8.pfb><d:/texlive/2019/texmf-dist/fonts/type1/public/amsf
 onts/cm/cmtt9.pfb>
-Output written on manuscript.pdf (21 pages, 385520 bytes).
+Output written on manuscript.pdf (21 pages, 385596 bytes).
 PDF statistics:
  450 PDF objects out of 1000 (max. 8388607)
  378 compressed objects within 4 object streams
