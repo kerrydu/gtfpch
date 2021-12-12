@@ -324,7 +324,7 @@ program define gtfpch, rclass prop(xt)
                                gy(`gy') gb(`gb')  ort(`ort')  wmat(`weightvec') ///
                               `biennial' `global' `sequential' window(`window') ///
                                maxiter(`maxiter') tol(`tol')       
-            local indexname "Luenberger Productivity Index (based on nonrial DDF)"
+            local indexname "Luenberger Productivity Index (based on nonradial DDF)"
 
     }
             local resvars `r(rvars)'
@@ -408,7 +408,7 @@ program define gtfpch, rclass prop(xt)
                                gy(`gy') gb(`gb')  ort(`ort')  wmat(`weightvec') ///
                               `biennial' `global' `sequential' window(`window') vrs ///
                                maxiter(`maxiter') tol(`tol')       
-            //local indexname "Luenberger Productivity Index (base on nonrial DDF)"
+            //local indexname "Luenberger Productivity Index (base on nonradial DDF)"
 
     }
     local resvars `r(rvars)'

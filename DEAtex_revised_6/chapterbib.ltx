@@ -1,0 +1,243 @@
+%
+%  chapterbib.ltx   Manual for chapterbib.sty
+%
+%
+%  Copyright (c) 1993-2010 by Donald Arseneau
+%
+%  Version 1.16 (5-Sep-2010)
+%
+\documentclass[12pt,a4paper]{ltxdoc}
+
+\setcounter{secnumdepth}{4}
+\renewcommand\theparagraph{\arabic{paragraph}}
+\newcommand\snugger{\vspace{-7pt}}
+
+\MakeShortVerb{\"}
+\hyphenpenalty=500
+\sloppy 
+
+\setlength\parskip{2pt}
+\raggedbottom
+
+\title{chapterbib\\ multiple bibliographies in \LaTeX}
+\author{Donald Arseneau\\ asnd@triumf.ca}
+\date{2010/09/05}
+\begin{document}
+\maketitle
+
+\begin{footnotesize}
+\noindent Chapterbib is copyright \copyright\ 1989--2010 by 
+Niel Kempson and Donald Arseneau.\\
+The package (chapterbib.sty) and this documentation (chapterbib.ltx,
+chapterbib.pdf) may be freely transmitted, reproduced, or modified 
+for any purpose provided that the copyright notice is left intact.
+(Small excerpts may of course be taken and used without any restriction.)
+\par
+\end{footnotesize}
+
+\section*{Introduction}
+
+ The chapterbib package facilitates multiple bibliographies in a 
+ \LaTeX\ document, including items \cs{cite}d (cited) in more than
+ one bibliography.  Despite the name `chapterbib',
+ the \emph{bibliographies are for each included file}, not necessarily
+ for each chapter, although a bibliography per chapter is the usual 
+ application.  The main point is to allow you to use \BibTeX: Each
+ included file should have its own \cs{bibliographystyle} and
+ \cs{bibliography} commands, and you should run bibtex on each included
+ file separately rather than on the main or root file.
+
+ Chapterbib also provides the environment |cbunit|, and the command
+ \cs{cbinput} to allow multiple bibliographies without using \cs{include}
+ (see item~\ref{cbinput}).
+ There are two added hooks, \cs{citeform} and \cs{citepunct}, which you can 
+ redefine to customize the formatting of each entry in a citation list,
+ and the declaration \cs{CitationPrefix} to use in preference to \cs{citeform}
+ for numbering-by-chapter.
+
+ Alternative packages: bibunits, biblatex.
+
+\clearpage
+
+\section*{Usage, Restrictions, and Options}
+
+\paragraph{Normal use: } \leavevmode \label{normaluse}% 1.
+Put \cs{bibliographystyle} and \cs{bibliography} commands in
+    each \cs{include}d file. Run \LaTeX; run \BibTeX\ on each included file;
+    run \LaTeX; run \LaTeX.
+
+\snugger\paragraph{Whole bibliography: } \label{whole} % 2.
+    With chapterbib, the \cs{bibliography} and |\bibliography|\-|style|
+    commands are not normally used in the root file, only in files that
+    have been \cs{include}d. To have a whole-document bibliography, see
+    items \ref{separate}--\ref{duplicate}, depending on which style of
+    whole-document bib.
+
+\snugger\paragraph{Without \textbackslash include: } \label{cbinput} % 3.
+ If you can't use \cs{include} because a new section must start below the
+    preceding bibliography on the same page (odd format!), then you can
+    use |\begin{cbunit}|\dots|\end{cbunit}| (for everything in one file)
+    or \cs{cbinput}, with a |thebibliography| environment in each unit
+    or input file.
+
+    To use \BibTeX, input separate files using \cs{cbinput}; at first use
+    the package or global option |[draft]|, run \LaTeX\ on the document,
+    then \BibTeX\ on each file that was \cs{cbinput}; finally, remove 
+    the |[draft]| option and run \LaTeX\ again (maybe twice to get page
+    references right).  The |[draft]| option only affects the treatment
+    of \cs{cbinput}, not \cs{include} or |\begin{cbunit}|.
+
+\snugger\paragraph{Package compatability: }\label{compatability} % 4.
+    Your preferred citation style (call it xxx.sty) may not work with
+    chapterbib at first, but it is easy to make it compatible:
+    In `xxx.sty' change every `|@\@citeb|' to `|@\@citeb\@extra@b@citeb|',
+    and insert the line\\[3pt]
+    \indent 
+      |\@ifundefined{@extra@b@citeb}{\def\@extra@b@citeb{}}{}|\\[3pt]
+    somewhere (but not as a comment or as part of another definition!).
+
+    If the package also redefines \cs{bibcite} then you should change that
+    definition, replacing `|@#1|' with `|@#1\@extra@binfo|', and insert
+    \\[3pt]\indent
+        |\gdef\@extra@binfo{}|\\[3pt]
+    somewhere in the file.  If the package defines a command that acts
+    similarly to \cs{bibcite} (being written to the aux file, and then 
+    executed as the aux file is processed), then it should
+    have `|\@extra@binfo|' inserted in the same way. 
+
+    Some citation packages deviate quite far from \LaTeX's own method
+    of organizing cite tags using `|b@\@citeb|'.  The instructions above
+    catch such extensions as `|Y@\@citeb|', but not more radical differences.
+    In such cases, try contacting the author of the citation package.
+
+    If a citation style does not (re)define \cs{nocite}, then that command
+    would not be converted when you make the patches at `|@\@citeb|'.
+    Chapterbib will try to detect the presence of \cs{@extra@b@citeb} 
+    in \cs{nocite} and insert it, but if that fails you may need to 
+    redefine \cs{nocite} changing any `|@\@citeb|' to 
+    `|@\@citeb\@extra@b@citeb|' in that sty file.
+
+\snugger\paragraph{Sectionbib: }\label{sectionbib} % 5.
+ The report and book document classes usually treat the bibliography as
+    an unnumbered chapter (|\chapter*|), which is not so good for
+    bibliographies \emph{in} a chapter.  You can specify\\[3pt]
+    \indent
+        |\usepackage[sectionbib]{chapterbib}| \\[3pt]
+    to convert your bibliographies from |\chapter*| to |\section*|, with an
+    entry in the table of contents and the page-header.  A bibliography in
+    the root file remains as a |\chapter*|.  The |[sectionbib]| option modifies
+    the existing |thebibliography| environment (or the \cs{bibsection}
+    command, if present already), so the other formatting in the bibliography
+    should remain unchanged.  On the other hand, if you already have a
+    non-standard bibliography defined, or if you want them numbered, it
+    may be easier to redefine \cs{thebibliography} directly, without any
+    tricky modification of existing commands.
+
+      Alternatively, you can use the \cs{sectionbib} command directly in the
+    document preamble.  It takes two parameters: the sectioning command, and
+    the name of the sectioning level.  For instance, the |[sectionbib]| option
+    executes |\sectionbib{\section*}{section}|. Again, for the most control,
+    it is better to redefine \cs{thebibliography} entirely.
+
+ 
+\snugger\paragraph{Overall separate bibliography: }   \label{separate} %6.
+ If you want a completely unrelated bibliography in the root file, perhaps
+    for a general reading list, you can provide your own bibliography there
+    using the |thebibliography| environment.  I don't suppose this will appeal
+    to \BibTeX\ users!
+
+\snugger\paragraph{Overall bibliography: }\label{overall}% 7.
+    To have a cohesive bibliography for the whole document, plus individual
+    bibs in the chapters, put \cs{bibliography} commands in the included
+    chapters plus in the root file.  Make sure the \cs{bibliographystyle}
+    for the overall bibliography appears \emph{first}, before any chapters
+    are included. Run \LaTeX; run \BibTeX\ on the root file; run \BibTeX\ on
+    each included file; run \LaTeX; run \LaTeX.
+    This produces an independent `overall' bibliography which only
+    makes sense for various `named' bibliography styles; a numbered style, or
+    one with any type of automatic enumeration (like Me2007a, Me2007b) will 
+    give unrelated numbers in each bibliography and lead to confusion.
+
+    \BibTeX\ will complain about multiple \cs{bibdata} commands when it makes
+    the whole bibliography, but it should obey the first.  If you don't 
+    want to see any error messages from bibtex, or if you don't want to put 
+    the main \cs{bibliographystyle} command first in the document, then use 
+    |\usepackage[rootbib]{chapterbib}| when you run \LaTeX\ first; run 
+    \BibTeX\ on the root file; change to |\usepackage{chapterbib}|; run 
+    \LaTeX; run \BibTeX\ on each included file; run \LaTeX; run \LaTeX.
+
+\snugger\paragraph{Chapter bibs gathered to end: }\label{gather} % 8.
+    To have a bibliography-by-chapter at the end instead of separate 
+    bibs in the chapters, use |\usepackage[gather]{chapterbib}|, put
+    \cs{bibliography} commands in each file, and at the end of the main
+    file. Run \LaTeX\ as in item~\ref{normaluse}. You can control the
+    titling of the final bibliographies by defining \cs{FinalBibTitles},
+    such as\\[3pt] 
+      \indent|\newcommand\FinalBibTitles|\\
+      \indent \indent |{References for Chapter \thechapter}|\\[3pt]
+    A similar effect may be achieved by re-defining \cs{FinalBibPrefix} as
+     \\[3pt] \indent
+      |\renewcommand\FinalBibPrefix{References for }|\\[3pt]
+    Even more control is achieved by redefining \cs{StartFinalBibs}.
+    The default definition is (like)
+\begin{verbatim}
+    \newcommand{\StartFinalBibs}{%
+      \renewcommand{\bibname}{Bibliography for chapter n}}
+\end{verbatim}
+    normally, but when using the [sectionbib] option it becomes
+\begin{verbatim}
+    \newcommand{\StartFinalBibs}{\chapter*{\bibname}%
+      \addcontentsline{toc}{chapter}{\bibname}%
+      \@mkboth{\bibname}{\bibname}%
+      \renewcommand{\bibname}{Chapter n}}
+\end{verbatim}
+    where the \cs{bibname} text is now provided by \cs{@auto@bibname},
+    which relies on bookkeeping and \cs{FinalBibPrefix}.
+
+    If your document class has neither section nor chapter, then you must
+    define \cs{StartFinalBibs} and also indicate the sectioning: for example,
+    if the main sectioning command in your document class is \cs{motif}:
+    \\[3pt]\indent
+        |\newcommand\CBMainSectioning{motif}|
+
+\snugger\paragraph{Duplicate bibliographies at end: } \label{duplicate}% 9  
+    To have bibliographies in each chapter \emph{plus} a 
+    bibliography-by-chapter at the end, follow item~\ref{gather}, 
+    but declare\\[3pt]
+    \indent  |\usepackage[duplicate]{chapterbib}|\\
+    \indent  (or |\usepackage[duplicate,sectionbib]{chapterbib}|).
+
+\snugger\paragraph{Babel: }  % 10
+ If you use Babel, load chapterbib before babel.
+
+\section*{Formatting extensions}
+\snugger\paragraph*{\textbackslash citeform}
+ Normally, the citations are formatted as given, but you can define 
+ \cs{citeform} (with one parameter) to reformat every citation.
+  Some possibilities:\\[3pt]
+  \quad |\renewcommand\citeform[1]{\romannumeral 0#1}| \hfill [iv,x]\\
+  \quad |\renewcommand\citeform[1]{(#1)}   | \hfill [(3),(4),(7)]\\[3pt]
+ If you change \cs{citeform}, you should really define \cs{@biblabel} to match.
+
+ A not-so-good way to provide a chapter-number prefix is\\[3pt]
+ \indent |\renewcommand\citeform[1]{\thechapter.#1}| \\[3pt]
+ This partially works, but has only limited applicability: it does not 
+ work with cites in the front-matter (TOC, LOF) or with hyperref.
+
+\snugger\paragraph*{\textbackslash CitationPrefix}
+ Instead, there is a \cs{CitationPrefix} command to apply a prefix to the 
+ citation numbers (or names) in the bibliographies and \cs{cite} commands 
+ for the included files. Use it by declaring something like\\[3pt]
+  \indent |\CitationPrefix{\thechapter.}| \\[3pt]
+ in the preamble.  The prefix will be applied to all the chapter-bibs
+ but will not be used in an overall (root) bibliography, if you have one.
+ This not only affects the formatting but the actual citation, therefore
+ it immediately applies to \cs{bibitem} (no need to change \cs{@biblabel})
+ and works with hyperref. (The \cs{CitationPrefix} mechanism may be
+ prone to conflicts with other packages.)
+
+\snugger\paragraph*{\textbackslash citepunct}
+ The \cs{citepunct} command gives the punctuation (comma-penalty-space)
+ between items in the \cs{cite} list, and you can redefine it.
+
+\end{document}

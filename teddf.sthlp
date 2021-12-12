@@ -24,19 +24,24 @@
 {p_end}
 
 {synopt:{opt gx(varlist)}}specifies direction components for input adjustment. The order of variables specified in gx() should be as the same in {it:{help varlist:inputvars}}. 
-By default, gx takes the opposite of 
+The i-th variable in gx() should be the direction of the i-th variable in {it:{help varlist:inputvars}}. 
+By default, gx() takes the opposite of 
 {it:{help varlist:inputvars}}. 
 {p_end}
 
-{synopt:{opt gy(varlist)}}specifies direction components for desirable output adjustment. The order of variables specified in gy() should be as the same in {it:{help varlist:desirable_outputvars}}. By default, gy takes 
+{synopt:{opt gy(varlist)}}specifies direction components for desirable output adjustment. The order of variables specified in gy() should be as the same in {it:{help varlist:desirable_outputvars}}. 
+The i-th variable in gy() should be the direction of the i-th variable in {it:{help varlist:desirable_outputvars}}. 
+By default, gy() takes 
 {it:{help varlist:desirable_outputvars}}.
 {p_end}
 
-{synopt:{opt gb(varlist)}}specifies direction components for undesirable output adjustment. The order of variables specified in gb() should be as the same in {it:{help varlist:undesirable_outputvars}}. By default, gb takes the opposite of 
+{synopt:{opt gb(varlist)}}specifies direction components for undesirable output adjustment. The order of variables specified in gb() should be as the same in {it:{help varlist:undesirable_outputvars}}. 
+The i-th variable in gb() should be the direction of the i-th variable in {it:{help varlist:undesirable_outputvars}}. 
+By default, gb() takes the opposite of 
 {it:{help varlist:undesirable_outputvars}}. 
 {p_end}
 
-{synopt:{cmdab:nonr:adial}}specifies using non-radial directional distance function.
+{synopt:{cmdab:nonr:adial}}specifies using nonradial directional distance function.
 {p_end}
 
 {synopt:*{opt wmat(name)}}specifies a weight matrix for adjustment of input and output variables. The default is  W=(1,...,1).

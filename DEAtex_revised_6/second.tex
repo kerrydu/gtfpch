@@ -42,13 +42,13 @@
 {\tt time(\varname)} specifies the time variable for panel data.
 
 \hangpara
-{\tt gx(\varlist)} specifies direction components for input adjustment. The order of variables specified in gx() should as the same in \textit{X\varlist}. By default, gx takes the opposite of \textit{X\varlist}.
+{\tt gx(\varlist)} specifies direction components for input adjustment. The order of variables specified in gx() should be as the same in \textit{X\varlist}. The \textit{i}th variable in gx() should be the direction of the \textit{i}th variable in \textit{Xvarlist}. By default, gx() takes the opposite of \textit{X\varlist}.
 
 \hangpara
-{\tt gy(\varlist)} specifies direction components for desirable output adjustment. The order of variables specified in gy() should as the same in \textit{Y\varlist}. By default, gy takes \textit{Y\varlist}.
+{\tt gy(\varlist)} specifies direction components for desirable output adjustment. The order of variables specified in gy() should be as the same in \textit{Y\varlist}. The \textit{i}th variable in gy() should be the direction of the \textit{i}th variable in \textit{Y\varlist}. By default, gy() takes \textit{Y\varlist}.
 
 \hangpara
-{\tt gb(\varlist)} specifies direction components for undesirable output adjustment. The order of variables specified in gb() should as the same in \textit{B\varlist}. By default, gb takes the opposite of \textit{B\varlist}.
+{\tt gb(\varlist)} specifies direction components for undesirable output adjustment. The order of variables specified in gb() should be as the same in \textit{B\varlist}. The \textit{i}th variable in gb() should be the direction of the \textit{i}th variable in \textit{B\varlist}. By default, gb() takes the opposite of \textit{B\varlist}.
 
 \hangpara
 {\tt nonradial} specifies using the nonradial directional distance measure.
@@ -143,19 +143,19 @@
 {\tt luenberger} specifies estimating Luenberger productivity indicator. The default is Malmquist–Luenberger productivity index based on the radial directional distance function.
 
 \hangpara
-{\tt ort(\ststring)} specifies the oriention. The default is ort(input), meaning the input oriented productivity index/indicator. ort(output) means the output oriented productivity index/indicator. ort(hybrid) means the hybrid-direction productivity index/indicator.
+{\tt ort(\ststring)} specifies the oriention. The default is ort(output), meaning the output oriented productivity index/indicator. ort(input) means the input oriented productivity index/indicator. ort(hybrid) means the hybrid-direction productivity index/indicator.
 
 \hangpara
-{\tt gx(\varlist)} specifies direction components for input adjustment. The order of variables specified in gx() should as the same in \textit{X\varlist}. By default, gx=(0,..,0) for ort(output); gx=-\textit{X\varlist} for ort(input) and ort(hybrid).
+{\tt gx(\varlist)} specifies direction components for input adjustment. The order of variables specified in gx() should as the same in \textit{X\varlist}. The \textit{i}th variable in gx() should be the direction of the \textit{i}th variable in \textit{X\varlist}.
 
 \hangpara
-{\tt gy(\varlist)} specifies direction components for desirable output adjustment. The order of variables specified in gy() should as the same in \textit{Y\varlist}. By default, gy=(0,..,0) for ort(input); gy=\textit{Y\varlist} for ort(output) and ort(hybrid).
+{\tt gy(\varlist)} specifies direction components for desirable output adjustment. The order of variables specified in gy() should as the same in \textit{Y\varlist}. The \textit{i}th variable in gy() should be the direction of the \textit{i}th variable in \textit{Y\varlist}.
 
 \hangpara
-{\tt gb(\varlist)} specifies direction components for undesirable output adjustment. The order of variables specified in gb() should as the same in \textit{B\varlist}. By default, gb=(0,..,0) for ort(input); gb=-\textit{B\varlist} for ort(output) and ort(hybrid).
+{\tt gb(\varlist)} specifies direction components for undesirable output adjustment. The order of variables specified in gb() should as the same in \textit{B\varlist}. The \textit{i}th variable in gb() should be the direction of the \textit{i}th variable in \textit{B\varlist}.
 
 \hangpara
-{\tt nonradial} specifies using the non-radial directional distance measure.
+{\tt nonradial} specifies using the nonradial directional distance measure.
 
 \hangpara
 {\tt wmat(name)} specifies a weight matrix for adjustment of input and output variable for the nonradial directional distance measure.
@@ -216,7 +216,7 @@ To customize the directional vector,
 	\input{ex.teddf.direction.log.tex}
 \end{stlog}
 
-Additionally, we show an application of {\tt teddf} to estimate the non-radial directional distance function model as follows. The Dv variable stores the values of the non-radial directional distance function of the DMUs. B\_K, B\_L, B\_CO2, and B\_Y variables store the reduction proportion of inputs ($K$,$L$) and undesirable outputs ($CO2$), and the expansion proportion of desirable output ($Y$), respectively.
+Additionally, we show an application of {\tt teddf} to estimate the nonradial directional distance function model as follows. The Dv variable stores the values of the nonradial directional distance function of the DMUs. B\_K, B\_L, B\_CO2, and B\_Y variables store the reduction proportion of inputs ($K$,$L$) and undesirable outputs ($CO2$), and the expansion proportion of desirable output ($Y$), respectively.
 
 \begin{stlog}
 	\input{ex.teddf.nonr.log.tex}
@@ -248,7 +248,7 @@ With the increasing demand for improving sustainability at the macro and micro l
 Stata, as one of the leading packages for economic analysis, however, has not provided comprehensive tools to measure technical efficiency and total factor productivity change when considering undesirable outputs. 
 Here, as an attempt to fill this gap, we introduced two new Stata commands that perform estimations for nonparametric frontier models with undesirable outputs.
 
-{\tt teddf} estimates directional distance function with undesirable outputs for technical efficiency measurement. Both radial Debreu-Farrell and non-radial Russell measures can be calculated, under different assumptions about the production technology, e.g., window, biennial, sequential, and global production technology.
+{\tt teddf} estimates directional distance function with undesirable outputs for technical efficiency measurement. Both radial Debreu-Farrell and nonradial Russell measures can be calculated, under different assumptions about the production technology, e.g., window, biennial, sequential, and global production technology.
 {\tt gtfpch} measures total factor productivity change with undesirable outputs using Malmquist–Luenberger productivity index or Luenberger indicator. Two types of specifications of decomposing total factor productivity change were given. 
 Some empirical examples have been presented to show the usage of the two commands.
 

@@ -20,13 +20,19 @@
 {syntab:Main}
 {synopt:{cmdab:d:mu:(varname)}}specifies names of DMUs. 
 
-{synopt:{opt gx(varlist)}}specifies direction components for input adjustment. The order of variables specified in gx() should as the same in {it:{help varlist:inputvars}}. 
+{synopt:{opt gx(varlist)}}specifies direction components for input adjustment. 
+The order of variables specified in gx() should as the same in {it:{help varlist:inputvars}}. 
+The i-th variable in gx() should be the direction of the i-th variable in {it:{help varlist:inputvars}}. 
 {p_end}
 
-{synopt:{opt gy(varlist)}}specifies direction components for desirable output adjustment. The order of variables specified in gy() should as the same in {it:{help varlist:desirable_outputvars}}. 
+{synopt:{opt gy(varlist)}}specifies direction components for desirable output adjustment. 
+The order of variables specified in gy() should as the same in {it:{help varlist:desirable_outputvars}}. 
+The i-th variable in gy() should be the direction of the i-th variable in {it:{help varlist:desirable_outputvars}}. 
 {p_end}
 
-{synopt:{opt gb(varlist)}}specifies direction components for undesirable output adjustment. The order of variables specified in gb() should as the same in {it:{help varlist:undesirable_outputvars}}.  
+{synopt:{opt gb(varlist)}}specifies direction components for undesirable output adjustment. 
+The order of variables specified in gb() should as the same in {it:{help varlist:undesirable_outputvars}}.  
+The i-th variable in gb() should be the direction of the i-th variable in {it:{help varlist:undesirable_outputvars}}. 
 {p_end}
 
 {synopt:{cmdab:seq:uential}}specifies sequential production technology.

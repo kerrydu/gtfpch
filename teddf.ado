@@ -1,3 +1,4 @@
+*! version 4.03, 12 Dec 2021
 *! version 4.02, 21 Oct 2021
 *! version 4.01, 11 Sep 2021
 *! version 3.01, 20 June 2021
@@ -446,7 +447,7 @@ program define teddf, rclass
 
 	}
 
-    local NDDF=cond("`nonradial'"!="","Non-raidal","")
+    local NDDF=cond("`nonradial'"!="","Nonraidal","")
  	format `outputvar'   %9.4f
 	order Row `dmu' `time' `outputvar'
 	keep  Row `dmu' `time' `outputvar'
