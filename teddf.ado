@@ -418,6 +418,8 @@ program define teddf, rclass
 		 
 
 		tempname wmat0
+		*local rownumw = rowsof(`weightvec')
+		*if `rownumw'!=1  mat `weightvec' =`weightvec''
 		mata: `wmat0'=st_matrix("`weightvec'")
 
 		if `brep'==0{

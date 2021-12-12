@@ -44,7 +44,7 @@ By default, gb() takes the opposite of
 {synopt:{cmdab:nonr:adial}}specifies using nonradial directional distance function.
 {p_end}
 
-{synopt:*{opt wmat(name)}}specifies a weight matrix for adjustment of input and output variables. The default is  W=(1,...,1).
+{synopt:*{opt wmat(name)}}specifies a weight rowvector for adjustment of input and output variables. The default is  W=(1,...,1).
 {p_end}
 
 {synopt:{opt vrs}}specifies production technology with variable returns to scale. By default, production technology with constant returns to scale is assumed.

@@ -44,10 +44,10 @@ The i-th variable in gb() should be the direction of the i-th variable in {it:{h
 {synopt:{opt global}}specifies global production technology.
 {p_end}
 
-{synopt:{cmdab:nonr:adial}}specifies using non-radial directional distance function(NDDF).
+{synopt:{cmdab:nonr:adial}}specifies using nonradial directional distance function(NDDF).
 {p_end}
 
-{synopt:*{opt wmat(name)}}specifies a weight matrix for adjustment of input and output variables. 
+{synopt:*{opt wmat(name)}}specifies a weight rowvector for adjustment of input and output variables. 
 {p_end}
 
 {synopt:*{cmdab:luen:berger}}specifies estimating Luenberger productivity index. The default is Malmquist–Luenberger productivity index.

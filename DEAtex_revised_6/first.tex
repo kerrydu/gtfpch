@@ -63,7 +63,7 @@ The radial measure expands (shrinks) all outputs or/and inputs proportionally un
 
 The nonradial DDF is defined as
 \begin{equation}\label{eq_ddf_nr}
-    D_{nr} (\pmb{x},\pmb{y},\pmb{b};\pmb{g}) = \sup \{ \pmb{w}^{Transpose} \pmb{\beta} :((\pmb{x},\pmb{y},\pmb{b}) + \textit{diag}(\pmb{\beta}) \cdot \pmb{g}) \in T \} 
+    D_{nr} (\pmb{x},\pmb{y},\pmb{b};\pmb{g}) = \sup \{ \pmb{w'} \pmb{\beta} :((\pmb{x},\pmb{y},\pmb{b}) + \textit{diag}(\pmb{\beta}) \cdot \pmb{g}) \in T \} 
 \end{equation}
 where $\pmb{w}$ denotes a normalized weight vector that is relevant to the numbers of inputs and outputs, and ${\pmb{\beta }} = ({{\pmb{\beta }}_x},{{\pmb{\beta }}_y},{{\pmb{\beta }}_b}) \in {\Re ^N} \times {\Re ^M} \times {\Re ^H}$ denotes the vector of the scaling factors. 
 Clearly, the nonradial DDF measure allows the inputs and outputs to be adjusted non-proportionally. Compared with the radial measure in Fig.\ref{fig_ddf}, instead of using a fixed point, e.g., B, C, or D, as the reference point, if the nonradial directional distance function is used, the reference point would be located at any point on the production frontier.
@@ -114,7 +114,7 @@ In Eq.(7), the left-hand side of the constraints construct the production fronti
 Similarly, the nonradial DDF measure of inefficiency considering the undesirable outputs can be obtained by solving the following linear programming problem.
 \begin{equation}\begin{split}\label{eq_eff_nr}
     D_{nr} (\pmb{x},\pmb{y},\pmb{b};\pmb{g}) 
-    = &\max _{\pmb{\beta},\pmb{\lambda}} \pmb{w}^{T} \pmb{\beta}  \\ 
+    = &\max _{\pmb{\beta},\pmb{\lambda}} \pmb{w'} \pmb{\beta}  \\ 
     \text{s.t.} &\sum\limits_{j = 1}^J {\lambda _j \pmb{x}_j \le \pmb{x} + diag(\pmb{\beta}_x)\cdot \pmb{g}_x}, \\ 
                 &\sum\limits_{j = 1}^J {\lambda _j \pmb{y}_j \ge \pmb{y} + diag(\pmb{\beta}_y)\cdot \pmb{g}_y}, \\ 
                 &\sum\limits_{j = 1}^J {\lambda _j \pmb{b}_j = \pmb{b} + diag(\pmb{\beta}_b)\cdot \pmb{g}_b}, \\ 
@@ -138,7 +138,7 @@ For the panel data case, the radial DDF measure of inefficiency under the CRS as
 Similarly, for the panel data case, the nonradial DDF measure of inefficiency can be estimated by solving the following linear programming problem,
 \begin{equation}\begin{split}\label{eq_eff_nr_panel}
     D_{nr} (\pmb{x},\pmb{y},\pmb{b};\pmb{g}) 
-    = &\max _{\pmb{\beta},\pmb{\lambda}} \pmb{w}^{T} \pmb{\beta}  \\ 
+    = &\max _{\pmb{\beta},\pmb{\lambda}} \pmb{w'} \pmb{\beta}  \\ 
     \text{s.t.} &\sum\limits_{\tau \in \Gamma_t }\sum\limits_{j = 1}^J {{\lambda _{j\tau}}{{\pmb{x}}_{j\tau}} \le \pmb{x} + diag(\pmb{\beta}_x)\cdot \pmb{g}_x}, \\ 
                 &\sum\limits_{\tau \in \Gamma_t }\sum\limits_{j = 1}^J {{\lambda _{j\tau}}{{\pmb{y}}_{j\tau}} \ge \pmb{y} + diag(\pmb{\beta}_y)\cdot \pmb{g}_y}, \\ 
                 &\sum\limits_{\tau \in \Gamma_t }\sum\limits_{j = 1}^J {{\lambda _{j\tau}}{{\pmb{b}}_{j\tau}} = \pmb{b} + diag(\pmb{\beta}_b)\cdot \pmb{g}_b}, \\ 
