@@ -1,4 +1,4 @@
-*! version 4.03, 12 Dec 2021
+*! version 4.03, 16 May 2022
 *! version 4.02, 21 Oct 2021
 *! version 4.01, 11 Sep 2021
 *! version 3.01, 20 June 2021
@@ -373,7 +373,8 @@ program define teddf, rclass
     if "`rf'"!=""{
     	qui replace `touse2'=(`rf'!=0) if !missing(`rf')
     }
-    markout `touse2' `invars' `opvars' `badvars' `rf'
+   * markout `touse2' `invars' `opvars' `badvars' `rf'
+   markout `touse2' `invars' `gopvars' `bopvars' //fixed bus 2022/5/16
     *count if `touse2'	
 	
 	qui mata mata mlib index
@@ -418,8 +419,6 @@ program define teddf, rclass
 		 
 
 		tempname wmat0
-		*local rownumw = rowsof(`weightvec')
-		*if `rownumw'!=1  mat `weightvec' =`weightvec''
 		mata: `wmat0'=st_matrix("`weightvec'")
 
 		if `brep'==0{
@@ -449,7 +448,7 @@ program define teddf, rclass
 
 	}
 
-    local NDDF=cond("`nonradial'"!="","Nonraidal","")
+    local NDDF=cond("`nonradial'"!="","Non-raidal","")
  	format `outputvar'   %9.4f
 	order Row `dmu' `time' `outputvar'
 	keep  Row `dmu' `time' `outputvar'
@@ -484,4 +483,6 @@ program define teddf, rclass
 	restore 
 	
 	end
+
+	
 	
