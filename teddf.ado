@@ -51,7 +51,7 @@ program define teddf, rclass
 										   maxiter(numlist integer >0 max=1) tol(numlist max=1) NODOTS  noPRINT NOCHeck]
     
    * check whether the new version is available
-   if "`nocheck"==""{ //default
+   if "`nocheck'"==""{ //default
 	   if "$gtfpchcheck"==""   gtfpchcheckupdate teddf 
    }	
 	
