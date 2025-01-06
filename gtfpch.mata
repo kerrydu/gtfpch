@@ -114,7 +114,7 @@ real matrix function  calddf(real matrix data,
 			q.setEquality(Aec,bec)		 	
 		}
 		else{
-			lsum=0,J(1,N,1)
+			lsum=0,J(1,cols(dataref),1)
 			q.setEquality(Aec \ lsum, bec \ 1)		 	
 		}
 		q.setInequality((Aie1 \ Aie2 ), (bie1 \ bie2))
